@@ -671,29 +671,6 @@
     white-space: nowrap; transition: all 0.2s;
   }
   .test-btn:hover { background: rgba(127,119,221,0.25); }
-  .score-breakdown {
-    display: flex; gap: 0.4rem; align-items: center; margin-top: 0.5rem;
-  }
-  .score-pill {
-    font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 99px;
-    font-weight: 500;
-  }
-  .score-pill.keywords { background: rgba(184,255,87,0.1); color: #b8ff57; border: 1px solid rgba(184,255,87,0.2); }
-  .score-pill.semantic { background: rgba(127,119,221,0.12); color: #AFA9EC; border: 1px solid rgba(127,119,221,0.25); }
-  .score-pill.total { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border); }
-  .semantic-match-badge {
-    font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 99px;
-    background: rgba(127,119,221,0.15); color: #AFA9EC;
-    border: 1px solid rgba(127,119,221,0.3); white-space: nowrap;
-  }
-  .ai-analyze-btn {
-    width: 100%; background: linear-gradient(135deg, rgba(127,119,221,0.2), rgba(184,255,87,0.1));
-    color: var(--text); border: 1px solid rgba(127,119,221,0.35);
-    border-radius: 8px; padding: 1rem; font-size: 0.95rem; font-weight: 500;
-    font-family: var(--font-body); cursor: pointer; margin-top: 1.5rem;
-    transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-  }
-  .ai-analyze-btn:hover { border-color: rgba(127,119,221,0.6); background: linear-gradient(135deg, rgba(127,119,221,0.3), rgba(184,255,87,0.15)); }
   .streaming-output {
     background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
     padding: 1rem; margin-top: 1rem; font-size: 0.85rem; color: var(--muted);
@@ -1106,12 +1083,16 @@
 <script>
   const API_BASE = "https://jobradar-backend-2.onrender.com";
 
-  const TAB_NAMES = ['config','ai','results','notion'];
-  const TAB_IDS   = ['tab-config','tab-ai','tab-results','tab-notion'];
+  const TAB_NAMES = ['config', 'ai', 'results', 'notion'];
+  const TAB_IDS = ['tab-config', 'tab-ai', 'tab-results', 'tab-notion'];
 
   function switchTab(name) {
-    document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', TAB_NAMES[i] === name));
-    document.querySelectorAll('.tab-panel').forEach((p, i) => p.classList.toggle('active', TAB_IDS[i] === 'tab-' + name));
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', TAB_NAMES[i] === name);
+    });
+    document.querySelectorAll('.tab-panel').forEach((p, i) => {
+      p.classList.toggle('active', TAB_IDS[i] === 'tab-' + name);
+    });
   }
 
   function addTag(e, wrapperId) {
@@ -1120,6 +1101,7 @@
     const input = e.target;
     const val = input.value.trim().toLowerCase();
     if (!val) return;
+
     const wrap = document.getElementById(wrapperId);
     const tag = document.createElement('span');
     tag.className = 'tag';
@@ -1161,7 +1143,7 @@
       const minScore = parseInt(document.getElementById('score-val').textContent || '35', 10);
       const maxJobs = parseInt(document.getElementById('max-val').textContent || '25', 10);
 
-      const res = await fetch(\`\${API_BASE}/scan\`, {
+      const res = await fetch(`${API_BASE}/scan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1199,11 +1181,11 @@
 
     const interval = setInterval(async () => {
       try {
-        const res = await fetch(\`\${API_BASE}/status\`);
+        const res = await fetch(`${API_BASE}/status`);
         const data = await res.json();
 
         if (statusMsg()) statusMsg().textContent = data.status || 'Scan en cours…';
-        if (progressFill()) progressFill().style.width = \`\${data.progress || 0}%\`;
+        if (progressFill()) progressFill().style.width = `${data.progress || 0}%`;
 
         if (!data.running) {
           clearInterval(interval);
@@ -1229,7 +1211,7 @@
     const container = document.getElementById('results-content');
 
     try {
-      const res = await fetch(\`\${API_BASE}/jobs\`);
+      const res = await fetch(`${API_BASE}/jobs`);
       const data = await res.json();
       const jobs = data.jobs || [];
 
@@ -1243,7 +1225,7 @@
         return;
       }
 
-      let html = \`<p class="status-msg" style="color:var(--accent);margin-bottom:0.5rem">✅ \${jobs.length} offres trouvées</p>\`;
+      let html = `<p class="status-msg" style="color:var(--accent);margin-bottom:0.5rem">✅ ${jobs.length} offres trouvées</p>`;
 
       jobs.forEach(job => {
         const score = Number(job.score || 0);
@@ -1296,13 +1278,16 @@
   async function testApiKey() {
     const key = document.getElementById('anthropic-key').value.trim();
     const status = document.getElementById('api-status');
+
     if (!key) {
       status.textContent = '⚠️ Entrez une clé API.';
       status.style.color = '#ffd57e';
       return;
     }
+
     status.textContent = '⏳ Test en cours…';
     status.style.color = 'var(--muted)';
+
     try {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -1317,6 +1302,7 @@
           messages: [{ role: 'user', content: 'Hi' }]
         })
       });
+
       if (res.ok) {
         status.textContent = '✅ Clé valide — connexion réussie !';
         status.style.color = '#b8ff57';
@@ -1406,6 +1392,7 @@ Analyse en 3 points :
           if (!line.startsWith('data: ')) continue;
           const data = line.slice(6);
           if (data === '[DONE]') continue;
+
           try {
             const evt = JSON.parse(data);
             if (evt.type === 'content_block_delta' && evt.delta?.text) {
@@ -1440,6 +1427,7 @@ Le titre ne doit pas être le seul critère.
   async function simulateStreaming(output, text) {
     output.innerHTML = '';
     const words = text.split(' ');
+
     for (const word of words) {
       output.innerHTML += word + ' ';
       output.innerHTML = output.innerHTML
