@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JobRadar — Votre agent emploi automatisé</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #1a1a1a;
+    --border: rgba(255,255,255,0.08);
+    --accent: #b8ff57;
+    --accent2: #7fff00;
+    --text: #f0ede8;
+    --muted: #7a7a72;
+    --muted2: #4a4a44;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 3rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(20px);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--accent);
+    color: #0a0a0a;
+    padding: 0.55rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    font-family: var(--font-body);
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 3rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(ellipse, rgba(184,255,87,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(184,255,87,0.08);
+    border: 1px solid rgba(184,255,87,0.2);
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.35rem 0.9rem;
+    border-radius: 99px;
+    margin-bottom: 2rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    width: fit-content;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(3rem, 7vw, 6.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    max-width: 900px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+    display: block;
+  }
+  .hero-sub {
+    margin-top: 2rem;
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 520px;
+    font-weight: 300;
+    line-height: 1.7;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #0a0a0a;
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 400;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.04); }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .stat-val {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 0.15rem; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 0.8rem 0;
+    overflow: hidden;
+    background: var(--bg2);
+  }
+  .ticker {
+    display: flex;
+    gap: 3rem;
+    width: max-content;
+    animation: ticker 30s linear infinite;
+  }
+  .ticker-item {
+    font-size: 0.8rem;
+    color: var(--muted);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .ticker-item::before { content: '●'; color: var(--accent); font-size: 0.5rem; }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 3rem; }
+  .section-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    max-width: 700px;
+  }
+  h2 span { color: var(--accent); }
+
+  /* ── HOW IT WORKS ── */
+  .how { background: var(--bg); }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5px;
+    margin-top: 3.5rem;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .step {
+    background: var(--bg2);
+    padding: 2.5rem;
+    transition: background 0.2s;
+  }
+  .step:hover { background: var(--bg3); }
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--muted2);
+    line-height: 1;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.04em;
+  }
+  .step-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+  .step-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+  .step-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: rgba(184,255,87,0.1);
+    border: 1px solid rgba(184,255,87,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ── FEATURES ── */
+  .features { background: var(--bg2); }
+  .feat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5px;
+    margin-top: 3.5rem;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .feat-card {
+    background: var(--bg);
+    padding: 2.5rem;
+    transition: background 0.2s;
+    position: relative;
+  }
+  .feat-card:hover { background: var(--bg3); }
+  .feat-card.large { grid-column: span 2; }
+  .feat-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+    display: block;
+  }
+  .feat-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+  .feat-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+  .feat-badge {
+    position: absolute;
+    top: 1.5rem; right: 1.5rem;
+    background: rgba(184,255,87,0.1);
+    border: 1px solid rgba(184,255,87,0.2);
+    color: var(--accent);
+    font-size: 0.72rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 99px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SOURCES ── */
+  .sources { background: var(--bg); }
+  .sources-intro { color: var(--muted); margin-top: 1rem; max-width: 480px; font-size: 0.95rem; }
+  .sources-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 3rem;
+  }
+  .source-pill {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 0.55rem 1.25rem;
+    border-radius: 99px;
+    font-size: 0.875rem;
+    color: var(--text);
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .source-pill:hover {
+    border-color: rgba(184,255,87,0.3);
+    background: rgba(184,255,87,0.05);
+    color: var(--accent);
+  }
+
+  /* ── APP SECTION ── */
+  .app-section { background: var(--bg2); }
+  .app-section h2 { margin-bottom: 0.75rem; }
+  .app-section p { color: var(--muted); margin-bottom: 2.5rem; max-width: 500px; font-size: 0.95rem; }
+
+  /* CONFIG FORM */
+  .config-app {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    max-width: 860px;
+  }
+  .app-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .tab-btn {
+    padding: 1rem 1.5rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab-btn.active { color: var(--text); border-bottom-color: var(--accent); }
+  .tab-btn:hover:not(.active) { color: var(--text); }
+  .tab-panel { display: none; padding: 2rem; }
+  .tab-panel.active { display: block; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+  .form-group label { font-size: 0.8rem; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+  .form-group input, .form-group select, .form-group textarea {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    font-family: var(--font-body);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: rgba(184,255,87,0.4);
+  }
+  .form-group input::placeholder { color: var(--muted2); }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  select option { background: #1a1a1a; }
+
+  .tags-input-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    min-height: 46px;
+    align-items: center;
+    cursor: text;
+    transition: border-color 0.2s;
+  }
+  .tags-input-wrap:focus-within { border-color: rgba(184,255,87,0.4); }
+  .tag {
+    background: rgba(184,255,87,0.12);
+    border: 1px solid rgba(184,255,87,0.25);
+    color: var(--accent);
+    font-size: 0.78rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 99px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .tag button { background: none; border: none; color: inherit; cursor: pointer; font-size: 0.9rem; line-height: 1; padding: 0; opacity: 0.6; }
+  .tag button:hover { opacity: 1; }
+  .tags-input {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-family: var(--font-body);
+    flex: 1;
+    min-width: 120px;
+    padding: 0.2rem 0.4rem;
+  }
+  .tags-input::placeholder { color: var(--muted2); }
+
+  .slider-row { display: flex; align-items: center; gap: 1rem; }
+  .slider-row input[type=range] {
+    flex: 1;
+    accent-color: var(--accent);
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  .slider-val {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1rem;
+    min-width: 40px;
+    text-align: right;
+  }
+
+  .form-section-title {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.25rem;
+    margin-top: 1.75rem;
+  }
+  .form-section-title:first-child { margin-top: 0; }
+
+  .checkbox-group { display: flex; flex-direction: column; gap: 0.5rem; }
+  .checkbox-item { display: flex; align-items: center; gap: 0.65rem; cursor: pointer; font-size: 0.9rem; color: var(--text); }
+  .checkbox-item input[type=checkbox] { accent-color: var(--accent); width: 15px; height: 15px; }
+
+  .run-btn {
+    width: 100%;
+    background: var(--accent);
+    color: #0a0a0a;
+    border: none;
+    border-radius: 8px;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: var(--font-body);
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .run-btn:hover { background: var(--accent2); transform: translateY(-1px); }
+  .run-btn:active { transform: translateY(0); }
+
+  /* RESULTS PANEL */
+  .results-empty {
+    text-align: center;
+    padding: 3rem;
+    color: var(--muted);
+  }
+  .results-empty .empty-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+
+  .job-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s;
+    cursor: pointer;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .job-card:hover { border-color: rgba(184,255,87,0.25); background: var(--bg3); }
+  .job-logo {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+  .job-info { flex: 1; }
+  .job-title { font-weight: 500; font-size: 0.95rem; margin-bottom: 0.2rem; }
+  .job-company { font-size: 0.82rem; color: var(--muted); }
+  .job-meta { display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap; }
+  .job-tag {
+    font-size: 0.72rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 99px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .job-score {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .score-label { font-size: 0.65rem; color: var(--muted); text-align: center; font-weight: 400; display: block; }
+
+  .progress-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 99px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 99px;
+    width: 0%;
+    transition: width 0.3s;
+  }
+  .status-msg { font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem; }
+
+  /* ── FAQ ── */
+  .faq { background: var(--bg); }
+  .faq-list { max-width: 700px; margin-top: 3rem; }
+  .faq-item { border-bottom: 1px solid var(--border); }
+  .faq-q {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 1.25rem 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .faq-q:hover { color: var(--accent); }
+  .faq-icon { font-size: 1.2rem; transition: transform 0.3s; flex-shrink: 0; color: var(--muted); }
+  .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--accent); }
+  .faq-a {
+    font-size: 0.9rem;
+    color: var(--muted);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s;
+    line-height: 1.7;
+  }
+  .faq-item.open .faq-a { max-height: 200px; padding-bottom: 1.25rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg2);
+  }
+  .footer-logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--text);
+  }
+  .footer-logo span { color: var(--accent); }
+  footer p { font-size: 0.8rem; color: var(--muted); }
+
+  /* ── AI SEMANTIC PANEL ── */
+  .ai-badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: rgba(127,119,221,0.12);
+    border: 1px solid rgba(127,119,221,0.25);
+    color: #AFA9EC;
+    font-size: 0.72rem; font-weight: 500;
+    padding: 0.25rem 0.65rem; border-radius: 99px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .ai-badge::before { content:''; width:5px; height:5px; background:#AFA9EC; border-radius:50%; animation: pulse 2s infinite; }
+  .profile-textarea {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text);
+    padding: 1rem; font-size: 0.9rem; font-family: var(--font-body);
+    outline: none; resize: vertical; min-height: 110px; width: 100%;
+    line-height: 1.6; transition: border-color 0.2s;
+  }
+  .profile-textarea:focus { border-color: rgba(127,119,221,0.5); }
+  .profile-textarea::placeholder { color: var(--muted2); font-style: italic; }
+  .ai-info-box {
+    background: rgba(127,119,221,0.06);
+    border: 1px solid rgba(127,119,221,0.15);
+    border-radius: 8px; padding: 1rem; margin: 1rem 0;
+    font-size: 0.82rem; color: var(--muted); line-height: 1.6;
+  }
+  .ai-info-box strong { color: #AFA9EC; }
+  .api-key-row { display: flex; gap: 0.5rem; align-items: center; }
+  .api-key-row input { flex: 1; }
+  .test-btn {
+    background: rgba(127,119,221,0.15); border: 1px solid rgba(127,119,221,0.3);
+    color: #AFA9EC; padding: 0.7rem 1rem; border-radius: 8px;
+    font-size: 0.82rem; font-family: var(--font-body); cursor: pointer;
+    white-space: nowrap; transition: all 0.2s;
+  }
+  .test-btn:hover { background: rgba(127,119,221,0.25); }
+  .score-breakdown {
+    display: flex; gap: 0.4rem; align-items: center; margin-top: 0.5rem;
+  }
+  .score-pill {
+    font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 99px;
+    font-weight: 500;
+  }
+  .score-pill.keywords { background: rgba(184,255,87,0.1); color: #b8ff57; border: 1px solid rgba(184,255,87,0.2); }
+  .score-pill.semantic { background: rgba(127,119,221,0.12); color: #AFA9EC; border: 1px solid rgba(127,119,221,0.25); }
+  .score-pill.total { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border); }
+  .semantic-match-badge {
+    font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 99px;
+    background: rgba(127,119,221,0.15); color: #AFA9EC;
+    border: 1px solid rgba(127,119,221,0.3); white-space: nowrap;
+  }
+  .ai-analyze-btn {
+    width: 100%; background: linear-gradient(135deg, rgba(127,119,221,0.2), rgba(184,255,87,0.1));
+    color: var(--text); border: 1px solid rgba(127,119,221,0.35);
+    border-radius: 8px; padding: 1rem; font-size: 0.95rem; font-weight: 500;
+    font-family: var(--font-body); cursor: pointer; margin-top: 1.5rem;
+    transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  }
+  .ai-analyze-btn:hover { border-color: rgba(127,119,221,0.6); background: linear-gradient(135deg, rgba(127,119,221,0.3), rgba(184,255,87,0.15)); }
+  .streaming-output {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 1rem; margin-top: 1rem; font-size: 0.85rem; color: var(--muted);
+    min-height: 60px; line-height: 1.7; display: none;
+    font-family: var(--font-mono, monospace);
+  }
+  .streaming-output.visible { display: block; }
+  .cursor-blink { animation: blink 1s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .hero { padding: 7rem 1.5rem 4rem; }
+    .hero-stats { gap: 2rem; flex-wrap: wrap; }
+    .feat-grid { grid-template-columns: 1fr; }
+    .feat-card.large { grid-column: span 1; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .steps { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Job<span>Radar</span></a>
+  <ul class="nav-links">
+    <li><a href="#how">Comment ça marche</a></li>
+    <li><a href="#features">Fonctionnalités</a></li>
+    <li><a href="#app">Démo</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="#app" class="nav-cta">Essayer gratuitement →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-tag">Agent IA de recherche d'emploi</div>
+  <h1>Trouvez votre<em>job idéal.</em>Automatiquement.</h1>
+  <p class="hero-sub">JobRadar scanne des dizaines de plateformes d'offres d'emploi, score chaque poste selon vos critères, et envoie les meilleurs directement dans votre Notion.</p>
+  <div class="hero-actions">
+    <a href="#app" class="btn-primary">Configurer mon agent →</a>
+    <a href="#how" class="btn-secondary">Voir comment ça marche</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-val">9+</div>
+      <div class="stat-label">Sources scrappées</div>
+    </div>
+    <div>
+      <div class="stat-val">100%</div>
+      <div class="stat-label">Automatisé</div>
+    </div>
+    <div>
+      <div class="stat-val">0€</div>
+      <div class="stat-label">Open source</div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">Greenhouse</span>
+    <span class="ticker-item">Lever</span>
+    <span class="ticker-item">LinkedIn</span>
+    <span class="ticker-item">Welcome to the Jungle</span>
+    <span class="ticker-item">RemoteOK</span>
+    <span class="ticker-item">Ashby</span>
+    <span class="ticker-item">YCombinator Jobs</span>
+    <span class="ticker-item">Workable</span>
+    <span class="ticker-item">SmartRecruiters</span>
+    <span class="ticker-item">Greenhouse</span>
+    <span class="ticker-item">Lever</span>
+    <span class="ticker-item">LinkedIn</span>
+    <span class="ticker-item">Welcome to the Jungle</span>
+    <span class="ticker-item">RemoteOK</span>
+    <span class="ticker-item">Ashby</span>
+    <span class="ticker-item">YCombinator Jobs</span>
+    <span class="ticker-item">Workable</span>
+    <span class="ticker-item">SmartRecruiters</span>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="section-label">Processus</div>
+  <h2>Simple comme <span>3 étapes</span></h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-icon">🎯</div>
+      <div class="step-num">01</div>
+      <div class="step-title">Définissez vos critères</div>
+      <div class="step-desc">Titres de postes, localisations, entreprises cibles, mots-clés à exclure. Vous configurez une fois, l'agent s'en souvient.</div>
+    </div>
+    <div class="step">
+      <div class="step-icon">🤖</div>
+      <div class="step-num">02</div>
+      <div class="step-title">L'agent scanne tout</div>
+      <div class="step-desc">Chaque jour, JobRadar parcourt 9 plateformes, extrait les offres et les score automatiquement selon vos priorités.</div>
+    </div>
+    <div class="step">
+      <div class="step-icon">📊</div>
+      <div class="step-num">03</div>
+      <div class="step-title">Notion se remplit seul</div>
+      <div class="step-desc">Les meilleures offres atterrissent dans votre base Notion avec score, priorité et lien direct. Vous recevez un email récap.</div>
+    </div>
+    <div class="step">
+      <div class="step-icon">✨</div>
+      <div class="step-num">04</div>
+      <div class="step-title">Vous postulez en focus</div>
+      <div class="step-desc">Plus de scroll infini. Vous avez une liste triée des meilleures opportunités du jour. Concentrez-vous sur les candidatures.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-label">Fonctionnalités</div>
+  <h2>Tout ce dont vous avez <span>besoin</span></h2>
+  <div class="feat-grid">
+    <div class="feat-card large">
+      <span class="feat-icon">✨</span>
+      <div class="feat-title">Recherche sémantique IA</div>
+      <div class="feat-desc">Décrivez votre job idéal en prose naturelle. L'IA transforme votre profil et chaque offre en vecteurs mathématiques, puis mesure leur proximité sémantique. Un "Growth Associate" ou "Relationship Specialist" est détecté comme pertinent — même sans apparaître dans vos mots-clés.</div>
+      <span class="feat-badge">Nouveau</span>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🎯</span>
+      <div class="feat-title">Scoring hybride</div>
+      <div class="feat-desc">Score final = mots-clés + IA sémantique, avec pondération ajustable. Vous choisissez l'équilibre entre précision des mots et sens du rôle.</div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🔄</span>
+      <div class="feat-title">Anti-doublons</div>
+      <div class="feat-desc">Système de mémoire sur 30 jours : aucune offre déjà vue n'est jamais envoyée deux fois dans votre Notion.</div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">📧</span>
+      <div class="feat-title">Email récapitulatif</div>
+      <div class="feat-desc">Chaque matin, recevez le top 3 des offres du jour avec score, localisation et lien direct.</div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🗂️</span>
+      <div class="feat-title">Intégration Notion</div>
+      <div class="feat-desc">Vos offres arrivent avec entreprise, poste, score, priorité (Haute/Moyenne/Basse) et statut "À postuler" prêt à l'emploi.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SOURCES -->
+<section class="sources">
+  <div class="section-label">Couverture</div>
+  <h2>9 plateformes <span>couvertes</span></h2>
+  <p class="sources-intro">De LinkedIn aux boards des startups YC, JobRadar couvre l'essentiel du marché tech & business européen.</p>
+  <div class="sources-grid">
+    <div class="source-pill">🟢 Greenhouse</div>
+    <div class="source-pill">⚡ Lever</div>
+    <div class="source-pill">💼 LinkedIn</div>
+    <div class="source-pill">🌿 Welcome to the Jungle</div>
+    <div class="source-pill">🌍 RemoteOK</div>
+    <div class="source-pill">🔷 Ashby</div>
+    <div class="source-pill">🚀 YCombinator Jobs</div>
+    <div class="source-pill">⚙️ Workable</div>
+    <div class="source-pill">🏢 SmartRecruiters</div>
+  </div>
+</section>
+
+<!-- APP SECTION -->
+<section class="app-section" id="app">
+  <div class="section-label">Interface</div>
+  <h2>Configurez votre <span>agent</span></h2>
+  <p>Définissez vos critères de recherche ci-dessous. Aucune ligne de code requise.</p>
+
+  <div class="config-app">
+    <div class="app-tabs">
+      <button class="tab-btn active" onclick="switchTab('config')">⚙️ Configuration</button>
+      <button class="tab-btn" onclick="switchTab('ai')">✨ IA Sémantique</button>
+      <button class="tab-btn" onclick="switchTab('results')">📋 Résultats</button>
+      <button class="tab-btn" onclick="switchTab('notion')">🗂️ Connexion Notion</button>
+    </div>
+
+    <!-- CONFIG TAB -->
+    <div class="tab-panel active" id="tab-config">
+      <div class="form-section-title">Postes recherchés</div>
+      <div class="form-group">
+        <label>Mots-clés de postes</label>
+        <div class="tags-input-wrap" id="keywords-wrap" onclick="document.getElementById('keyword-input').focus()">
+          <span class="tag">customer success <button onclick="removeTag(this)">×</button></span>
+          <span class="tag">account manager <button onclick="removeTag(this)">×</button></span>
+          <span class="tag">business development <button onclick="removeTag(this)">×</button></span>
+          <input class="tags-input" id="keyword-input" placeholder="Ajouter un mot-clé…" onkeydown="addTag(event, 'keywords-wrap')">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Mots à exclure (stages, senior…)</label>
+        <div class="tags-input-wrap" id="exclude-wrap" onclick="document.getElementById('exclude-input').focus()">
+          <span class="tag">senior <button onclick="removeTag(this)">×</button></span>
+          <span class="tag">intern <button onclick="removeTag(this)">×</button></span>
+          <span class="tag">director <button onclick="removeTag(this)">×</button></span>
+          <input class="tags-input" id="exclude-input" placeholder="Ajouter un mot à exclure…" onkeydown="addTag(event, 'exclude-wrap')">
+        </div>
+      </div>
+
+      <div class="form-section-title">Localisation</div>
+      <div class="form-group">
+        <label>Pays / Villes prioritaires</label>
+        <div class="tags-input-wrap" id="location-wrap" onclick="document.getElementById('location-input').focus()">
+          <span class="tag">switzerland <button onclick="removeTag(this)">×</button></span>
+          <span class="tag">barcelona <button onclick="removeTag(this)">×</button></span>
+          <span class="tag">paris <button onclick="removeTag(this)">×</button></span>
+          <span class="tag">remote <button onclick="removeTag(this)">×</button></span>
+          <input class="tags-input" id="location-input" placeholder="Ajouter une ville…" onkeydown="addTag(event, 'location-wrap')">
+        </div>
+      </div>
+
+      <div class="form-section-title">Filtres de qualité</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Score minimum</label>
+          <div class="slider-row">
+            <input type="range" min="0" max="100" value="35" oninput="document.getElementById('score-val').textContent=this.value">
+            <span class="slider-val" id="score-val">35</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Offres max par jour</label>
+          <div class="slider-row">
+            <input type="range" min="5" max="50" value="25" oninput="document.getElementById('max-val').textContent=this.value">
+            <span class="slider-val" id="max-val">25</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-title">Sources actives</div>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox" checked> Greenhouse</label>
+        <label class="checkbox-item"><input type="checkbox" checked> Lever</label>
+        <label class="checkbox-item"><input type="checkbox" checked> Welcome to the Jungle</label>
+        <label class="checkbox-item"><input type="checkbox" checked> RemoteOK</label>
+        <label class="checkbox-item"><input type="checkbox" checked> Ashby</label>
+        <label class="checkbox-item"><input type="checkbox" checked> YCombinator Jobs</label>
+        <label class="checkbox-item"><input type="checkbox"> LinkedIn (scraping, instable)</label>
+        <label class="checkbox-item"><input type="checkbox"> Workable (liste vide par défaut)</label>
+      </div>
+
+      <button class="run-btn" onclick="runDemo()">
+        <span id="run-label">🚀 Lancer la simulation</span>
+      </button>
+    </div>
+
+    <!-- AI SEMANTIC TAB -->
+    <div class="tab-panel" id="tab-ai">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem;">
+        <div>
+          <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:0.35rem;">Recherche sémantique par IA</div>
+          <div style="font-size:0.85rem;color:var(--muted);">Trouve les offres similaires même si elles n'ont pas les mêmes mots-clés</div>
+        </div>
+        <span class="ai-badge">IA active</span>
+      </div>
+
+      <div class="form-section-title">Votre profil idéal</div>
+      <div class="form-group">
+        <label>Décrivez votre job idéal en quelques phrases</label>
+        <textarea class="profile-textarea" id="ideal-profile" placeholder="Ex : Je recherche un poste orienté clients dans une entreprise tech ou SaaS, de niveau junior à intermédiaire. J'aime travailler sur l'adoption produit, la fidélisation et le développement commercial. Je suis ouvert aux rôles en anglais ou en français, en Suisse, Allemagne, France ou en remote..."></textarea>
+      </div>
+
+      <div class="ai-info-box">
+        <strong>Comment ça marche ?</strong> Votre description est transformée en vecteur mathématique (embedding) par l'IA. Chaque offre est vectorisée de la même façon. On mesure ensuite la proximité sémantique — un "Growth Associate" ou un "Relationship Manager" proche de votre profil sera détecté, même sans apparaître dans vos mots-clés.
+      </div>
+
+      <div class="form-section-title">Clé API Anthropic</div>
+      <div class="form-group">
+        <label>Clé API (pour les embeddings)</label>
+        <div class="api-key-row">
+          <input type="password" id="anthropic-key" placeholder="sk-ant-api03-…" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:0.7rem 1rem;font-size:0.9rem;font-family:var(--font-body);outline:none;transition:border-color 0.2s;">
+          <button class="test-btn" onclick="testApiKey()">Tester la clé</button>
+        </div>
+        <div id="api-status" style="font-size:0.78rem;margin-top:0.4rem;color:var(--muted);"></div>
+      </div>
+
+      <div class="form-section-title">Pondération du score</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Poids score mots-clés</label>
+          <div class="slider-row">
+            <input type="range" min="0" max="100" value="50" id="kw-weight"
+              oninput="document.getElementById('kw-w-val').textContent=this.value+'%'; document.getElementById('sem-weight').value=100-this.value; document.getElementById('sem-w-val').textContent=(100-this.value)+'%'">
+            <span class="slider-val" id="kw-w-val">50%</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Poids score sémantique IA</label>
+          <div class="slider-row">
+            <input type="range" min="0" max="100" value="50" id="sem-weight"
+              oninput="document.getElementById('sem-w-val').textContent=this.value+'%'; document.getElementById('kw-weight').value=100-this.value; document.getElementById('kw-w-val').textContent=(100-this.value)+'%'">
+            <span class="slider-val" id="sem-w-val">50%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-title">Tester l'analyse sémantique</div>
+      <div class="form-group">
+        <label>Titre d'une offre à analyser</label>
+        <input type="text" id="test-job-title" placeholder="Ex : Growth & Partnerships Associate" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:0.7rem 1rem;font-size:0.9rem;font-family:var(--font-body);outline:none;width:100%;">
+      </div>
+      <div class="form-group">
+        <label>Entreprise (optionnel)</label>
+        <input type="text" id="test-job-company" placeholder="Ex : Stripe" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:0.7rem 1rem;font-size:0.9rem;font-family:var(--font-body);outline:none;width:100%;">
+      </div>
+
+      <button class="ai-analyze-btn" onclick="analyzeJobWithAI()">
+        <span id="ai-btn-label">✨ Analyser la similarité avec mon profil</span>
+      </button>
+
+      <div class="streaming-output" id="ai-output"></div>
+    </div>
+
+    <!-- RESULTS TAB -->
+    <div class="tab-panel" id="tab-results">
+      <div id="results-content">
+        <div class="results-empty">
+          <span class="empty-icon">🔍</span>
+          <p>Lancez une simulation depuis l'onglet Configuration pour voir les résultats ici.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTION TAB -->
+    <div class="tab-panel" id="tab-notion">
+      <div class="form-section-title">Connexion Notion</div>
+      <div class="form-group">
+        <label>Notion Token (Integration Secret)</label>
+        <input type="password" placeholder="secret_xxxxxxxxxxxxxxxxxxxx" id="notion-token">
+      </div>
+      <div class="form-group">
+        <label>Database ID</label>
+        <input type="text" placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" id="database-id">
+      </div>
+      <div class="form-section-title">Email récapitulatif</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Adresse Gmail</label>
+          <input type="email" placeholder="vous@gmail.com">
+        </div>
+        <div class="form-group">
+          <label>Mot de passe application</label>
+          <input type="password" placeholder="xxxx xxxx xxxx xxxx">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Envoyer le récap à</label>
+        <input type="email" placeholder="vous@gmail.com">
+      </div>
+      <div style="background: rgba(184,255,87,0.06); border: 1px solid rgba(184,255,87,0.15); border-radius: 8px; padding: 1rem; margin-top: 0.5rem;">
+        <p style="font-size: 0.82rem; color: var(--muted); line-height: 1.6;">
+          💡 <strong style="color: var(--text);">Comment obtenir un mot de passe d'application Gmail ?</strong><br>
+          Allez dans Compte Google → Sécurité → Validation en 2 étapes → Mots de passe d'application. Créez-en un pour "Messagerie" et copiez les 16 caractères.
+        </p>
+      </div>
+      <button class="run-btn" onclick="saveNotion()">
+        💾 Sauvegarder la configuration
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="section-label">Questions fréquentes</div>
+  <h2>Tout ce que vous <span>voulez savoir</span></h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Dois-je savoir coder pour utiliser JobRadar ?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Non ! L'interface web vous permet de tout configurer sans toucher une ligne de code. Il faut juste avoir Python installé sur votre Mac pour lancer l'agent, et suivre notre guide en 5 minutes.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Combien d'offres l'agent trouve-t-il par jour ?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Cela dépend de vos critères. En moyenne, l'agent scanne plusieurs centaines d'offres brutes et vous en sélectionne entre 5 et 25 selon le score minimum que vous avez défini.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Est-ce que LinkedIn est fiable comme source ?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">LinkedIn utilise du scraping HTML qui peut être instable (rate limiting, changements de structure). Les sources via API officielle (Greenhouse, Lever, Ashby, RemoteOK) sont beaucoup plus fiables. C'est pourquoi LinkedIn est désactivé par défaut.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Mes données sont-elles en sécurité ?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">JobRadar est 100% open source et tourne localement sur votre machine. Vos tokens Notion et Gmail ne quittent jamais votre ordinateur. Aucune donnée n'est envoyée à des serveurs tiers.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Comment automatiser l'exécution quotidienne ?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Sur Mac, vous pouvez utiliser un cron job ou l'Automator. Ajoutez simplement `0 8 * * * cd /path/to/job-agent && python agent.py` dans votre crontab pour une exécution automatique chaque matin à 8h.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Job<span>Radar</span></div>
+  <p>Open source — construit avec ❤️ pour les chercheurs d'emploi</p>
+</footer>
+
+<script>
+  // Tab switching — now 4 tabs
+  const TAB_NAMES = ['config','ai','results','notion'];
+  const TAB_IDS   = ['tab-config','tab-ai','tab-results','tab-notion'];
+  function switchTab(name) {
+    document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', TAB_NAMES[i] === name));
+    document.querySelectorAll('.tab-panel').forEach((p,i) => p.classList.toggle('active', TAB_IDS[i] === 'tab-'+name));
+  }
+
+  // Tag input
+  function addTag(e, wrapperId) {
+    if (e.key !== 'Enter' && e.key !== ',') return;
+    e.preventDefault();
+    const input = e.target;
+    const val = input.value.trim().toLowerCase();
+    if (!val) return;
+    const wrap = document.getElementById(wrapperId);
+    const tag = document.createElement('span');
+    tag.className = 'tag';
+    tag.innerHTML = `${val} <button onclick="removeTag(this)">×</button>`;
+    wrap.insertBefore(tag, input);
+    input.value = '';
+  }
+  function removeTag(btn) { btn.closest('.tag').remove(); }
+
+  // FAQ
+  function toggleFaq(btn) { btn.closest('.faq-item').classList.toggle('open'); }
+
+  // ── AI KEY TEST ──
+  async function testApiKey() {
+    const key = document.getElementById('anthropic-key').value.trim();
+    const status = document.getElementById('api-status');
+    if (!key) { status.textContent = '⚠️ Entrez une clé API.'; status.style.color = '#ffd57e'; return; }
+    status.textContent = '⏳ Test en cours…'; status.style.color = 'var(--muted)';
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
+        body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 10, messages: [{ role: 'user', content: 'Hi' }] })
+      });
+      if (res.ok) { status.textContent = '✅ Clé valide — connexion réussie !'; status.style.color = '#b8ff57'; }
+      else { status.textContent = '❌ Clé invalide ou expirée.'; status.style.color = '#ff8c7e'; }
+    } catch(e) { status.textContent = '❌ Erreur réseau : ' + e.message; status.style.color = '#ff8c7e'; }
+  }
+
+  // ── AI SEMANTIC ANALYSIS ──
+  async function analyzeJobWithAI() {
+    const key     = document.getElementById('anthropic-key').value.trim();
+    const profile = document.getElementById('ideal-profile').value.trim();
+    const title   = document.getElementById('test-job-title').value.trim();
+    const company = document.getElementById('test-job-company').value.trim();
+    const output  = document.getElementById('ai-output');
+    const btnLabel = document.getElementById('ai-btn-label');
+
+    if (!profile) { alert('Décrivez d\'abord votre profil idéal dans le champ ci-dessus.'); return; }
+    if (!title)   { alert('Entrez un titre de poste à analyser.'); return; }
+
+    output.classList.add('visible');
+    output.innerHTML = '<span style="color:var(--muted)">Analyse en cours<span class="cursor-blink">▌</span></span>';
+    btnLabel.textContent = '⏳ Analyse…';
+
+    const systemPrompt = `Tu es un expert en recrutement et analyse de compatibilité candidat/offre. 
+Tu dois analyser si une offre d'emploi correspond au profil idéal d'un candidat en utilisant la similarité sémantique — pas seulement les mots-clés exacts, mais la nature réelle du rôle.
+Réponds en français, de façon concise et structurée.`;
+
+    const userPrompt = `Profil idéal du candidat :
+"${profile}"
+
+Offre à analyser :
+Titre : ${title}${company ? `\nEntreprise : ${company}` : ''}
+
+Analyse en 3 points :
+1. **Score de similarité sémantique** (0-100) et justification en 1 phrase
+2. **Pourquoi ce rôle est (ou n'est pas) pertinent** malgré son titre, en 2-3 phrases
+3. **Verdict** : ✅ À postuler / ⚠️ À considérer / ❌ Hors profil`;
+
+    if (!key) {
+      // Demo mode without real API key
+      await simulateStreaming(output, getDemoAnalysis(title, profile));
+      btnLabel.textContent = '✨ Analyser la similarité avec mon profil';
+      return;
+    }
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': key,
+          'anthropic-version': '2023-06-01',
+          'anthropic-beta': 'messages-2023-12-15'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 400,
+          stream: true,
+          system: systemPrompt,
+          messages: [{ role: 'user', content: userPrompt }]
+        })
+      });
+
+      output.innerHTML = '';
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const data = line.slice(6);
+          if (data === '[DONE]') continue;
+          try {
+            const evt = JSON.parse(data);
+            if (evt.type === 'content_block_delta' && evt.delta?.text) {
+              output.innerHTML += evt.delta.text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--text)">$1</strong>');
+              output.scrollTop = output.scrollHeight;
+            }
+          } catch(e) {}
+        }
+      }
+    } catch(e) {
+      output.innerHTML = `<span style="color:#ff8c7e">Erreur : ${e.message}. Vérifiez votre clé API et réessayez.</span>`;
+    }
+    btnLabel.textContent = '✨ Analyser la similarité avec mon profil';
+  }
+
+  function getDemoAnalysis(title, profile) {
+    return `**Score de similarité sémantique : 78/100**
+Ce rôle partage une forte proximité sémantique avec votre profil orienté relations clients et développement commercial.
+
+**Pourquoi ce rôle est pertinent**
+"${title}" couvre des responsabilités typiques d'un poste orienté clients : gestion de compte, adoption produit et croissance du revenu. Même si le titre diffère de "Customer Success Manager", la nature du travail — travailler avec des clients existants pour maximiser la valeur — est sémantiquement très proche de votre profil idéal. Ce type de rôle hybride entre business development et account management correspond à votre description.
+
+**Verdict : ✅ À postuler**
+Le titre ne doit pas vous freiner — le fond du rôle correspond. Recommandé.
+
+<span style="color:var(--muted);font-size:0.75rem;font-style:italic">Mode démo — ajoutez votre clé API Anthropic pour une analyse réelle en streaming.</span>`;
+  }
+
+  async function simulateStreaming(output, text) {
+    output.innerHTML = '';
+    const words = text.split(' ');
+    for (const word of words) {
+      output.innerHTML += word + ' ';
+      output.innerHTML = output.innerHTML.replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--text)">$1</strong>').replace(/\n/g, '<br>');
+      await new Promise(r => setTimeout(r, 18));
+    }
+  }
+
+  // ── DEMO SIMULATION ──
+  const mockJobs = [
+    { title: 'Customer Success Manager', company: 'Stripe', location: 'Amsterdam', kwScore: 72, aiScore: 88, source: 'Greenhouse', logo: '💳', aiMatch: true },
+    { title: 'Account Manager — DACH', company: 'Salesforce', location: 'Zurich', kwScore: 85, aiScore: 90, source: 'Lever', logo: '☁️', aiMatch: true },
+    { title: 'Growth & Partnerships Associate', company: 'Airtable', location: 'Paris (Remote)', kwScore: 18, aiScore: 74, source: 'Ashby', logo: '🗄️', aiMatch: true },
+    { title: 'Graduate Program — Business', company: 'Google', location: 'Zurich', kwScore: 65, aiScore: 71, source: 'Greenhouse', logo: '🔍', aiMatch: false },
+    { title: 'Relationship Development Specialist', company: 'HubSpot', location: 'Remote', kwScore: 12, aiScore: 81, source: 'RemoteOK', logo: '🧡', aiMatch: true },
+    { title: 'Client Onboarding Manager', company: 'Revolut', location: 'Barcelone', kwScore: 20, aiScore: 76, source: 'WTTJ', logo: '🏦', aiMatch: true },
+  ];
+
+  function blendScore(kw, ai) {
+    const kwW = parseInt(document.getElementById('kw-weight')?.value || 50) / 100;
+    return Math.round(kw * kwW + ai * (1 - kwW));
+  }
+
+  function scoreColor(s) {
+    if (s >= 80) return '#b8ff57';
+    if (s >= 60) return '#ffd57e';
+    return '#ff8c7e';
+  }
+
+  function runDemo() {
+    const btn = document.getElementById('run-label');
+    btn.textContent = '⏳ Scan en cours…';
+    switchTab('results');
+
+    const container = document.getElementById('results-content');
+    const hasAI = document.getElementById('ideal-profile')?.value?.trim().length > 10;
+    const statuses = hasAI
+      ? ['Connexion aux sources…', 'Scan Greenhouse…', 'Scan Lever…', 'Vectorisation des offres…', '✨ Analyse sémantique IA…', 'Fusion des scores…', 'Envoi vers Notion…']
+      : ['Connexion aux sources…', 'Scan Greenhouse…', 'Scan Lever…', 'Scan Ashby…', 'Calcul des scores…', 'Filtrage des doublons…', 'Envoi vers Notion…'];
+
+    container.innerHTML = `
+      <p class="status-msg" id="status-msg">${statuses[0]}</p>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    `;
+
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < statuses.length) {
+        document.getElementById('status-msg').textContent = statuses[i];
+        document.getElementById('progress-fill').style.width = ((i+1)/statuses.length*100) + '%';
+        i++;
+      } else {
+        clearInterval(interval);
+        showResults(hasAI);
+        btn.textContent = '🚀 Lancer la simulation';
+      }
+    }, 500);
+  }
+
+  function showResults(hasAI) {
+    const container = document.getElementById('results-content');
+    const sorted = [...mockJobs].sort((a,b) => blendScore(b.kwScore,b.aiScore) - blendScore(a.kwScore,a.aiScore));
+    const semanticNew = hasAI ? sorted.filter(j => j.kwScore < 30 && j.aiMatch) : [];
+
+    let html = `<p class="status-msg" style="color:var(--accent);margin-bottom:0.5rem">✅ ${sorted.length} offres trouvées et scorées</p>`;
+    if (hasAI && semanticNew.length) {
+      html += `<p style="font-size:0.82rem;color:#AFA9EC;margin-bottom:1.25rem;">✨ ${semanticNew.length} offre(s) détectée(s) uniquement par l'IA sémantique — hors mots-clés</p>`;
+    }
+
+    sorted.forEach(job => {
+      const total = blendScore(job.kwScore, job.aiScore);
+      const isSemanticOnly = job.kwScore < 30 && job.aiMatch && hasAI;
+      html += `
+        <div class="job-card" style="${isSemanticOnly ? 'border-color:rgba(127,119,221,0.3);' : ''}">
+          <div class="job-logo">${job.logo}</div>
+          <div class="job-info">
+            <div class="job-title" style="display:flex;align-items:center;gap:0.5rem;">
+              ${job.title}
+              ${isSemanticOnly ? '<span class="semantic-match-badge">✨ Match IA</span>' : ''}
+            </div>
+            <div class="job-company">${job.company}</div>
+            <div class="job-meta">
+              <span class="job-tag">📍 ${job.location}</span>
+              <span class="job-tag">🔗 ${job.source}</span>
+              ${total >= 80 ? '<span class="job-tag" style="border-color:rgba(184,255,87,0.3);color:var(--accent)">⭐ Haute priorité</span>' : ''}
+            </div>
+            ${hasAI ? `<div class="score-breakdown">
+              <span class="score-pill keywords">🎯 mots-clés ${job.kwScore}</span>
+              <span style="color:var(--muted2);font-size:0.75rem;">+</span>
+              <span class="score-pill semantic">✨ IA ${job.aiScore}</span>
+              <span style="color:var(--muted2);font-size:0.75rem;">=</span>
+              <span class="score-pill total">score ${total}</span>
+            </div>` : ''}
+          </div>
+          <div class="job-score" style="color:${scoreColor(total)}">${total}<span class="score-label">score</span></div>
+        </div>`;
+    });
+    container.innerHTML = html;
+  }
+
+  function saveNotion() {
+    const btn = event.target;
+    btn.textContent = '✅ Configuration sauvegardée !';
+    setTimeout(() => btn.textContent = '💾 Sauvegarder la configuration', 2000);
+  }
+</script>
+</body>
+</html>
