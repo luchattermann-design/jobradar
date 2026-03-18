@@ -34,7 +34,6 @@
     overflow-x: hidden;
   }
 
-  /* ── NOISE OVERLAY ── */
   body::before {
     content: '';
     position: fixed;
@@ -45,7 +44,6 @@
     opacity: 0.6;
   }
 
-  /* ── NAV ── */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -89,7 +87,6 @@
   }
   .nav-cta:hover { opacity: 0.85; }
 
-  /* ── HERO ── */
   .hero {
     min-height: 100vh;
     display: flex;
@@ -219,7 +216,6 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* ── TICKER ── */
   .ticker-wrap {
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
@@ -244,7 +240,6 @@
   .ticker-item::before { content: '●'; color: var(--accent); font-size: 0.5rem; }
   @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
-  /* ── SECTIONS ── */
   section { padding: 6rem 3rem; }
   .section-label {
     font-size: 0.75rem;
@@ -264,7 +259,6 @@
   }
   h2 span { color: var(--accent); }
 
-  /* ── HOW IT WORKS ── */
   .how { background: var(--bg); }
   .steps {
     display: grid;
@@ -309,7 +303,6 @@
     margin-bottom: 1.5rem;
   }
 
-  /* ── FEATURES ── */
   .features { background: var(--bg2); }
   .feat-grid {
     display: grid;
@@ -354,7 +347,6 @@
     letter-spacing: 0.05em;
   }
 
-  /* ── SOURCES ── */
   .sources { background: var(--bg); }
   .sources-intro { color: var(--muted); margin-top: 1rem; max-width: 480px; font-size: 0.95rem; }
   .sources-grid {
@@ -379,12 +371,10 @@
     color: var(--accent);
   }
 
-  /* ── APP SECTION ── */
   .app-section { background: var(--bg2); }
   .app-section h2 { margin-bottom: 0.75rem; }
   .app-section p { color: var(--muted); margin-bottom: 2.5rem; max-width: 500px; font-size: 0.95rem; }
 
-  /* CONFIG FORM */
   .config-app {
     background: var(--bg);
     border: 1px solid var(--border);
@@ -529,8 +519,8 @@
   }
   .run-btn:hover { background: var(--accent2); transform: translateY(-1px); }
   .run-btn:active { transform: translateY(0); }
+  .run-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
-  /* RESULTS PANEL */
   .results-empty {
     text-align: center;
     padding: 3rem;
@@ -597,7 +587,6 @@
   }
   .status-msg { font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem; }
 
-  /* ── FAQ ── */
   .faq { background: var(--bg); }
   .faq-list { max-width: 700px; margin-top: 3rem; }
   .faq-item { border-bottom: 1px solid var(--border); }
@@ -628,9 +617,8 @@
     transition: max-height 0.3s ease, padding 0.3s;
     line-height: 1.7;
   }
-  .faq-item.open .faq-a { max-height: 200px; padding-bottom: 1.25rem; }
+  .faq-item.open .faq-a { max-height: 240px; padding-bottom: 1.25rem; }
 
-  /* ── FOOTER ── */
   footer {
     border-top: 1px solid var(--border);
     padding: 2.5rem 3rem;
@@ -648,7 +636,6 @@
   .footer-logo span { color: var(--accent); }
   footer p { font-size: 0.8rem; color: var(--muted); }
 
-  /* ── AI SEMANTIC PANEL ── */
   .ai-badge {
     display: inline-flex; align-items: center; gap: 0.4rem;
     background: rgba(127,119,221,0.12);
@@ -717,7 +704,6 @@
   .cursor-blink { animation: blink 1s step-end infinite; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-  /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
     nav { padding: 1rem 1.5rem; }
     .nav-links { display: none; }
@@ -734,7 +720,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">Job<span>Radar</span></a>
   <ul class="nav-links">
@@ -746,12 +731,11 @@
   <a href="#app" class="nav-cta">Essayer gratuitement →</a>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-glow"></div>
   <div class="hero-tag">Agent IA de recherche d'emploi</div>
   <h1>Trouvez votre<em>job idéal.</em>Automatiquement.</h1>
-  <p class="hero-sub">JobRadar scanne des dizaines de plateformes d'offres d'emploi, score chaque poste selon vos critères, et envoie les meilleurs directement dans votre Notion.</p>
+  <p class="hero-sub">JobRadar scanne des dizaines de plateformes d'offres d'emploi, score chaque poste selon vos critères, et affiche les meilleurs directement dans votre interface.</p>
   <div class="hero-actions">
     <a href="#app" class="btn-primary">Configurer mon agent →</a>
     <a href="#how" class="btn-secondary">Voir comment ça marche</a>
@@ -759,7 +743,7 @@
   <div class="hero-stats">
     <div>
       <div class="stat-val">9+</div>
-      <div class="stat-label">Sources scrappées</div>
+      <div class="stat-label">Sources scannées</div>
     </div>
     <div>
       <div class="stat-val">100%</div>
@@ -772,63 +756,60 @@
   </div>
 </section>
 
-<!-- TICKER -->
 <div class="ticker-wrap">
   <div class="ticker">
     <span class="ticker-item">Greenhouse</span>
     <span class="ticker-item">Lever</span>
-    <span class="ticker-item">LinkedIn</span>
     <span class="ticker-item">Welcome to the Jungle</span>
     <span class="ticker-item">RemoteOK</span>
     <span class="ticker-item">Ashby</span>
     <span class="ticker-item">YCombinator Jobs</span>
-    <span class="ticker-item">Workable</span>
-    <span class="ticker-item">SmartRecruiters</span>
+    <span class="ticker-item">Himalayas</span>
+    <span class="ticker-item">We Work Remotely</span>
+    <span class="ticker-item">Hacker News</span>
     <span class="ticker-item">Greenhouse</span>
     <span class="ticker-item">Lever</span>
-    <span class="ticker-item">LinkedIn</span>
     <span class="ticker-item">Welcome to the Jungle</span>
     <span class="ticker-item">RemoteOK</span>
     <span class="ticker-item">Ashby</span>
     <span class="ticker-item">YCombinator Jobs</span>
-    <span class="ticker-item">Workable</span>
-    <span class="ticker-item">SmartRecruiters</span>
+    <span class="ticker-item">Himalayas</span>
+    <span class="ticker-item">We Work Remotely</span>
+    <span class="ticker-item">Hacker News</span>
   </div>
 </div>
 
-<!-- HOW IT WORKS -->
 <section class="how" id="how">
   <div class="section-label">Processus</div>
-  <h2>Simple comme <span>3 étapes</span></h2>
+  <h2>Simple comme <span>4 étapes</span></h2>
   <div class="steps">
     <div class="step">
       <div class="step-icon">🎯</div>
       <div class="step-num">01</div>
       <div class="step-title">Définissez vos critères</div>
-      <div class="step-desc">Titres de postes, localisations, entreprises cibles, mots-clés à exclure. Vous configurez une fois, l'agent s'en souvient.</div>
+      <div class="step-desc">Titres de postes, localisations, entreprises cibles, mots-clés à exclure. Vous configurez votre recherche selon vos priorités.</div>
     </div>
     <div class="step">
       <div class="step-icon">🤖</div>
       <div class="step-num">02</div>
       <div class="step-title">L'agent scanne tout</div>
-      <div class="step-desc">Chaque jour, JobRadar parcourt 9 plateformes, extrait les offres et les score automatiquement selon vos priorités.</div>
+      <div class="step-desc">JobRadar parcourt les plateformes, récupère les offres et applique un scoring selon vos préférences.</div>
     </div>
     <div class="step">
       <div class="step-icon">📊</div>
       <div class="step-num">03</div>
-      <div class="step-title">Notion se remplit seul</div>
-      <div class="step-desc">Les meilleures offres atterrissent dans votre base Notion avec score, priorité et lien direct. Vous recevez un email récap.</div>
+      <div class="step-title">Les offres sont triées</div>
+      <div class="step-desc">Les résultats sont filtrés, dédoublonnés et classés par score pour vous montrer les plus pertinentes.</div>
     </div>
     <div class="step">
       <div class="step-icon">✨</div>
       <div class="step-num">04</div>
       <div class="step-title">Vous postulez en focus</div>
-      <div class="step-desc">Plus de scroll infini. Vous avez une liste triée des meilleures opportunités du jour. Concentrez-vous sur les candidatures.</div>
+      <div class="step-desc">Plus de scroll infini. Vous avez une liste triée des meilleures opportunités à consulter directement.</div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
 <section class="features" id="features">
   <div class="section-label">Fonctionnalités</div>
   <h2>Tout ce dont vous avez <span>besoin</span></h2>
@@ -836,51 +817,49 @@
     <div class="feat-card large">
       <span class="feat-icon">✨</span>
       <div class="feat-title">Recherche sémantique IA</div>
-      <div class="feat-desc">Décrivez votre job idéal en prose naturelle. L'IA transforme votre profil et chaque offre en vecteurs mathématiques, puis mesure leur proximité sémantique. Un "Growth Associate" ou "Relationship Specialist" est détecté comme pertinent — même sans apparaître dans vos mots-clés.</div>
+      <div class="feat-desc">Décrivez votre job idéal en prose naturelle. L'IA peut vous aider à repérer des rôles proches sémantiquement, même si le titre exact n'apparaît pas dans vos mots-clés.</div>
       <span class="feat-badge">Nouveau</span>
     </div>
     <div class="feat-card">
       <span class="feat-icon">🎯</span>
-      <div class="feat-title">Scoring hybride</div>
-      <div class="feat-desc">Score final = mots-clés + IA sémantique, avec pondération ajustable. Vous choisissez l'équilibre entre précision des mots et sens du rôle.</div>
+      <div class="feat-title">Scoring intelligent</div>
+      <div class="feat-desc">Score basé sur les mots-clés, la localisation, le niveau de seniorité et la pertinence du poste.</div>
     </div>
     <div class="feat-card">
       <span class="feat-icon">🔄</span>
       <div class="feat-title">Anti-doublons</div>
-      <div class="feat-desc">Système de mémoire sur 30 jours : aucune offre déjà vue n'est jamais envoyée deux fois dans votre Notion.</div>
+      <div class="feat-desc">Les résultats sont dédoublonnés à partir du lien pour éviter les répétitions inutiles.</div>
     </div>
     <div class="feat-card">
-      <span class="feat-icon">📧</span>
-      <div class="feat-title">Email récapitulatif</div>
-      <div class="feat-desc">Chaque matin, recevez le top 3 des offres du jour avec score, localisation et lien direct.</div>
+      <span class="feat-icon">📡</span>
+      <div class="feat-title">Backend connecté</div>
+      <div class="feat-desc">Le site est connecté à un backend en ligne qui lance le scan réel et renvoie les vraies offres.</div>
     </div>
     <div class="feat-card">
       <span class="feat-icon">🗂️</span>
-      <div class="feat-title">Intégration Notion</div>
-      <div class="feat-desc">Vos offres arrivent avec entreprise, poste, score, priorité (Haute/Moyenne/Basse) et statut "À postuler" prêt à l'emploi.</div>
+      <div class="feat-title">Évolutif</div>
+      <div class="feat-desc">La base est prête pour intégrer ensuite Notion, email récapitulatif ou automatisation quotidienne.</div>
     </div>
   </div>
 </section>
 
-<!-- SOURCES -->
 <section class="sources">
   <div class="section-label">Couverture</div>
-  <h2>9 plateformes <span>couvertes</span></h2>
-  <p class="sources-intro">De LinkedIn aux boards des startups YC, JobRadar couvre l'essentiel du marché tech & business européen.</p>
+  <h2>Plusieurs plateformes <span>couvertes</span></h2>
+  <p class="sources-intro">JobRadar interroge plusieurs sources d’offres pour trouver les opportunités les plus pertinentes selon vos critères.</p>
   <div class="sources-grid">
     <div class="source-pill">🟢 Greenhouse</div>
     <div class="source-pill">⚡ Lever</div>
-    <div class="source-pill">💼 LinkedIn</div>
     <div class="source-pill">🌿 Welcome to the Jungle</div>
     <div class="source-pill">🌍 RemoteOK</div>
     <div class="source-pill">🔷 Ashby</div>
     <div class="source-pill">🚀 YCombinator Jobs</div>
-    <div class="source-pill">⚙️ Workable</div>
-    <div class="source-pill">🏢 SmartRecruiters</div>
+    <div class="source-pill">🏔️ Himalayas</div>
+    <div class="source-pill">🧑‍💻 We Work Remotely</div>
+    <div class="source-pill">📰 Hacker News</div>
   </div>
 </section>
 
-<!-- APP SECTION -->
 <section class="app-section" id="app">
   <div class="section-label">Interface</div>
   <h2>Configurez votre <span>agent</span></h2>
@@ -894,24 +873,24 @@
       <button class="tab-btn" onclick="switchTab('notion')">🗂️ Connexion Notion</button>
     </div>
 
-    <!-- CONFIG TAB -->
     <div class="tab-panel active" id="tab-config">
       <div class="form-section-title">Postes recherchés</div>
       <div class="form-group">
         <label>Mots-clés de postes</label>
         <div class="tags-input-wrap" id="keywords-wrap" onclick="document.getElementById('keyword-input').focus()">
-          <span class="tag">customer success <button onclick="removeTag(this)">×</button></span>
-          <span class="tag">account manager <button onclick="removeTag(this)">×</button></span>
-          <span class="tag">business development <button onclick="removeTag(this)">×</button></span>
+          <span class="tag">customer success <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">account manager <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">business development <button type="button" onclick="removeTag(this)">×</button></span>
           <input class="tags-input" id="keyword-input" placeholder="Ajouter un mot-clé…" onkeydown="addTag(event, 'keywords-wrap')">
         </div>
       </div>
+
       <div class="form-group">
         <label>Mots à exclure (stages, senior…)</label>
         <div class="tags-input-wrap" id="exclude-wrap" onclick="document.getElementById('exclude-input').focus()">
-          <span class="tag">senior <button onclick="removeTag(this)">×</button></span>
-          <span class="tag">intern <button onclick="removeTag(this)">×</button></span>
-          <span class="tag">director <button onclick="removeTag(this)">×</button></span>
+          <span class="tag">senior <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">intern <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">director <button type="button" onclick="removeTag(this)">×</button></span>
           <input class="tags-input" id="exclude-input" placeholder="Ajouter un mot à exclure…" onkeydown="addTag(event, 'exclude-wrap')">
         </div>
       </div>
@@ -920,10 +899,10 @@
       <div class="form-group">
         <label>Pays / Villes prioritaires</label>
         <div class="tags-input-wrap" id="location-wrap" onclick="document.getElementById('location-input').focus()">
-          <span class="tag">switzerland <button onclick="removeTag(this)">×</button></span>
-          <span class="tag">barcelona <button onclick="removeTag(this)">×</button></span>
-          <span class="tag">paris <button onclick="removeTag(this)">×</button></span>
-          <span class="tag">remote <button onclick="removeTag(this)">×</button></span>
+          <span class="tag">switzerland <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">barcelona <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">paris <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">remote <button type="button" onclick="removeTag(this)">×</button></span>
           <input class="tags-input" id="location-input" placeholder="Ajouter une ville…" onkeydown="addTag(event, 'location-wrap')">
         </div>
       </div>
@@ -933,42 +912,42 @@
         <div class="form-group">
           <label>Score minimum</label>
           <div class="slider-row">
-            <input type="range" min="0" max="100" value="35" oninput="document.getElementById('score-val').textContent=this.value">
+            <input id="score-range" type="range" min="0" max="100" value="35" oninput="document.getElementById('score-val').textContent=this.value">
             <span class="slider-val" id="score-val">35</span>
           </div>
         </div>
         <div class="form-group">
-          <label>Offres max par jour</label>
+          <label>Offres max par scan</label>
           <div class="slider-row">
-            <input type="range" min="5" max="50" value="25" oninput="document.getElementById('max-val').textContent=this.value">
+            <input id="max-range" type="range" min="5" max="50" value="25" oninput="document.getElementById('max-val').textContent=this.value">
             <span class="slider-val" id="max-val">25</span>
           </div>
         </div>
       </div>
 
-      <div class="form-section-title">Sources actives</div>
+      <div class="form-section-title">Sources affichées</div>
       <div class="checkbox-group">
-        <label class="checkbox-item"><input type="checkbox" checked> Greenhouse</label>
-        <label class="checkbox-item"><input type="checkbox" checked> Lever</label>
-        <label class="checkbox-item"><input type="checkbox" checked> Welcome to the Jungle</label>
-        <label class="checkbox-item"><input type="checkbox" checked> RemoteOK</label>
-        <label class="checkbox-item"><input type="checkbox" checked> Ashby</label>
-        <label class="checkbox-item"><input type="checkbox" checked> YCombinator Jobs</label>
-        <label class="checkbox-item"><input type="checkbox"> LinkedIn (scraping, instable)</label>
-        <label class="checkbox-item"><input type="checkbox"> Workable (liste vide par défaut)</label>
+        <label class="checkbox-item"><input type="checkbox" checked disabled> Greenhouse</label>
+        <label class="checkbox-item"><input type="checkbox" checked disabled> Lever</label>
+        <label class="checkbox-item"><input type="checkbox" checked disabled> Welcome to the Jungle</label>
+        <label class="checkbox-item"><input type="checkbox" checked disabled> RemoteOK</label>
+        <label class="checkbox-item"><input type="checkbox" checked disabled> Ashby</label>
+        <label class="checkbox-item"><input type="checkbox" checked disabled> YCombinator Jobs</label>
+        <label class="checkbox-item"><input type="checkbox" checked disabled> Himalayas</label>
+        <label class="checkbox-item"><input type="checkbox" checked disabled> We Work Remotely</label>
+        <label class="checkbox-item"><input type="checkbox" checked disabled> Hacker News</label>
       </div>
 
-      <button class="run-btn" onclick="runDemo()">
-        <span id="run-label">🚀 Lancer la simulation</span>
+      <button id="run-btn" class="run-btn" onclick="runRealScan()">
+        <span id="run-label">🚀 Lancer le scan</span>
       </button>
     </div>
 
-    <!-- AI SEMANTIC TAB -->
     <div class="tab-panel" id="tab-ai">
       <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem;">
         <div>
           <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:0.35rem;">Recherche sémantique par IA</div>
-          <div style="font-size:0.85rem;color:var(--muted);">Trouve les offres similaires même si elles n'ont pas les mêmes mots-clés</div>
+          <div style="font-size:0.85rem;color:var(--muted);">Module de démonstration côté front</div>
         </div>
         <span class="ai-badge">IA active</span>
       </div>
@@ -980,15 +959,15 @@
       </div>
 
       <div class="ai-info-box">
-        <strong>Comment ça marche ?</strong> Votre description est transformée en vecteur mathématique (embedding) par l'IA. Chaque offre est vectorisée de la même façon. On mesure ensuite la proximité sémantique — un "Growth Associate" ou un "Relationship Manager" proche de votre profil sera détecté, même sans apparaître dans vos mots-clés.
+        <strong>Comment ça marche ?</strong> Cette partie sert de démo de réflexion sémantique côté front. Elle n'est pas encore reliée à ton backend de scan d'offres.
       </div>
 
       <div class="form-section-title">Clé API Anthropic</div>
       <div class="form-group">
-        <label>Clé API (pour les embeddings)</label>
+        <label>Clé API (optionnelle pour la démo)</label>
         <div class="api-key-row">
           <input type="password" id="anthropic-key" placeholder="sk-ant-api03-…" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:0.7rem 1rem;font-size:0.9rem;font-family:var(--font-body);outline:none;transition:border-color 0.2s;">
-          <button class="test-btn" onclick="testApiKey()">Tester la clé</button>
+          <button class="test-btn" type="button" onclick="testApiKey()">Tester la clé</button>
         </div>
         <div id="api-status" style="font-size:0.78rem;margin-top:0.4rem;color:var(--muted);"></div>
       </div>
@@ -1023,24 +1002,22 @@
         <input type="text" id="test-job-company" placeholder="Ex : Stripe" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:0.7rem 1rem;font-size:0.9rem;font-family:var(--font-body);outline:none;width:100%;">
       </div>
 
-      <button class="ai-analyze-btn" onclick="analyzeJobWithAI()">
+      <button class="ai-analyze-btn" type="button" onclick="analyzeJobWithAI()">
         <span id="ai-btn-label">✨ Analyser la similarité avec mon profil</span>
       </button>
 
       <div class="streaming-output" id="ai-output"></div>
     </div>
 
-    <!-- RESULTS TAB -->
     <div class="tab-panel" id="tab-results">
       <div id="results-content">
         <div class="results-empty">
           <span class="empty-icon">🔍</span>
-          <p>Lancez une simulation depuis l'onglet Configuration pour voir les résultats ici.</p>
+          <p>Lancez un scan depuis l'onglet Configuration pour voir les résultats ici.</p>
         </div>
       </div>
     </div>
 
-    <!-- NOTION TAB -->
     <div class="tab-panel" id="tab-notion">
       <div class="form-section-title">Connexion Notion</div>
       <div class="form-group">
@@ -1072,14 +1049,13 @@
           Allez dans Compte Google → Sécurité → Validation en 2 étapes → Mots de passe d'application. Créez-en un pour "Messagerie" et copiez les 16 caractères.
         </p>
       </div>
-      <button class="run-btn" onclick="saveNotion()">
+      <button class="run-btn" type="button" onclick="saveNotion(this)">
         💾 Sauvegarder la configuration
       </button>
     </div>
   </div>
 </section>
 
-<!-- FAQ -->
 <section class="faq" id="faq">
   <div class="section-label">Questions fréquentes</div>
   <h2>Tout ce que vous <span>voulez savoir</span></h2>
@@ -1089,55 +1065,55 @@
         Dois-je savoir coder pour utiliser JobRadar ?
         <span class="faq-icon">+</span>
       </button>
-      <div class="faq-a">Non ! L'interface web vous permet de tout configurer sans toucher une ligne de code. Il faut juste avoir Python installé sur votre Mac pour lancer l'agent, et suivre notre guide en 5 minutes.</div>
+      <div class="faq-a">Non. L'interface web permet de lancer le scan et de consulter les résultats sans écrire de code.</div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">
-        Combien d'offres l'agent trouve-t-il par jour ?
+        Combien d'offres l'agent trouve-t-il par scan ?
         <span class="faq-icon">+</span>
       </button>
-      <div class="faq-a">Cela dépend de vos critères. En moyenne, l'agent scanne plusieurs centaines d'offres brutes et vous en sélectionne entre 5 et 25 selon le score minimum que vous avez défini.</div>
+      <div class="faq-a">Cela dépend de vos critères. Le backend scanne plusieurs sources, filtre les offres et vous renvoie les résultats les plus pertinents selon le score minimum défini.</div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">
-        Est-ce que LinkedIn est fiable comme source ?
+        Est-ce que toutes les sources sont fiables ?
         <span class="faq-icon">+</span>
       </button>
-      <div class="faq-a">LinkedIn utilise du scraping HTML qui peut être instable (rate limiting, changements de structure). Les sources via API officielle (Greenhouse, Lever, Ashby, RemoteOK) sont beaucoup plus fiables. C'est pourquoi LinkedIn est désactivé par défaut.</div>
+      <div class="faq-a">Les sources basées sur API sont généralement les plus stables. D'autres peuvent évoluer ou limiter les appels selon leur structure.</div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">
         Mes données sont-elles en sécurité ?
         <span class="faq-icon">+</span>
       </button>
-      <div class="faq-a">JobRadar est 100% open source et tourne localement sur votre machine. Vos tokens Notion et Gmail ne quittent jamais votre ordinateur. Aucune donnée n'est envoyée à des serveurs tiers.</div>
+      <div class="faq-a">Le site appelle un backend déployé en ligne pour récupérer les offres. Évite de mettre des secrets sensibles directement dans un front public tant que tu n'as pas sécurisé ce flux côté serveur.</div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">
         Comment automatiser l'exécution quotidienne ?
         <span class="faq-icon">+</span>
       </button>
-      <div class="faq-a">Sur Mac, vous pouvez utiliser un cron job ou l'Automator. Ajoutez simplement `0 8 * * * cd /path/to/job-agent && python agent.py` dans votre crontab pour une exécution automatique chaque matin à 8h.</div>
+      <div class="faq-a">La version actuelle lance un scan à la demande depuis l'interface. L'automatisation quotidienne pourra être ajoutée ensuite côté backend ou via un scheduler externe.</div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-logo">Job<span>Radar</span></div>
   <p>Open source — construit avec ❤️ pour les chercheurs d'emploi</p>
 </footer>
 
 <script>
-  // Tab switching — now 4 tabs
+  const API_BASE = "https://jobradar-backend-2.onrender.com";
+
   const TAB_NAMES = ['config','ai','results','notion'];
   const TAB_IDS   = ['tab-config','tab-ai','tab-results','tab-notion'];
+
   function switchTab(name) {
-    document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', TAB_NAMES[i] === name));
-    document.querySelectorAll('.tab-panel').forEach((p,i) => p.classList.toggle('active', TAB_IDS[i] === 'tab-'+name));
+    document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', TAB_NAMES[i] === name));
+    document.querySelectorAll('.tab-panel').forEach((p, i) => p.classList.toggle('active', TAB_IDS[i] === 'tab-' + name));
   }
 
-  // Tag input
   function addTag(e, wrapperId) {
     if (e.key !== 'Enter' && e.key !== ',') return;
     e.preventDefault();
@@ -1147,50 +1123,236 @@
     const wrap = document.getElementById(wrapperId);
     const tag = document.createElement('span');
     tag.className = 'tag';
-    tag.innerHTML = `${val} <button onclick="removeTag(this)">×</button>`;
+    tag.innerHTML = `${val} <button type="button" onclick="removeTag(this)">×</button>`;
     wrap.insertBefore(tag, input);
     input.value = '';
   }
-  function removeTag(btn) { btn.closest('.tag').remove(); }
 
-  // FAQ
-  function toggleFaq(btn) { btn.closest('.faq-item').classList.toggle('open'); }
+  function removeTag(btn) {
+    btn.closest('.tag').remove();
+  }
 
-  // ── AI KEY TEST ──
+  function toggleFaq(btn) {
+    btn.closest('.faq-item').classList.toggle('open');
+  }
+
+  function scoreColor(s) {
+    if (s >= 80) return '#b8ff57';
+    if (s >= 60) return '#ffd57e';
+    return '#ff8c7e';
+  }
+
+  async function runRealScan() {
+    const btn = document.getElementById('run-btn');
+    const label = document.getElementById('run-label');
+    const container = document.getElementById('results-content');
+
+    btn.disabled = true;
+    label.textContent = '⏳ Lancement du scan…';
+
+    switchTab('results');
+
+    container.innerHTML = `
+      <p class="status-msg" id="status-msg">Connexion au backend…</p>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    `;
+
+    try {
+      const minScore = parseInt(document.getElementById('score-val').textContent || '35', 10);
+      const maxJobs = parseInt(document.getElementById('max-val').textContent || '25', 10);
+
+      const res = await fetch(\`\${API_BASE}/scan\`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          min_score: minScore,
+          max_jobs: maxJobs
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Impossible de lancer le scan');
+      }
+
+      label.textContent = '⏳ Scan en cours…';
+      pollScanStatus();
+    } catch (e) {
+      container.innerHTML = `
+        <div class="results-empty">
+          <span class="empty-icon">❌</span>
+          <p>Erreur : ${escapeHtml(e.message)}</p>
+        </div>
+      `;
+      btn.disabled = false;
+      label.textContent = '🚀 Lancer le scan';
+    }
+  }
+
+  async function pollScanStatus() {
+    const btn = document.getElementById('run-btn');
+    const label = document.getElementById('run-label');
+    const container = document.getElementById('results-content');
+    const statusMsg = () => document.getElementById('status-msg');
+    const progressFill = () => document.getElementById('progress-fill');
+
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch(\`\${API_BASE}/status\`);
+        const data = await res.json();
+
+        if (statusMsg()) statusMsg().textContent = data.status || 'Scan en cours…';
+        if (progressFill()) progressFill().style.width = \`\${data.progress || 0}%\`;
+
+        if (!data.running) {
+          clearInterval(interval);
+          await loadRealJobs();
+          btn.disabled = false;
+          label.textContent = '🚀 Lancer le scan';
+        }
+      } catch (e) {
+        clearInterval(interval);
+        container.innerHTML = `
+          <div class="results-empty">
+            <span class="empty-icon">❌</span>
+            <p>Erreur pendant le suivi du scan : ${escapeHtml(e.message)}</p>
+          </div>
+        `;
+        btn.disabled = false;
+        label.textContent = '🚀 Lancer le scan';
+      }
+    }, 2000);
+  }
+
+  async function loadRealJobs() {
+    const container = document.getElementById('results-content');
+
+    try {
+      const res = await fetch(\`\${API_BASE}/jobs\`);
+      const data = await res.json();
+      const jobs = data.jobs || [];
+
+      if (!jobs.length) {
+        container.innerHTML = `
+          <div class="results-empty">
+            <span class="empty-icon">📭</span>
+            <p>Aucune offre trouvée avec ces critères.</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = \`<p class="status-msg" style="color:var(--accent);margin-bottom:0.5rem">✅ \${jobs.length} offres trouvées</p>\`;
+
+      jobs.forEach(job => {
+        const score = Number(job.score || 0);
+        const safeLink = job.link || '#';
+
+        html += `
+          <div class="job-card" onclick="window.open('${escapeAttr(safeLink)}', '_blank')">
+            <div class="job-logo">💼</div>
+            <div class="job-info">
+              <div class="job-title">${escapeHtml(job.position || 'Sans titre')}</div>
+              <div class="job-company">${escapeHtml(job.company || 'Entreprise inconnue')}</div>
+              <div class="job-meta">
+                <span class="job-tag">📍 ${escapeHtml(job.location || 'N/A')}</span>
+                <span class="job-tag">🔗 ${escapeHtml(job.source || 'Source inconnue')}</span>
+                <span class="job-tag">🌐 Voir l'offre</span>
+              </div>
+            </div>
+            <div class="job-score" style="color:${scoreColor(score)}">
+              ${score}
+              <span class="score-label">score</span>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    } catch (e) {
+      container.innerHTML = `
+        <div class="results-empty">
+          <span class="empty-icon">❌</span>
+          <p>Impossible de charger les offres : ${escapeHtml(e.message)}</p>
+        </div>
+      `;
+    }
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+  }
+
+  function escapeAttr(str) {
+    return String(str).replaceAll("'", "\\'");
+  }
+
   async function testApiKey() {
     const key = document.getElementById('anthropic-key').value.trim();
     const status = document.getElementById('api-status');
-    if (!key) { status.textContent = '⚠️ Entrez une clé API.'; status.style.color = '#ffd57e'; return; }
-    status.textContent = '⏳ Test en cours…'; status.style.color = 'var(--muted)';
+    if (!key) {
+      status.textContent = '⚠️ Entrez une clé API.';
+      status.style.color = '#ffd57e';
+      return;
+    }
+    status.textContent = '⏳ Test en cours…';
+    status.style.color = 'var(--muted)';
     try {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
-        body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 10, messages: [{ role: 'user', content: 'Hi' }] })
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': key,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 10,
+          messages: [{ role: 'user', content: 'Hi' }]
+        })
       });
-      if (res.ok) { status.textContent = '✅ Clé valide — connexion réussie !'; status.style.color = '#b8ff57'; }
-      else { status.textContent = '❌ Clé invalide ou expirée.'; status.style.color = '#ff8c7e'; }
-    } catch(e) { status.textContent = '❌ Erreur réseau : ' + e.message; status.style.color = '#ff8c7e'; }
+      if (res.ok) {
+        status.textContent = '✅ Clé valide — connexion réussie !';
+        status.style.color = '#b8ff57';
+      } else {
+        status.textContent = '❌ Clé invalide ou expirée.';
+        status.style.color = '#ff8c7e';
+      }
+    } catch (e) {
+      status.textContent = '❌ Erreur réseau : ' + e.message;
+      status.style.color = '#ff8c7e';
+    }
   }
 
-  // ── AI SEMANTIC ANALYSIS ──
   async function analyzeJobWithAI() {
-    const key     = document.getElementById('anthropic-key').value.trim();
+    const key = document.getElementById('anthropic-key').value.trim();
     const profile = document.getElementById('ideal-profile').value.trim();
-    const title   = document.getElementById('test-job-title').value.trim();
+    const title = document.getElementById('test-job-title').value.trim();
     const company = document.getElementById('test-job-company').value.trim();
-    const output  = document.getElementById('ai-output');
+    const output = document.getElementById('ai-output');
     const btnLabel = document.getElementById('ai-btn-label');
 
-    if (!profile) { alert('Décrivez d\'abord votre profil idéal dans le champ ci-dessus.'); return; }
-    if (!title)   { alert('Entrez un titre de poste à analyser.'); return; }
+    if (!profile) {
+      alert("Décrivez d'abord votre profil idéal dans le champ ci-dessus.");
+      return;
+    }
+    if (!title) {
+      alert("Entrez un titre de poste à analyser.");
+      return;
+    }
 
     output.classList.add('visible');
     output.innerHTML = '<span style="color:var(--muted)">Analyse en cours<span class="cursor-blink">▌</span></span>';
     btnLabel.textContent = '⏳ Analyse…';
 
     const systemPrompt = `Tu es un expert en recrutement et analyse de compatibilité candidat/offre. 
-Tu dois analyser si une offre d'emploi correspond au profil idéal d'un candidat en utilisant la similarité sémantique — pas seulement les mots-clés exacts, mais la nature réelle du rôle.
+Tu dois analyser si une offre d'emploi correspond au profil idéal d'un candidat en utilisant la similarité sémantique.
 Réponds en français, de façon concise et structurée.`;
 
     const userPrompt = `Profil idéal du candidat :
@@ -1200,13 +1362,12 @@ Offre à analyser :
 Titre : ${title}${company ? `\nEntreprise : ${company}` : ''}
 
 Analyse en 3 points :
-1. **Score de similarité sémantique** (0-100) et justification en 1 phrase
-2. **Pourquoi ce rôle est (ou n'est pas) pertinent** malgré son titre, en 2-3 phrases
-3. **Verdict** : ✅ À postuler / ⚠️ À considérer / ❌ Hors profil`;
+1. Score de similarité sémantique (0-100) et justification en 1 phrase
+2. Pourquoi ce rôle est (ou n'est pas) pertinent en 2-3 phrases
+3. Verdict : ✅ À postuler / ⚠️ À considérer / ❌ Hors profil`;
 
     if (!key) {
-      // Demo mode without real API key
-      await simulateStreaming(output, getDemoAnalysis(title, profile));
+      await simulateStreaming(output, getDemoAnalysis(title));
       btnLabel.textContent = '✨ Analyser la similarité avec mon profil';
       return;
     }
@@ -1240,6 +1401,7 @@ Analyse en 3 points :
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split('\n');
         buffer = lines.pop();
+
         for (const line of lines) {
           if (!line.startsWith('data: ')) continue;
           const data = line.slice(6);
@@ -1247,27 +1409,30 @@ Analyse en 3 points :
           try {
             const evt = JSON.parse(data);
             if (evt.type === 'content_block_delta' && evt.delta?.text) {
-              output.innerHTML += evt.delta.text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--text)">$1</strong>');
+              output.innerHTML += evt.delta.text
+                .replace(/\n/g, '<br>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--text)">$1</strong>');
               output.scrollTop = output.scrollHeight;
             }
-          } catch(e) {}
+          } catch (e) {}
         }
       }
-    } catch(e) {
-      output.innerHTML = `<span style="color:#ff8c7e">Erreur : ${e.message}. Vérifiez votre clé API et réessayez.</span>`;
+    } catch (e) {
+      output.innerHTML = `<span style="color:#ff8c7e">Erreur : ${escapeHtml(e.message)}. Vérifiez votre clé API et réessayez.</span>`;
     }
+
     btnLabel.textContent = '✨ Analyser la similarité avec mon profil';
   }
 
-  function getDemoAnalysis(title, profile) {
+  function getDemoAnalysis(title) {
     return `**Score de similarité sémantique : 78/100**
-Ce rôle partage une forte proximité sémantique avec votre profil orienté relations clients et développement commercial.
+Ce rôle partage une forte proximité sémantique avec un profil orienté relations clients et développement commercial.
 
 **Pourquoi ce rôle est pertinent**
-"${title}" couvre des responsabilités typiques d'un poste orienté clients : gestion de compte, adoption produit et croissance du revenu. Même si le titre diffère de "Customer Success Manager", la nature du travail — travailler avec des clients existants pour maximiser la valeur — est sémantiquement très proche de votre profil idéal. Ce type de rôle hybride entre business development et account management correspond à votre description.
+"${title}" couvre potentiellement des responsabilités proches d'un poste orienté clients : gestion de compte, adoption produit et croissance du revenu. Même si le titre diffère de "Customer Success Manager", la nature du travail peut rester proche d'un rôle business ou account management.
 
-**Verdict : ✅ À postuler**
-Le titre ne doit pas vous freiner — le fond du rôle correspond. Recommandé.
+**Verdict : ✅ À considérer**
+Le titre ne doit pas être le seul critère.
 
 <span style="color:var(--muted);font-size:0.75rem;font-style:italic">Mode démo — ajoutez votre clé API Anthropic pour une analyse réelle en streaming.</span>`;
   }
@@ -1277,107 +1442,17 @@ Le titre ne doit pas vous freiner — le fond du rôle correspond. Recommandé.
     const words = text.split(' ');
     for (const word of words) {
       output.innerHTML += word + ' ';
-      output.innerHTML = output.innerHTML.replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--text)">$1</strong>').replace(/\n/g, '<br>');
+      output.innerHTML = output.innerHTML
+        .replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--text)">$1</strong>')
+        .replace(/\n/g, '<br>');
       await new Promise(r => setTimeout(r, 18));
     }
   }
 
-  // ── DEMO SIMULATION ──
-  const mockJobs = [
-    { title: 'Customer Success Manager', company: 'Stripe', location: 'Amsterdam', kwScore: 72, aiScore: 88, source: 'Greenhouse', logo: '💳', aiMatch: true },
-    { title: 'Account Manager — DACH', company: 'Salesforce', location: 'Zurich', kwScore: 85, aiScore: 90, source: 'Lever', logo: '☁️', aiMatch: true },
-    { title: 'Growth & Partnerships Associate', company: 'Airtable', location: 'Paris (Remote)', kwScore: 18, aiScore: 74, source: 'Ashby', logo: '🗄️', aiMatch: true },
-    { title: 'Graduate Program — Business', company: 'Google', location: 'Zurich', kwScore: 65, aiScore: 71, source: 'Greenhouse', logo: '🔍', aiMatch: false },
-    { title: 'Relationship Development Specialist', company: 'HubSpot', location: 'Remote', kwScore: 12, aiScore: 81, source: 'RemoteOK', logo: '🧡', aiMatch: true },
-    { title: 'Client Onboarding Manager', company: 'Revolut', location: 'Barcelone', kwScore: 20, aiScore: 76, source: 'WTTJ', logo: '🏦', aiMatch: true },
-  ];
-
-  function blendScore(kw, ai) {
-    const kwW = parseInt(document.getElementById('kw-weight')?.value || 50) / 100;
-    return Math.round(kw * kwW + ai * (1 - kwW));
-  }
-
-  function scoreColor(s) {
-    if (s >= 80) return '#b8ff57';
-    if (s >= 60) return '#ffd57e';
-    return '#ff8c7e';
-  }
-
-  function runDemo() {
-    const btn = document.getElementById('run-label');
-    btn.textContent = '⏳ Scan en cours…';
-    switchTab('results');
-
-    const container = document.getElementById('results-content');
-    const hasAI = document.getElementById('ideal-profile')?.value?.trim().length > 10;
-    const statuses = hasAI
-      ? ['Connexion aux sources…', 'Scan Greenhouse…', 'Scan Lever…', 'Vectorisation des offres…', '✨ Analyse sémantique IA…', 'Fusion des scores…', 'Envoi vers Notion…']
-      : ['Connexion aux sources…', 'Scan Greenhouse…', 'Scan Lever…', 'Scan Ashby…', 'Calcul des scores…', 'Filtrage des doublons…', 'Envoi vers Notion…'];
-
-    container.innerHTML = `
-      <p class="status-msg" id="status-msg">${statuses[0]}</p>
-      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-    `;
-
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i < statuses.length) {
-        document.getElementById('status-msg').textContent = statuses[i];
-        document.getElementById('progress-fill').style.width = ((i+1)/statuses.length*100) + '%';
-        i++;
-      } else {
-        clearInterval(interval);
-        showResults(hasAI);
-        btn.textContent = '🚀 Lancer la simulation';
-      }
-    }, 500);
-  }
-
-  function showResults(hasAI) {
-    const container = document.getElementById('results-content');
-    const sorted = [...mockJobs].sort((a,b) => blendScore(b.kwScore,b.aiScore) - blendScore(a.kwScore,a.aiScore));
-    const semanticNew = hasAI ? sorted.filter(j => j.kwScore < 30 && j.aiMatch) : [];
-
-    let html = `<p class="status-msg" style="color:var(--accent);margin-bottom:0.5rem">✅ ${sorted.length} offres trouvées et scorées</p>`;
-    if (hasAI && semanticNew.length) {
-      html += `<p style="font-size:0.82rem;color:#AFA9EC;margin-bottom:1.25rem;">✨ ${semanticNew.length} offre(s) détectée(s) uniquement par l'IA sémantique — hors mots-clés</p>`;
-    }
-
-    sorted.forEach(job => {
-      const total = blendScore(job.kwScore, job.aiScore);
-      const isSemanticOnly = job.kwScore < 30 && job.aiMatch && hasAI;
-      html += `
-        <div class="job-card" style="${isSemanticOnly ? 'border-color:rgba(127,119,221,0.3);' : ''}">
-          <div class="job-logo">${job.logo}</div>
-          <div class="job-info">
-            <div class="job-title" style="display:flex;align-items:center;gap:0.5rem;">
-              ${job.title}
-              ${isSemanticOnly ? '<span class="semantic-match-badge">✨ Match IA</span>' : ''}
-            </div>
-            <div class="job-company">${job.company}</div>
-            <div class="job-meta">
-              <span class="job-tag">📍 ${job.location}</span>
-              <span class="job-tag">🔗 ${job.source}</span>
-              ${total >= 80 ? '<span class="job-tag" style="border-color:rgba(184,255,87,0.3);color:var(--accent)">⭐ Haute priorité</span>' : ''}
-            </div>
-            ${hasAI ? `<div class="score-breakdown">
-              <span class="score-pill keywords">🎯 mots-clés ${job.kwScore}</span>
-              <span style="color:var(--muted2);font-size:0.75rem;">+</span>
-              <span class="score-pill semantic">✨ IA ${job.aiScore}</span>
-              <span style="color:var(--muted2);font-size:0.75rem;">=</span>
-              <span class="score-pill total">score ${total}</span>
-            </div>` : ''}
-          </div>
-          <div class="job-score" style="color:${scoreColor(total)}">${total}<span class="score-label">score</span></div>
-        </div>`;
-    });
-    container.innerHTML = html;
-  }
-
-  function saveNotion() {
-    const btn = event.target;
+  function saveNotion(btn) {
+    const oldText = btn.textContent;
     btn.textContent = '✅ Configuration sauvegardée !';
-    setTimeout(() => btn.textContent = '💾 Sauvegarder la configuration', 2000);
+    setTimeout(() => btn.textContent = oldText, 2000);
   }
 </script>
 </body>
