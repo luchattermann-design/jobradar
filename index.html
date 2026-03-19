@@ -1,1995 +1,1412 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JobRadar — Votre agent emploi automatisé</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JobRadar - Scan business large</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --bg: #0a0a0a;
-    --bg2: #111111;
-    --bg3: #1a1a1a;
-    --border: rgba(255,255,255,0.08);
-    --accent: #b8ff57;
-    --accent2: #7fff00;
-    --text: #f0ede8;
-    --muted: #7a7a72;
-    --muted2: #4a4a44;
-    --font-display: 'Syne', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
-  }
+    :root {
+      --bg: #090b10;
+      --bg2: #11141c;
+      --bg3: #171b24;
+      --panel: rgba(17, 20, 28, 0.86);
+      --border: rgba(255,255,255,0.09);
+      --text: #f3efe6;
+      --muted: #9a988f;
+      --muted2: #6b695f;
+      --accent: #b8ff57;
+      --accent2: #8de63a;
+      --secondary: #6ed7ff;
+      --danger: #ff8c7e;
+      --warn: #ffd57e;
+      --font-display: "Syne", sans-serif;
+      --font-body: "DM Sans", sans-serif;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+    }
 
-  html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: 16px;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(184,255,87,0.07), transparent 25%),
+        radial-gradient(circle at top right, rgba(110,215,255,0.08), transparent 22%),
+        linear-gradient(180deg, #07090d 0%, var(--bg) 100%);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.6;
-  }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.05;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
 
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.25rem 3rem;
-    border-bottom: 1px solid var(--border);
-    background: rgba(10,10,10,0.85);
-    backdrop-filter: blur(20px);
-  }
-  .nav-logo {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 1.3rem;
-    letter-spacing: -0.02em;
-    color: var(--text);
-    text-decoration: none;
-  }
-  .nav-logo span { color: var(--accent); }
-  .nav-links { display: flex; gap: 2rem; list-style: none; }
-  .nav-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 400;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--text); }
-  .nav-cta {
-    background: var(--accent);
-    color: #0a0a0a;
-    padding: 0.55rem 1.25rem;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    text-decoration: none;
-    font-family: var(--font-body);
-    transition: opacity 0.2s;
-  }
-  .nav-cta:hover { opacity: 0.85; }
+    .page-shell {
+      width: min(1360px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 56px;
+      position: relative;
+      z-index: 1;
+    }
 
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 8rem 3rem 5rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero-glow {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(ellipse, rgba(184,255,87,0.07) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: rgba(184,255,87,0.08);
-    border: 1px solid rgba(184,255,87,0.2);
-    color: var(--accent);
-    font-size: 0.78rem;
-    font-weight: 500;
-    padding: 0.35rem 0.9rem;
-    border-radius: 99px;
-    margin-bottom: 2rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    width: fit-content;
-    animation: fadeUp 0.6s ease both;
-  }
-  .hero-tag::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 0 28px;
+    }
 
-  h1 {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(3rem, 7vw, 6.5rem);
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    max-width: 900px;
-    animation: fadeUp 0.6s 0.1s ease both;
-  }
-  h1 em {
-    font-style: normal;
-    color: var(--accent);
-    display: block;
-  }
-  .hero-sub {
-    margin-top: 2rem;
-    font-size: 1.15rem;
-    color: var(--muted);
-    max-width: 520px;
-    font-weight: 300;
-    line-height: 1.7;
-    animation: fadeUp 0.6s 0.2s ease both;
-  }
-  .hero-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2.5rem;
-    flex-wrap: wrap;
-    animation: fadeUp 0.6s 0.3s ease both;
-  }
-  .btn-primary {
-    background: var(--accent);
-    color: #0a0a0a;
-    padding: 0.85rem 2rem;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    font-family: var(--font-body);
-    transition: all 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
-  .btn-secondary {
-    background: transparent;
-    color: var(--text);
-    padding: 0.85rem 2rem;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 400;
-    text-decoration: none;
-    border: 1px solid var(--border);
-    cursor: pointer;
-    font-family: var(--font-body);
-    transition: all 0.2s;
-  }
-  .btn-secondary:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.04); }
+    .nav-logo {
+      text-decoration: none;
+      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
 
-  .hero-stats {
-    display: flex;
-    gap: 3rem;
-    margin-top: 4rem;
-    padding-top: 3rem;
-    border-top: 1px solid var(--border);
-    animation: fadeUp 0.6s 0.4s ease both;
-  }
-  .stat-val {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 2rem;
-    color: var(--accent);
-    letter-spacing: -0.02em;
-  }
-  .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 0.15rem; }
+    .nav-logo span { color: var(--accent); }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 28px;
+      padding: 12px 0 10px;
+    }
 
-  .ticker-wrap {
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 0.8rem 0;
-    overflow: hidden;
-    background: var(--bg2);
-  }
-  .ticker {
-    display: flex;
-    gap: 3rem;
-    width: max-content;
-    animation: ticker 30s linear infinite;
-  }
-  .ticker-item {
-    font-size: 0.8rem;
-    color: var(--muted);
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .ticker-item::before { content: '●'; color: var(--accent); font-size: 0.5rem; }
-  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.78rem;
+      margin-bottom: 18px;
+    }
 
-  section { padding: 6rem 3rem; }
-  .section-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--accent);
-    font-weight: 500;
-    margin-bottom: 1rem;
-  }
-  h2 {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    letter-spacing: -0.025em;
-    line-height: 1.05;
-    max-width: 700px;
-  }
-  h2 span { color: var(--accent); }
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(184,255,87,0.75);
+    }
 
-  .how { background: var(--bg); }
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5px;
-    margin-top: 3.5rem;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-  }
-  .step {
-    background: var(--bg2);
-    padding: 2.5rem;
-    transition: background 0.2s;
-  }
-  .step:hover { background: var(--bg3); }
-  .step-num {
-    font-family: var(--font-display);
-    font-size: 3.5rem;
-    font-weight: 800;
-    color: var(--muted2);
-    line-height: 1;
-    margin-bottom: 1.25rem;
-    letter-spacing: -0.04em;
-  }
-  .step-title {
-    font-family: var(--font-display);
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-    color: var(--text);
-  }
-  .step-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
-  .step-icon {
-    width: 36px; height: 36px;
-    border-radius: 8px;
-    background: rgba(184,255,87,0.1);
-    border: 1px solid rgba(184,255,87,0.2);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-  }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 7vw, 5.6rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      max-width: 12ch;
+      margin-bottom: 18px;
+    }
 
-  .features { background: var(--bg2); }
-  .feat-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5px;
-    margin-top: 3.5rem;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-  }
-  .feat-card {
-    background: var(--bg);
-    padding: 2.5rem;
-    transition: background 0.2s;
-    position: relative;
-  }
-  .feat-card:hover { background: var(--bg3); }
-  .feat-card.large { grid-column: span 2; }
-  .feat-icon {
-    font-size: 1.5rem;
-    margin-bottom: 1.25rem;
-    display: block;
-  }
-  .feat-title {
-    font-family: var(--font-display);
-    font-size: 1.15rem;
-    font-weight: 700;
-    margin-bottom: 0.6rem;
-  }
-  .feat-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
-  .feat-badge {
-    position: absolute;
-    top: 1.5rem; right: 1.5rem;
-    background: rgba(184,255,87,0.1);
-    border: 1px solid rgba(184,255,87,0.2);
-    color: var(--accent);
-    font-size: 0.72rem;
-    padding: 0.25rem 0.65rem;
-    border-radius: 99px;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-  }
+    .hero-copy {
+      color: var(--muted);
+      max-width: 70ch;
+      font-size: 1rem;
+    }
 
-  .sources { background: var(--bg); }
-  .sources-intro { color: var(--muted); margin-top: 1rem; max-width: 480px; font-size: 0.95rem; }
-  .sources-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 3rem;
-  }
-  .source-pill {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    padding: 0.55rem 1.25rem;
-    border-radius: 99px;
-    font-size: 0.875rem;
-    color: var(--text);
-    transition: all 0.2s;
-    cursor: default;
-  }
-  .source-pill:hover {
-    border-color: rgba(184,255,87,0.3);
-    background: rgba(184,255,87,0.05);
-    color: var(--accent);
-  }
+    .primary-button,
+    .secondary-button,
+    .preset-button,
+    .focus-button {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 14px;
+      font: inherit;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
 
-  .app-section { background: var(--bg2); }
-  .app-section h2 { margin-bottom: 0.75rem; }
-  .app-section p { color: var(--muted); margin-bottom: 2.5rem; max-width: 500px; font-size: 0.95rem; }
+    .primary-button {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      color: #081008;
+      border: 0;
+      box-shadow: var(--shadow);
+      font-weight: 700;
+      padding: 16px 24px;
+      border-radius: 999px;
+    }
 
-  .config-app {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    max-width: 860px;
-  }
-  .app-tabs {
-    display: flex;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg2);
-  }
-  .tab-btn {
-    padding: 1rem 1.5rem;
-    font-size: 0.875rem;
-    color: var(--muted);
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-family: var(--font-body);
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s;
-  }
-  .tab-btn.active { color: var(--text); border-bottom-color: var(--accent); }
-  .tab-btn:hover:not(.active) { color: var(--text); }
-  .tab-panel { display: none; padding: 2rem; }
-  .tab-panel.active { display: block; }
+    .primary-button:hover { transform: translateY(-1px); }
 
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-  .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
-  .form-group label { font-size: 0.8rem; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
-  .form-group input, .form-group select, .form-group textarea {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    padding: 0.7rem 1rem;
-    font-size: 0.9rem;
-    font-family: var(--font-body);
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-    border-color: rgba(184,255,87,0.4);
-  }
-  .form-group input::placeholder { color: var(--muted2); }
-  .form-group textarea { resize: vertical; min-height: 80px; }
-  select option { background: #1a1a1a; }
+    .secondary-button {
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+    }
 
-  .tags-input-wrap {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.5rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    min-height: 46px;
-    align-items: center;
-    cursor: text;
-    transition: border-color 0.2s;
-  }
-  .tags-input-wrap:focus-within { border-color: rgba(184,255,87,0.4); }
-  .tag {
-    background: rgba(184,255,87,0.12);
-    border: 1px solid rgba(184,255,87,0.25);
-    color: var(--accent);
-    font-size: 0.78rem;
-    padding: 0.2rem 0.6rem;
-    border-radius: 99px;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-  }
-  .tag button { background: none; border: none; color: inherit; cursor: pointer; font-size: 0.9rem; line-height: 1; padding: 0; opacity: 0.6; }
-  .tag button:hover { opacity: 1; }
-  .tags-input {
-    background: none;
-    border: none;
-    outline: none;
-    color: var(--text);
-    font-size: 0.9rem;
-    font-family: var(--font-body);
-    flex: 1;
-    min-width: 120px;
-    padding: 0.2rem 0.4rem;
-  }
-  .tags-input::placeholder { color: var(--muted2); }
+    .secondary-button:hover,
+    .preset-button:hover,
+    .focus-button:hover {
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08);
+    }
 
-  .slider-row { display: flex; align-items: center; gap: 1rem; }
-  .slider-row input[type=range] {
-    flex: 1;
-    accent-color: var(--accent);
-    background: none;
-    border: none;
-    padding: 0;
-  }
-  .slider-val {
-    font-family: var(--font-display);
-    font-weight: 700;
-    color: var(--accent);
-    font-size: 1rem;
-    min-width: 40px;
-    text-align: right;
-  }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(360px, 470px) minmax(0, 1fr);
+      gap: 24px;
+    }
 
-  .form-section-title {
-    font-family: var(--font-display);
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 0.75rem;
-    margin-bottom: 1.25rem;
-    margin-top: 1.75rem;
-  }
-  .form-section-title:first-child { margin-top: 0; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      padding: 24px;
+    }
 
-  .checkbox-group { display: flex; flex-direction: column; gap: 0.5rem; }
-  .checkbox-item { display: flex; align-items: center; gap: 0.65rem; cursor: pointer; font-size: 0.9rem; color: var(--text); }
-  .checkbox-item input[type=checkbox] { accent-color: var(--accent); width: 15px; height: 15px; }
+    .panel h2 {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      letter-spacing: -0.03em;
+      margin-bottom: 18px;
+    }
 
-  .run-btn, .ai-analyze-btn {
-    width: 100%;
-    background: var(--accent);
-    color: #0a0a0a;
-    border: none;
-    border-radius: 8px;
-    padding: 1rem;
-    font-size: 1rem;
-    font-weight: 500;
-    font-family: var(--font-body);
-    cursor: pointer;
-    margin-top: 1.5rem;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-  .run-btn:hover, .ai-analyze-btn:hover { background: var(--accent2); transform: translateY(-1px); }
-  .run-btn:active, .ai-analyze-btn:active { transform: translateY(0); }
-  .run-btn:disabled, .ai-analyze-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+    .group + .group { margin-top: 24px; }
 
-  .results-empty {
-    text-align: center;
-    padding: 3rem;
-    color: var(--muted);
-  }
-  .results-empty .empty-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+    .group h3 {
+      font-family: var(--font-display);
+      font-size: 1.02rem;
+      margin-bottom: 8px;
+    }
 
-  .job-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.25rem;
-    margin-bottom: 0.75rem;
-    transition: all 0.2s;
-    cursor: pointer;
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-  }
-  .job-card:hover { border-color: rgba(184,255,87,0.25); background: var(--bg3); }
-  .job-logo {
-    width: 40px; height: 40px;
-    border-radius: 8px;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem;
-  }
-  .job-info { flex: 1; }
-  .job-title { font-weight: 500; font-size: 0.95rem; margin-bottom: 0.2rem; }
-  .job-company { font-size: 0.82rem; color: var(--muted); }
-  .job-meta { display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap; }
-  .job-tag {
-    font-size: 0.72rem;
-    padding: 0.15rem 0.55rem;
-    border-radius: 99px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--muted);
-  }
-  .job-score {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--accent);
-    flex-shrink: 0;
-  }
-  .score-label { font-size: 0.65rem; color: var(--muted); text-align: center; font-weight: 400; display: block; }
+    .helper,
+    .preset-copy,
+    .sources-copy,
+    .status-note,
+    .empty-state,
+    .job-meta,
+    .job-description,
+    .company-line,
+    #status-text,
+    #count-text,
+    #display-summary {
+      color: var(--muted);
+    }
 
-  .progress-bar {
-    height: 3px;
-    background: var(--border);
-    border-radius: 99px;
-    margin-bottom: 1.5rem;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 99px;
-    width: 0%;
-    transition: width 0.3s;
-  }
-  .status-msg { font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem; }
+    .preset-copy,
+    .sources-copy {
+      margin-bottom: 12px;
+      font-size: 0.92rem;
+    }
 
-  .faq { background: var(--bg); }
-  .faq-list { max-width: 700px; margin-top: 3rem; }
-  .faq-item { border-bottom: 1px solid var(--border); }
-  .faq-q {
-    width: 100%;
-    text-align: left;
-    background: none;
-    border: none;
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 400;
-    padding: 1.25rem 0;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-  }
-  .faq-q:hover { color: var(--accent); }
-  .faq-icon { font-size: 1.2rem; transition: transform 0.3s; flex-shrink: 0; color: var(--muted); }
-  .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--accent); }
-  .faq-a {
-    font-size: 0.9rem;
-    color: var(--muted);
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s;
-    line-height: 1.7;
-  }
-  .faq-item.open .faq-a { max-height: 240px; padding-bottom: 1.25rem; }
+    .preset-grid,
+    .focus-grid {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
 
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 2.5rem 3rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--bg2);
-  }
-  .footer-logo {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 1.1rem;
-    color: var(--text);
-  }
-  .footer-logo span { color: var(--accent); }
-  footer p { font-size: 0.8rem; color: var(--muted); }
+    .preset-grid {
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+    }
 
-  .ai-badge {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    background: rgba(127,119,221,0.12);
-    border: 1px solid rgba(127,119,221,0.25);
-    color: #AFA9EC;
-    font-size: 0.72rem; font-weight: 500;
-    padding: 0.25rem 0.65rem; border-radius: 99px;
-    letter-spacing: 0.04em; text-transform: uppercase;
-  }
-  .ai-badge::before { content:''; width:5px; height:5px; background:#AFA9EC; border-radius:50%; animation: pulse 2s infinite; }
-  .profile-textarea {
-    background: var(--bg2); border: 1px solid var(--border);
-    border-radius: 10px; color: var(--text);
-    padding: 1rem; font-size: 0.9rem; font-family: var(--font-body);
-    outline: none; resize: vertical; min-height: 110px; width: 100%;
-    line-height: 1.6; transition: border-color 0.2s;
-  }
-  .profile-textarea:focus { border-color: rgba(127,119,221,0.5); }
-  .profile-textarea::placeholder { color: var(--muted2); font-style: italic; }
-  .ai-info-box {
-    background: rgba(127,119,221,0.06);
-    border: 1px solid rgba(127,119,221,0.15);
-    border-radius: 8px; padding: 1rem; margin: 1rem 0;
-    font-size: 0.82rem; color: var(--muted); line-height: 1.6;
-  }
-  .ai-info-box strong { color: #AFA9EC; }
-  .api-key-row { display: flex; gap: 0.5rem; align-items: center; }
-  .api-key-row input { flex: 1; }
-  .test-btn {
-    background: rgba(127,119,221,0.15); border: 1px solid rgba(127,119,221,0.3);
-    color: #AFA9EC; padding: 0.7rem 1rem; border-radius: 8px;
-    font-size: 0.82rem; font-family: var(--font-body); cursor: pointer;
-    white-space: nowrap; transition: all 0.2s;
-  }
-  .test-btn:hover { background: rgba(127,119,221,0.25); }
-  .streaming-output {
-    background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
-    padding: 1rem; margin-top: 1rem; font-size: 0.85rem; color: var(--muted);
-    min-height: 60px; line-height: 1.7; display: none;
-    font-family: monospace;
-  }
-  .streaming-output.visible { display: block; }
-  .cursor-blink { animation: blink 1s step-end infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .focus-grid {
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
 
-  @media (max-width: 768px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { display: none; }
-    section { padding: 4rem 1.5rem; }
-    .hero { padding: 7rem 1.5rem 4rem; }
-    .hero-stats { gap: 2rem; flex-wrap: wrap; }
-    .feat-grid { grid-template-columns: 1fr; }
-    .feat-card.large { grid-column: span 1; }
-    .form-row { grid-template-columns: 1fr; }
-    footer { flex-direction: column; gap: 1rem; text-align: center; }
-    .steps { grid-template-columns: 1fr; }
-  }
-</style>
+    .preset-button,
+    .focus-button {
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      text-align: left;
+    }
+
+    .preset-button.active {
+      background: linear-gradient(135deg, #20473f 0%, #2c7a6d 100%);
+      color: #f7fff9;
+      border-color: transparent;
+    }
+
+    .focus-button.active {
+      background: linear-gradient(135deg, #5e4b1f 0%, #8a6c28 100%);
+      color: #fffaf0;
+      border-color: transparent;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 8px;
+      font-size: 0.94rem;
+    }
+
+    .tags-wrap,
+    .select-input {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--bg2);
+      border-radius: 18px;
+    }
+
+    .tags-wrap {
+      padding: 12px;
+      min-height: 54px;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .tag {
+      border: 0;
+      border-radius: 999px;
+      padding: 7px 12px;
+      background: rgba(184,255,87,0.12);
+      color: var(--accent);
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.85rem;
+    }
+
+    .tag-input {
+      width: 100%;
+      background: transparent;
+      border: 0;
+      outline: none;
+      color: var(--text);
+      font: inherit;
+      padding: 4px 2px;
+    }
+
+    .tag-input::placeholder { color: var(--muted2); }
+
+    .select-input {
+      color: var(--text);
+      padding: 12px 14px;
+      outline: none;
+      font: inherit;
+    }
+
+    .slider-line {
+      margin-top: 14px;
+    }
+
+    .slider-line label {
+      margin: 0 0 6px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    .source-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
+    }
+
+    .source-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--bg2);
+      min-height: 190px;
+    }
+
+    .source-card-top {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .source-checkbox {
+      margin-top: 4px;
+      accent-color: var(--accent);
+    }
+
+    .source-card-title {
+      display: block;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .source-card-type {
+      display: inline-block;
+      margin-top: 5px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(110,215,255,0.12);
+      color: var(--secondary);
+      font-size: 0.76rem;
+    }
+
+    .source-card-description,
+    .source-card-focus {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .source-card-focus strong { color: var(--text); }
+
+    .status-card {
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--bg2);
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .status-line,
+    .results-header,
+    .job-top,
+    .job-breakdown {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.08);
+      margin: 12px 0;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--secondary) 0%, var(--accent) 100%);
+      transition: width 0.25s ease;
+    }
+
+    .jobs-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .job-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      padding: 18px;
+      border-radius: 22px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      transition: 0.2s ease;
+    }
+
+    .job-card:hover {
+      transform: translateY(-1px);
+      border-color: rgba(184,255,87,0.25);
+      background: var(--bg3);
+    }
+
+    .source-pill {
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      background: rgba(184,255,87,0.12);
+      color: var(--accent);
+    }
+
+    .job-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .score-box {
+      min-width: 90px;
+      text-align: center;
+      padding: 12px;
+      border-radius: 18px;
+      color: #fff;
+      background: linear-gradient(135deg, #20473f 0%, #2c7a6d 100%);
+      flex-shrink: 0;
+    }
+
+    .score-box strong {
+      display: block;
+      font-size: 1.45rem;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .job-meta {
+      font-size: 0.88rem;
+      margin-bottom: 12px;
+    }
+
+    .job-description {
+      font-size: 0.92rem;
+      margin-bottom: 12px;
+    }
+
+    .job-breakdown {
+      flex-wrap: wrap;
+      font-size: 0.84rem;
+      margin-bottom: 12px;
+    }
+
+    .job-link {
+      color: var(--accent);
+      font-size: 0.92rem;
+    }
+
+    .empty-state {
+      padding: 24px 0;
+      text-align: center;
+    }
+
+    footer {
+      padding-top: 26px;
+      color: var(--muted2);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .layout,
+      .status-line,
+      .results-header,
+      .job-top {
+        grid-template-columns: 1fr;
+        display: grid;
+      }
+
+      h1 { max-width: none; }
+    }
+  </style>
 </head>
 <body>
+  <div class="page-shell">
+    <nav>
+      <a href="#" class="nav-logo">Job<span>Radar</span></a>
+    </nav>
 
-<nav>
-  <a href="#" class="nav-logo">Job<span>Radar</span></a>
-  <ul class="nav-links">
-    <li><a href="#how">Comment ça marche</a></li>
-    <li><a href="#features">Fonctionnalités</a></li>
-    <li><a href="#app">Démo</a></li>
-    <li><a href="#faq">FAQ</a></li>
-  </ul>
-  <a href="#app" class="nav-cta">Essayer gratuitement →</a>
-</nav>
-
-<section class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-tag">Agent IA de recherche d'emploi</div>
-  <h1>Trouvez votre<em>job idéal.</em>Automatiquement.</h1>
-  <p class="hero-sub">JobRadar scanne des dizaines de plateformes d'offres d'emploi, score chaque poste selon vos critères, et affiche les meilleurs directement dans votre interface.</p>
-  <div class="hero-actions">
-    <a href="#app" class="btn-primary">Configurer mon agent →</a>
-    <a href="#how" class="btn-secondary">Voir comment ça marche</a>
-  </div>
-  <div class="hero-stats">
-    <div>
-      <div class="stat-val">9+</div>
-      <div class="stat-label">Sources scannées</div>
-    </div>
-    <div>
-      <div class="stat-val">100%</div>
-      <div class="stat-label">Automatisé</div>
-    </div>
-    <div>
-      <div class="stat-val">0€</div>
-      <div class="stat-label">Open source</div>
-    </div>
-  </div>
-</section>
-
-<div class="ticker-wrap">
-  <div class="ticker">
-    <span class="ticker-item">Greenhouse</span>
-    <span class="ticker-item">Lever</span>
-    <span class="ticker-item">Welcome to the Jungle</span>
-    <span class="ticker-item">RemoteOK</span>
-    <span class="ticker-item">Ashby</span>
-    <span class="ticker-item">YCombinator Jobs</span>
-    <span class="ticker-item">Himalayas</span>
-    <span class="ticker-item">We Work Remotely</span>
-    <span class="ticker-item">Hacker News</span>
-    <span class="ticker-item">Greenhouse</span>
-    <span class="ticker-item">Lever</span>
-    <span class="ticker-item">Welcome to the Jungle</span>
-    <span class="ticker-item">RemoteOK</span>
-    <span class="ticker-item">Ashby</span>
-    <span class="ticker-item">YCombinator Jobs</span>
-    <span class="ticker-item">Himalayas</span>
-    <span class="ticker-item">We Work Remotely</span>
-    <span class="ticker-item">Hacker News</span>
-  </div>
-</div>
-
-<section class="how" id="how">
-  <div class="section-label">Processus</div>
-  <h2>Simple comme <span>4 étapes</span></h2>
-  <div class="steps">
-    <div class="step">
-      <div class="step-icon">🎯</div>
-      <div class="step-num">01</div>
-      <div class="step-title">Définissez vos critères</div>
-      <div class="step-desc">Titres de postes, localisations, entreprises cibles, mots-clés à exclure. Vous configurez votre recherche selon vos priorités.</div>
-    </div>
-    <div class="step">
-      <div class="step-icon">🤖</div>
-      <div class="step-num">02</div>
-      <div class="step-title">L'agent scanne tout</div>
-      <div class="step-desc">JobRadar parcourt les plateformes, récupère les offres et applique un scoring selon vos préférences.</div>
-    </div>
-    <div class="step">
-      <div class="step-icon">📊</div>
-      <div class="step-num">03</div>
-      <div class="step-title">Les offres sont triées</div>
-      <div class="step-desc">Les résultats sont filtrés, dédoublonnés et classés par score pour vous montrer les plus pertinentes.</div>
-    </div>
-    <div class="step">
-      <div class="step-icon">✨</div>
-      <div class="step-num">04</div>
-      <div class="step-title">Vous postulez en focus</div>
-      <div class="step-desc">Plus de scroll infini. Vous avez une liste triée des meilleures opportunités à consulter directement.</div>
-    </div>
-  </div>
-</section>
-
-<section class="features" id="features">
-  <div class="section-label">Fonctionnalités</div>
-  <h2>Tout ce dont vous avez <span>besoin</span></h2>
-  <div class="feat-grid">
-    <div class="feat-card large">
-      <span class="feat-icon">✨</span>
-      <div class="feat-title">Recherche sémantique IA</div>
-      <div class="feat-desc">Décrivez votre job idéal en prose naturelle. L'IA peut vous aider à repérer des rôles proches sémantiquement, même si le titre exact n'apparaît pas dans vos mots-clés.</div>
-      <span class="feat-badge">Nouveau</span>
-    </div>
-    <div class="feat-card">
-      <span class="feat-icon">🎯</span>
-      <div class="feat-title">Scoring intelligent</div>
-      <div class="feat-desc">Score basé sur les mots-clés, la localisation, le niveau de seniorité et la pertinence du poste.</div>
-    </div>
-    <div class="feat-card">
-      <span class="feat-icon">🔄</span>
-      <div class="feat-title">Anti-doublons</div>
-      <div class="feat-desc">Les résultats sont dédoublonnés à partir du lien pour éviter les répétitions inutiles.</div>
-    </div>
-    <div class="feat-card">
-      <span class="feat-icon">📡</span>
-      <div class="feat-title">Backend connecté</div>
-      <div class="feat-desc">Le site est connecté à un backend en ligne qui lance le scan réel et renvoie les vraies offres.</div>
-    </div>
-    <div class="feat-card">
-      <span class="feat-icon">🗂️</span>
-      <div class="feat-title">Évolutif</div>
-      <div class="feat-desc">La base est prête pour intégrer ensuite Notion, email récapitulatif ou automatisation quotidienne.</div>
-    </div>
-  </div>
-</section>
-
-<section class="sources">
-  <div class="section-label">Couverture</div>
-  <h2>Plusieurs plateformes <span>couvertes</span></h2>
-  <p class="sources-intro">JobRadar interroge plusieurs sources d’offres pour trouver les opportunités les plus pertinentes selon vos critères.</p>
-  <div class="sources-grid">
-    <div class="source-pill">🟢 Greenhouse</div>
-    <div class="source-pill">⚡ Lever</div>
-    <div class="source-pill">🌿 Welcome to the Jungle</div>
-    <div class="source-pill">🌍 RemoteOK</div>
-    <div class="source-pill">🔷 Ashby</div>
-    <div class="source-pill">🚀 YCombinator Jobs</div>
-    <div class="source-pill">🏔️ Himalayas</div>
-    <div class="source-pill">🧑‍💻 We Work Remotely</div>
-    <div class="source-pill">📰 Hacker News</div>
-  </div>
-</section>
-
-<section class="app-section" id="app">
-  <div class="section-label">Interface</div>
-  <h2>Configurez votre <span>agent</span></h2>
-  <p>Définissez vos critères de recherche ci-dessous. Aucune ligne de code requise.</p>
-
-  <div class="config-app">
-    <div class="app-tabs">
-      <button class="tab-btn active" onclick="switchTab('config')">⚙️ Configuration</button>
-      <button class="tab-btn" onclick="switchTab('ai')">✨ IA Sémantique</button>
-      <button class="tab-btn" onclick="switchTab('results')">📋 Résultats</button>
-      <button class="tab-btn" onclick="switchTab('notion')">🗂️ Connexion Notion</button>
-    </div>
-
-    <div class="tab-panel active" id="tab-config">
-      <div class="form-section-title">Postes recherchés</div>
-      <div class="form-group">
-        <label>Mots-clés de postes</label>
-        <div class="tags-input-wrap" id="keywords-wrap" onclick="document.getElementById('keyword-input').focus()">
-          <span class="tag">sales <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">account executive <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">account manager <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">business development <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">customer success <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">partnerships <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">revenue operations <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">business operations <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">growth <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">marketing <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">strategy <button type="button" onclick="removeTag(this)">×</button></span>
-          <input class="tags-input" id="keyword-input" placeholder="Ajouter un mot-clé…" onkeydown="addTag(event, 'keywords-wrap')">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Mots à exclure</label>
-        <div class="tags-input-wrap" id="exclude-wrap" onclick="document.getElementById('exclude-input').focus()">
-          <span class="tag">intern <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">internship <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">director <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">vp <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">head of <button type="button" onclick="removeTag(this)">×</button></span>
-          <input class="tags-input" id="exclude-input" placeholder="Ajouter un mot à exclure…" onkeydown="addTag(event, 'exclude-wrap')">
-        </div>
-      </div>
-
-      <div class="form-section-title">Localisation</div>
-      <div class="form-group">
-        <label>Pays / Villes prioritaires</label>
-        <div class="tags-input-wrap" id="location-wrap" onclick="document.getElementById('location-input').focus()">
-          <span class="tag">switzerland <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">barcelona <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">paris <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">london <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">remote <button type="button" onclick="removeTag(this)">×</button></span>
-          <input class="tags-input" id="location-input" placeholder="Ajouter une ville ou un pays…" onkeydown="addTag(event, 'location-wrap')">
-        </div>
-      </div>
-
-      <div class="form-section-title">Entreprises cibles</div>
-      <div class="form-group">
-        <label>Entreprises à favoriser</label>
-        <div class="tags-input-wrap" id="company-wrap" onclick="document.getElementById('company-input').focus()">
-          <input class="tags-input" id="company-input" placeholder="Ajouter une entreprise…" onkeydown="addTag(event, 'company-wrap')">
-        </div>
-      </div>
-
-      <div class="form-section-title">Affichage</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Score minimum</label>
-          <div class="slider-row">
-            <input id="score-range" type="range" min="0" max="100" value="15" oninput="document.getElementById('score-val').textContent=this.value; refreshResults()">
-            <span class="slider-val" id="score-val">15</span>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Limite affichée</label>
-          <div class="slider-row">
-            <input id="max-range" type="range" min="5" max="100" value="50" oninput="document.getElementById('max-val').textContent=this.value; refreshResults()">
-            <span class="slider-val" id="max-val">50</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-section-title">Pondération du score</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Poids mots-clés</label>
-          <div class="slider-row">
-            <input id="weight-keywords" type="range" min="0" max="100" value="40" oninput="document.getElementById('weight-keywords-val').textContent=this.value; refreshResults()">
-            <span class="slider-val" id="weight-keywords-val">40</span>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Poids localisation</label>
-          <div class="slider-row">
-            <input id="weight-location" type="range" min="0" max="100" value="20" oninput="document.getElementById('weight-location-val').textContent=this.value; refreshResults()">
-            <span class="slider-val" id="weight-location-val">20</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label>Poids entreprise</label>
-          <div class="slider-row">
-            <input id="weight-company" type="range" min="0" max="100" value="15" oninput="document.getElementById('weight-company-val').textContent=this.value; refreshResults()">
-            <span class="slider-val" id="weight-company-val">15</span>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Poids sémantique</label>
-          <div class="slider-row">
-            <input id="weight-semantic" type="range" min="0" max="100" value="25" oninput="document.getElementById('weight-semantic-val').textContent=this.value; refreshResults()">
-            <span class="slider-val" id="weight-semantic-val">25</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-section-title">Sources affichées</div>
-      <div class="checkbox-group">
-        <label class="checkbox-item"><input type="checkbox" value="Greenhouse" checked> Greenhouse</label>
-        <label class="checkbox-item"><input type="checkbox" value="Lever" checked> Lever</label>
-        <label class="checkbox-item"><input type="checkbox" value="Welcome to the Jungle" checked> Welcome to the Jungle</label>
-        <label class="checkbox-item"><input type="checkbox" value="RemoteOK" checked> RemoteOK</label>
-        <label class="checkbox-item"><input type="checkbox" value="Ashby" checked> Ashby</label>
-        <label class="checkbox-item"><input type="checkbox" value="YCombinator" checked> YCombinator Jobs</label>
-        <label class="checkbox-item"><input type="checkbox" value="Himalayas" checked> Himalayas</label>
-        <label class="checkbox-item"><input type="checkbox" value="We Work Remotely" checked> We Work Remotely</label>
-        <label class="checkbox-item"><input type="checkbox" value="Hacker News Hiring" checked> Hacker News</label>
-      </div>
-
-      <button id="run-btn" class="run-btn" onclick="runRealScan()">
-        <span id="run-label">🚀 Lancer le scan</span>
-      </button>
-    </div>
-
-    <div class="tab-panel" id="tab-ai">
-      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem;">
-        <div>
-          <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:0.35rem;">Recherche sémantique par IA</div>
-          <div style="font-size:0.85rem;color:var(--muted);">Module de démonstration côté front</div>
-        </div>
-        <span class="ai-badge">IA active</span>
-      </div>
-
-      <div class="form-section-title">Votre profil idéal</div>
-      <div class="form-group">
-        <label>Décrivez votre job idéal en quelques phrases</label>
-        <textarea class="profile-textarea" id="ideal-profile" placeholder="Ex : Je recherche un poste orienté clients dans une entreprise tech ou SaaS, de niveau junior à intermédiaire. J'aime travailler sur l'adoption produit, la fidélisation et le développement commercial. Je suis ouvert aux rôles en anglais ou en français, en Suisse, Allemagne, France ou en remote..."></textarea>
-      </div>
-
-      <div class="ai-info-box">
-        <strong>Comment ça marche ?</strong> Cette partie sert de démo de réflexion sémantique côté front. Elle n'est pas encore reliée à ton backend de scan d'offres.
-      </div>
-
-      <div class="form-section-title">Clé API Anthropic</div>
-      <div class="form-group">
-        <label>Clé API (optionnelle pour la démo)</label>
-        <div class="api-key-row">
-          <input type="password" id="anthropic-key" placeholder="sk-ant-api03-…" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:0.7rem 1rem;font-size:0.9rem;font-family:var(--font-body);outline:none;transition:border-color 0.2s;">
-          <button class="test-btn" type="button" onclick="testApiKey()">Tester la clé</button>
-        </div>
-        <div id="api-status" style="font-size:0.78rem;margin-top:0.4rem;color:var(--muted);"></div>
-      </div>
-
-      <div class="form-section-title">Pondération du score</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Poids score mots-clés</label>
-          <div class="slider-row">
-            <input type="range" min="0" max="100" value="50" id="kw-weight"
-              oninput="document.getElementById('kw-w-val').textContent=this.value+'%'; document.getElementById('sem-weight').value=100-this.value; document.getElementById('sem-w-val').textContent=(100-this.value)+'%'">
-            <span class="slider-val" id="kw-w-val">50%</span>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Poids score sémantique IA</label>
-          <div class="slider-row">
-            <input type="range" min="0" max="100" value="50" id="sem-weight"
-              oninput="document.getElementById('sem-w-val').textContent=this.value+'%'; document.getElementById('kw-weight').value=100-this.value; document.getElementById('kw-w-val').textContent=(100-this.value)+'%'">
-            <span class="slider-val" id="sem-w-val">50%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-section-title">Tester l'analyse sémantique</div>
-      <div class="form-group">
-        <label>Titre d'une offre à analyser</label>
-        <input type="text" id="test-job-title" placeholder="Ex : Growth & Partnerships Associate" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:0.7rem 1rem;font-size:0.9rem;font-family:var(--font-body);outline:none;width:100%;">
-      </div>
-      <div class="form-group">
-        <label>Entreprise (optionnel)</label>
-        <input type="text" id="test-job-company" placeholder="Ex : Stripe" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:0.7rem 1rem;font-size:0.9rem;font-family:var(--font-body);outline:none;width:100%;">
-      </div>
-
-      <button class="ai-analyze-btn" type="button" onclick="analyzeJobWithAI()">
-        <span id="ai-btn-label">✨ Analyser la similarité avec mon profil</span>
-      </button>
-
-      <div class="streaming-output" id="ai-output"></div>
-    </div>
-
-    <div class="tab-panel" id="tab-results">
-      <div id="results-content">
-        <div class="results-empty">
-          <span class="empty-icon">🔍</span>
-          <p>Lancez un scan depuis l'onglet Configuration pour voir les résultats ici.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="tab-panel" id="tab-notion">
-      <div class="form-section-title">Connexion Notion</div>
-      <div class="form-group">
-        <label>Notion Token (Integration Secret)</label>
-        <input type="password" placeholder="secret_xxxxxxxxxxxxxxxxxxxx" id="notion-token">
-      </div>
-      <div class="form-group">
-        <label>Database ID</label>
-        <input type="text" placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" id="database-id">
-      </div>
-      <div class="form-section-title">Email récapitulatif</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Adresse Gmail</label>
-          <input type="email" placeholder="vous@gmail.com">
-        </div>
-        <div class="form-group">
-          <label>Mot de passe application</label>
-          <input type="password" placeholder="xxxx xxxx xxxx xxxx">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Envoyer le récap à</label>
-        <input type="email" placeholder="vous@gmail.com">
-      </div>
-      <div style="background: rgba(184,255,87,0.06); border: 1px solid rgba(184,255,87,0.15); border-radius: 8px; padding: 1rem; margin-top: 0.5rem;">
-        <p style="font-size: 0.82rem; color: var(--muted); line-height: 1.6;">
-          💡 <strong style="color: var(--text);">Comment obtenir un mot de passe d'application Gmail ?</strong><br>
-          Allez dans Compte Google → Sécurité → Validation en 2 étapes → Mots de passe d'application. Créez-en un pour "Messagerie" et copiez les 16 caractères.
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Business School Search</p>
+        <h1>Choisissez mieux vos sources et vos jobs business</h1>
+        <p class="hero-copy">
+          Cette version aide l'utilisateur a comprendre chaque source, a choisir les bons univers de postes,
+          et a filtrer les offres par type de metier, secteur, niveau et score.
         </p>
       </div>
-      <button class="run-btn" type="button" onclick="saveNotion(this)">
-        💾 Sauvegarder la configuration
-      </button>
-    </div>
+      <button id="scan-button" class="primary-button">Lancer le scan</button>
+    </header>
+
+    <main class="layout">
+      <section class="panel">
+        <h2>Configuration</h2>
+
+        <div class="group">
+          <h3>Presets metiers</h3>
+          <p class="preset-copy" id="preset-description">
+            Preset par defaut: Sales & Account Management pour les roles commerciaux, account management et customer success.
+          </p>
+          <div class="preset-grid">
+            <button type="button" class="preset-button active" data-preset="sales">Sales & Account</button>
+            <button type="button" class="preset-button" data-preset="marketing">Marketing & Growth</button>
+            <button type="button" class="preset-button" data-preset="strategy">Strategy, Ops & Finance</button>
+            <button type="button" class="preset-button" data-preset="luxury">Luxury / FMCG / Brand</button>
+            <button type="button" class="preset-button" data-preset="consulting">Consulting / Strategy only</button>
+          </div>
+
+          <p class="preset-copy" id="focus-description">
+            Focus sectoriel par defaut: aucun. Utilise un focus si tu veux orienter le scan vers un univers particulier.
+          </p>
+          <div class="focus-grid">
+            <button type="button" class="focus-button active" data-focus="all">Tous secteurs</button>
+            <button type="button" class="focus-button" data-focus="tech">Tech / SaaS</button>
+            <button type="button" class="focus-button" data-focus="luxury">Luxe</button>
+            <button type="button" class="focus-button" data-focus="consulting">Conseil</button>
+            <button type="button" class="focus-button" data-focus="fmcg">FMCG</button>
+            <button type="button" class="focus-button" data-focus="finance">Finance</button>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3>Filtres</h3>
+
+          <label>Keywords</label>
+          <div id="keywords-wrap" class="tags-wrap" data-default-tags=""></div>
+
+          <label>Exclusions</label>
+          <div id="exclude-wrap" class="tags-wrap" data-default-tags=""></div>
+
+          <label>Localisations</label>
+          <div id="location-wrap" class="tags-wrap" data-default-tags=""></div>
+
+          <label>Entreprises cibles</label>
+          <div id="company-wrap" class="tags-wrap" data-default-tags=""></div>
+
+          <label for="level-filter">Niveau</label>
+          <select id="level-filter" class="select-input">
+            <option value="all" selected>Tous niveaux</option>
+            <option value="junior">Junior</option>
+            <option value="mid">Mid</option>
+            <option value="senior">Senior</option>
+          </select>
+        </div>
+
+        <div class="group">
+          <h3>Sources actives</h3>
+          <p class="sources-copy">
+            Chaque source explique de quel type de site il s'agit et pour quels besoins elle est surtout utile.
+          </p>
+
+          <div class="source-actions">
+            <button type="button" class="secondary-button" id="select-all-sources">Tout cocher</button>
+            <button type="button" class="secondary-button" id="clear-all-sources">Tout decocher</button>
+          </div>
+
+          <div id="source-list" class="checkbox-grid"></div>
+        </div>
+
+        <div class="group">
+          <h3>Poids</h3>
+
+          <div class="slider-line">
+            <label for="weight-keywords">Poids mots-cles: <span id="weight-keywords-value">40</span></label>
+            <input id="weight-keywords" type="range" min="0" max="100" value="40" />
+          </div>
+
+          <div class="slider-line">
+            <label for="weight-location">Poids localisation: <span id="weight-location-value">20</span></label>
+            <input id="weight-location" type="range" min="0" max="100" value="20" />
+          </div>
+
+          <div class="slider-line">
+            <label for="weight-company">Poids entreprise: <span id="weight-company-value">10</span></label>
+            <input id="weight-company" type="range" min="0" max="100" value="10" />
+          </div>
+        </div>
+
+        <div class="group">
+          <h3>Affichage</h3>
+
+          <div class="slider-line">
+            <label for="score-range">Score minimum: <span id="score-range-value">12</span></label>
+            <input id="score-range" type="range" min="0" max="100" value="12" />
+          </div>
+
+          <div class="slider-line">
+            <label for="max-range">Limite visible: <span id="max-range-value">80</span></label>
+            <input id="max-range" type="range" min="5" max="150" step="5" value="80" />
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Resultats</h2>
+
+        <div class="status-card">
+          <div class="status-line">
+            <span>Progression</span>
+            <strong id="progress-text">0%</strong>
+          </div>
+          <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+          <p id="status-text">Configuration chargee. Choisis un preset ou un focus puis lance un scan.</p>
+          <p id="count-text">0 offre</p>
+        </div>
+
+        <div class="results-header">
+          <p id="display-summary">Limite visible: 80, score minimum: 12, niveau: tous niveaux, sources cochees: 22</p>
+        </div>
+
+        <div id="jobs-list" class="jobs-list"></div>
+      </section>
+    </main>
+
+    <footer>
+      Open source front sur GitHub Pages, connecte au backend JobRadar Render.
+    </footer>
   </div>
-</section>
 
-<section class="faq" id="faq">
-  <div class="section-label">Questions fréquentes</div>
-  <h2>Tout ce que vous <span>voulez savoir</span></h2>
-  <div class="faq-list">
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        Dois-je savoir coder pour utiliser JobRadar ?
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a">Non. L'interface web permet de lancer le scan et de consulter les résultats sans écrire de code.</div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        Combien d'offres l'agent trouve-t-il par scan ?
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a">Cela dépend de vos critères. Le backend scanne plusieurs sources, filtre les offres et vous renvoie les résultats les plus pertinents selon le score minimum défini.</div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        Est-ce que toutes les sources sont fiables ?
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a">Les sources basées sur API sont généralement les plus stables. D'autres peuvent évoluer ou limiter les appels selon leur structure.</div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        Mes données sont-elles en sécurité ?
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a">Le site appelle un backend déployé en ligne pour récupérer les offres. Évite de mettre des secrets sensibles directement dans un front public tant que tu n'as pas sécurisé ce flux côté serveur.</div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        Comment automatiser l'exécution quotidienne ?
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a">La version actuelle lance un scan à la demande depuis l'interface. L'automatisation quotidienne pourra être ajoutée ensuite côté backend ou via un scheduler externe.</div>
-    </div>
-  </div>
-</section>
+  <script>
+    const API_BASE = "https://jobradar-backend-2.onrender.com";
 
-<footer>
-  <div class="footer-logo">Job<span>Radar</span></div>
-  <p>Open source — construit avec ❤️ pour les chercheurs d'emploi</p>
-</footer>
+    const ALL_SOURCES = [
+      "Greenhouse",
+      "Lever",
+      "Ashby",
+      "RemoteOK",
+      "YCombinator",
+      "Welcome to the Jungle",
+      "Himalayas",
+      "We Work Remotely",
+      "Hacker News",
+      "Otta",
+      "Wellfound",
+      "LinkedIn",
+      "Indeed",
+      "Glassdoor",
+      "Flexa",
+      "EuroTechJobs",
+      "Built In",
+      "JobTeaser",
+      "Talent.com",
+      "StepStone",
+      "Adzuna",
+      "Reed"
+    ];
 
-<script>
-  const API_BASE = "https://jobradar-backend-2.onrender.com";
+    const SOURCE_METADATA = {
+      Greenhouse: {
+        type: "ATS / pages carrieres",
+        description: "Offres publiees via Greenhouse, tres frequent chez les startups, scale-ups et entreprises tech.",
+        focus: "Tres utile pour sales, customer success, account management, operations et marketing en environnement startup/SaaS."
+      },
+      Lever: {
+        type: "ATS / pages carrieres",
+        description: "Source issue des entreprises qui publient leurs offres via Lever, souvent orientee tech et croissance.",
+        focus: "Souvent pertinent pour sales, business development, account management, partnerships et growth."
+      },
+      Ashby: {
+        type: "ATS / pages carrieres",
+        description: "Plateforme de recrutement moderne utilisee par de nombreuses startups et scale-ups.",
+        focus: "Utile pour account management, revops, customer success, operations et GTM."
+      },
+      RemoteOK: {
+        type: "Remote-first",
+        description: "Job board centre sur le travail a distance, avec une forte composante tech et digital.",
+        focus: "A privilegier pour des roles remote en sales, support client, growth, marketing ou operations."
+      },
+      YCombinator: {
+        type: "Startups",
+        description: "Univers startup tres oriente early-stage, innovation et roles generalistes de croissance.",
+        focus: "Ideal pour founding roles, business development, account executive, operations et growth."
+      },
+      "Welcome to the Jungle": {
+        type: "Generaliste Europe",
+        description: "Plateforme tres utilisee en France et en Europe, avec bonne presence startup, scale-up et corporate.",
+        focus: "Tres utile pour marketing, customer success, account management, partnerships et roles business generalistes."
+      },
+      Himalayas: {
+        type: "Remote-first",
+        description: "Plateforme remote avec bonne visibilite sur les postes digitaux et internationaux.",
+        focus: "Bonne source pour remote business, customer success, growth, marketing, operations et business analyst."
+      },
+      "We Work Remotely": {
+        type: "Remote-first",
+        description: "Job board historique du remote, surtout connu pour les postes internet, startup et digital.",
+        focus: "Souvent utile pour customer success, account executive, marketing, revops et support business remote."
+      },
+      "Hacker News": {
+        type: "Startup / community",
+        description: "Source plus informelle issue de l'ecosysteme startup, avec des roles souvent transverses.",
+        focus: "Utile si tu es ouvert aux startups en forte croissance, roles hybrides et postes business tres larges."
+      },
+      Otta: {
+        type: "Tech / startups",
+        description: "Plateforme moderne orientee startups et scale-ups, forte sur les metiers tech et business.",
+        focus: "Tres pratique pour business development, account executive, customer success, ops et product marketing."
+      },
+      Wellfound: {
+        type: "Startups",
+        description: "Anciennement AngelList Talent, tres oriente startup et contact direct avec l'ecosysteme entrepreneurial.",
+        focus: "Utile pour sales, growth, partnerships, ops et account management en startup."
+      },
+      LinkedIn: {
+        type: "Generaliste",
+        description: "Grande plateforme emploi avec un volume important d'offres dans presque tous les secteurs white-collar.",
+        focus: "Bonne source large pour presque tous les metiers d'ecole de commerce, du junior au senior."
+      },
+      Indeed: {
+        type: "Generaliste",
+        description: "Agregateur et job board tres large, utile pour elargir fortement le volume d'offres.",
+        focus: "A privilegier si tu veux maximiser les options sur sales, marketing, support client, ops et analyste."
+      },
+      Glassdoor: {
+        type: "Generaliste + avis",
+        description: "Plateforme emploi connue aussi pour les avis employeurs, avec couverture assez large.",
+        focus: "Interessante pour des roles business generalistes si tu veux aussi evaluer les employeurs."
+      },
+      Flexa: {
+        type: "Flexible work",
+        description: "Plateforme orientee travail flexible, remote ou hybride.",
+        focus: "Tres utile si ton critere principal est la flexibilite pour des metiers business et digitaux."
+      },
+      EuroTechJobs: {
+        type: "Tech Europe",
+        description: "Plateforme europeenne orientee emplois tech et digitaux avec dimension internationale.",
+        focus: "Peut etre utile pour growth, revops, account et partnerships en environnement tech europeen."
+      },
+      "Built In": {
+        type: "Tech / startups",
+        description: "Site emploi centre sur les entreprises tech avec fiches societes et nombreux postes startup/scale-up.",
+        focus: "Particulierement pertinent pour GTM, sales, product marketing et customer success."
+      },
+      JobTeaser: {
+        type: "Etudiants / jeunes diplomes",
+        description: "Plateforme tres connue chez les etudiants et jeunes diplomes, souvent connectee aux ecoles.",
+        focus: "A cocher pour stages, graduate programs, VIE, alternances ou premiers CDI business."
+      },
+      "Talent.com": {
+        type: "Generaliste / agregateur",
+        description: "Agregateur large qui aide a capter du volume sur de nombreux secteurs et niveaux d'anciennete.",
+        focus: "Utile pour ratisser large sur les metiers business si tu veux maximiser le nombre d'options."
+      },
+      StepStone: {
+        type: "Generaliste Europe",
+        description: "Plateforme europeenne bien implantee sur les postes white-collar et corporate.",
+        focus: "Bonne source pour marketing, account management, finance, procurement, supply chain et operations."
+      },
+      Adzuna: {
+        type: "Generaliste / agregateur",
+        description: "Agregateur emploi large qui fait remonter beaucoup d'offres issues de sites differents.",
+        focus: "Pratique pour elargir le volume total d'offres sur business, finance, sales et marketing."
+      },
+      Reed: {
+        type: "Generaliste UK",
+        description: "Site emploi historique au Royaume-Uni avec beaucoup de postes business et white-collar.",
+        focus: "A privilegier si Londres ou le marche UK t'interessent pour sales, finance et operations."
+      }
+    };
 
-  const TAB_NAMES = ['config', 'ai', 'results', 'notion'];
-  const TAB_IDS = ['tab-config', 'tab-ai', 'tab-results', 'tab-notion'];
+    const DEFAULT_EXCLUDES = ["intern", "internship", "director", "vp", "head of", "chief"];
+    const DEFAULT_LOCATIONS = ["switzerland", "barcelona", "madrid", "paris", "london", "berlin", "amsterdam", "dublin", "remote"];
 
-  let allJobs = [];
-  let pollTimer = null;
+    const LEVEL_LABELS = {
+      all: "tous niveaux",
+      junior: "junior",
+      mid: "mid",
+      senior: "senior"
+    };
 
-  const DEFAULT_BUSINESS_KEYWORDS = [
-    "sales",
-    "account executive",
-    "account manager",
-    "business development",
-    "customer success",
-    "partnerships",
-    "revenue operations",
-    "business operations",
-    "growth",
-    "marketing",
-    "strategy"
-  ];
+    const PRESETS = {
+      sales: {
+        description: "Preset par defaut: Sales & Account Management pour les roles commerciaux, account management et customer success.",
+        keywords: ["sales", "account executive", "key account manager", "strategic account manager", "account manager", "customer success", "business development", "sales development", "partnerships", "revenue operations", "sales enablement"],
+        excludes: DEFAULT_EXCLUDES,
+        locations: DEFAULT_LOCATIONS,
+        companies: [],
+        sources: ALL_SOURCES,
+        level: "all",
+        weights: { keywords: 45, location: 20, company: 10 },
+        display: { minScore: 12, limit: 80 }
+      },
+      marketing: {
+        description: "Marketing & Growth pour les roles acquisition, CRM, product marketing, category, brand, demand generation et e-commerce.",
+        keywords: ["growth", "growth marketing", "marketing", "product marketing", "brand management", "category management", "crm", "lifecycle marketing", "demand generation", "market research", "e-commerce", "trade marketing"],
+        excludes: DEFAULT_EXCLUDES,
+        locations: DEFAULT_LOCATIONS,
+        companies: [],
+        sources: ALL_SOURCES,
+        level: "all",
+        weights: { keywords: 45, location: 15, company: 10 },
+        display: { minScore: 10, limit: 90 }
+      },
+      strategy: {
+        description: "Strategy, Ops & Finance pour les roles business analyst, consulting, operations, finance, procurement, supply chain et project management.",
+        keywords: ["strategy", "consulting", "finance", "business analyst", "commercial analyst", "business operations", "operations", "project management", "revenue operations", "supply chain", "procurement", "market research"],
+        excludes: DEFAULT_EXCLUDES,
+        locations: DEFAULT_LOCATIONS,
+        companies: [],
+        sources: ALL_SOURCES,
+        level: "all",
+        weights: { keywords: 40, location: 20, company: 10 },
+        display: { minScore: 10, limit: 90 }
+      },
+      luxury: {
+        description: "Luxury / FMCG / Brand pour les roles brand, category, trade marketing, shopper marketing, consumer insights, retail et e-commerce.",
+        keywords: ["luxury", "fmcg", "brand management", "luxury brand manager", "category management", "category development manager", "trade marketing", "shopper marketing", "consumer insights", "market research", "retail", "e-commerce"],
+        excludes: DEFAULT_EXCLUDES,
+        locations: DEFAULT_LOCATIONS,
+        companies: [],
+        sources: ALL_SOURCES,
+        level: "all",
+        weights: { keywords: 45, location: 15, company: 10 },
+        display: { minScore: 10, limit: 90 }
+      },
+      consulting: {
+        description: "Consulting / Strategy only pour les roles tres orientes analyse, problem solving, market research, pricing, business analysis et conseil.",
+        keywords: ["consulting", "management consultant", "strategy", "strategy associate", "business analyst", "commercial analyst", "pricing", "market research", "consumer insights", "project management"],
+        excludes: DEFAULT_EXCLUDES,
+        locations: DEFAULT_LOCATIONS,
+        companies: [],
+        sources: ALL_SOURCES,
+        level: "all",
+        weights: { keywords: 45, location: 20, company: 10 },
+        display: { minScore: 10, limit: 75 }
+      }
+    };
 
-  const ROLE_FAMILIES = {
-    "sales": [
-      "sales",
-      "sales manager",
-      "sales representative",
-      "sales rep",
-      "account executive",
-      "ae",
-      "business development",
-      "bdr",
-      "sdr",
-      "new business",
-      "closing"
-    ],
-    "account executive": [
-      "account executive",
-      "ae",
-      "sales executive",
-      "commercial executive",
-      "new business",
-      "closing"
-    ],
-    "account manager": [
-      "account manager",
-      "key account manager",
-      "strategic account manager",
-      "client partner",
-      "relationship manager",
-      "customer success"
-    ],
-    "customer success": [
-      "customer success",
-      "client success",
-      "customer experience",
-      "customer onboarding",
-      "retention",
-      "adoption",
-      "implementation",
-      "account management"
-    ],
-    "business development": [
-      "business development",
-      "bizdev",
-      "sales development",
-      "bdr",
-      "sdr",
-      "lead generation",
-      "outbound",
-      "partnerships",
-      "growth"
-    ],
-    "partnerships": [
-      "partnerships",
-      "strategic partnerships",
-      "partner manager",
-      "alliances",
-      "alliance manager",
-      "channel manager",
-      "ecosystem"
-    ],
-    "revenue operations": [
-      "revenue operations",
-      "revops",
-      "go to market operations",
-      "gtm operations",
-      "revenue strategy",
-      "sales operations",
-      "sales enablement"
-    ],
-    "business operations": [
-      "business operations",
-      "bizops",
-      "strategy operations",
-      "operations manager",
-      "operations associate",
-      "commercial operations"
-    ],
-    "growth": [
-      "growth",
-      "growth manager",
-      "growth marketing",
-      "acquisition",
-      "activation",
-      "lifecycle",
-      "expansion"
-    ],
-    "marketing": [
-      "marketing",
-      "demand generation",
-      "demand gen",
-      "product marketing",
-      "field marketing",
-      "performance marketing",
-      "content marketing"
-    ],
-    "strategy": [
-      "strategy",
-      "strategy and operations",
-      "commercial strategy",
-      "market intelligence",
-      "go to market strategy"
-    ]
-  };
+    const FOCUS_PRESETS = {
+      all: {
+        description: "Focus sectoriel par defaut: aucun. Utilise un focus si tu veux orienter le scan vers un univers particulier.",
+        keywords: [],
+        companies: [],
+        sources: ALL_SOURCES,
+        level: "all",
+        weights: {},
+        display: {}
+      },
+      tech: {
+        description: "Focus Tech / SaaS: roles business frequents dans les startups et scale-ups logicielles.",
+        keywords: ["saas", "b2b", "account executive", "customer success", "revenue operations", "product marketing", "demand generation", "partnerships"],
+        companies: ["HubSpot", "Notion", "Intercom", "Airtable", "Atlassian"],
+        sources: ALL_SOURCES,
+        level: "all",
+        weights: { keywords: 50 },
+        display: { minScore: 10 }
+      },
+      luxury: {
+        description: "Focus Luxe: premium, selective retail, brand management, retail excellence et consumer insights.",
+        keywords: ["luxury", "premium", "luxury brand manager", "brand management", "consumer insights", "retail", "trade marketing"],
+        companies: ["L'Oreal"],
+        sources: ALL_SOURCES,
+        level: "all",
+        weights: { keywords: 50 },
+        display: { minScore: 10 }
+      },
+      consulting: {
+        description: "Focus Conseil: roles structures autour de l'analyse, du problem solving, du cadrage et des recommandations.",
+        keywords: ["consulting", "management consultant", "strategy", "business analyst", "project management", "pricing", "market research"],
+        companies: ["Accenture", "IBM", "Oracle"],
+        sources: ALL_SOURCES,
+        level: "all",
+        weights: { keywords: 50 },
+        display: { minScore: 10 }
+      },
+      fmcg: {
+        description: "Focus FMCG: category, trade marketing, shopper marketing, retail, supply chain et procurement.",
+        keywords: ["fmcg", "category management", "category development manager", "trade marketing", "shopper marketing", "supply chain", "procurement", "e-commerce"],
+        companies: ["Danone", "HelloFresh"],
+        sources: ALL_SOURCES,
+        level: "all",
+        weights: { keywords: 50 },
+        display: { minScore: 10 }
+      },
+      finance: {
+        description: "Focus Finance: finance, FP&A, pricing, analyses business et performance commerciale.",
+        keywords: ["finance", "fp&a", "pricing", "business analyst", "commercial analyst", "revenue operations", "market research"],
+        companies: ["SAP", "Workday", "Oracle"],
+        sources: ALL_SOURCES,
+        level: "all",
+        weights: { keywords: 50 },
+        display: { minScore: 10 }
+      }
+    };
 
-  function switchTab(name) {
-    document.querySelectorAll('.tab-btn').forEach((b, i) => {
-      b.classList.toggle('active', TAB_NAMES[i] === name);
-    });
-    document.querySelectorAll('.tab-panel').forEach((p, i) => {
-      p.classList.toggle('active', TAB_IDS[i] === 'tab-' + name);
-    });
-  }
+    const state = {
+      poller: null,
+      activePreset: "sales",
+      activeFocus: "all",
+      allJobs: []
+    };
 
-  function addTag(e, wrapperId) {
-    if (e.key !== 'Enter' && e.key !== ',') return;
-    e.preventDefault();
-
-    const input = e.target;
-    const val = input.value.trim().toLowerCase();
-    if (!val) return;
-
-    const existing = getTags(wrapperId);
-    if (existing.includes(val)) {
-      input.value = '';
-      return;
+    function uniqueValues(values) {
+      return [...new Set(values.filter(Boolean))];
     }
 
-    const wrap = document.getElementById(wrapperId);
-    const tag = document.createElement('span');
-    tag.className = 'tag';
-    tag.innerHTML = `${escapeHtml(val)} <button type="button" onclick="removeTag(this)">×</button>`;
-    wrap.insertBefore(tag, input);
-    input.value = '';
+    function normalizeText(value) {
+      return String(value || "").trim();
+    }
 
-    refreshResults();
-  }
+    function normalizeLower(value) {
+      return normalizeText(value).toLowerCase();
+    }
 
-  function removeTag(btn) {
-    btn.closest('.tag').remove();
-    refreshResults();
-  }
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
 
-  function toggleFaq(btn) {
-    btn.closest('.faq-item').classList.toggle('open');
-  }
+    function inferLevel(position) {
+      const title = normalizeLower(position);
 
-  function scoreColor(s) {
-    if (s >= 80) return '#b8ff57';
-    if (s >= 60) return '#ffd57e';
-    return '#ff8c7e';
-  }
-
-  function escapeHtml(str) {
-    return String(str)
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;')
-      .replaceAll('"', '&quot;')
-      .replaceAll("'", '&#39;');
-  }
-
-  function normalizeText(value) {
-    return String(value || '').trim();
-  }
-
-  function normalizeLower(value) {
-    return normalizeText(value).toLowerCase();
-  }
-
-  function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  function tokenize(text) {
-    return normalizeLower(text)
-      .replace(/[^a-z0-9\s]/g, ' ')
-      .split(/\s+/)
-      .filter(token => token.length > 2);
-  }
-
-  function getTags(wrapperId) {
-    return Array.from(document.querySelectorAll(`#${wrapperId} .tag`))
-      .map(tag => tag.textContent.replace('×', '').trim().toLowerCase())
-      .filter(Boolean);
-  }
-
-  function getSelectedSources() {
-    return Array.from(document.querySelectorAll('.checkbox-group input[type="checkbox"]:checked'))
-      .map(input => input.value);
-  }
-
-  function normalizeSourceName(value) {
-    const raw = normalizeLower(value);
-    const aliases = {
-      'ycombinator jobs': 'ycombinator',
-      'yc': 'ycombinator',
-      'hacker news': 'hacker news hiring',
-      'hn': 'hacker news hiring',
-      'wwr': 'we work remotely',
-      'wttj': 'welcome to the jungle'
-    };
-    return aliases[raw] || raw;
-  }
-
-  function getUserConfig() {
-    const keywords = getTags('keywords-wrap');
-
-    return {
-      filters: {
-        keywords: keywords.length ? keywords : DEFAULT_BUSINESS_KEYWORDS,
-        exclude: getTags('exclude-wrap'),
-        locations: getTags('location-wrap'),
-        companies: getTags('company-wrap'),
-        sources: getSelectedSources()
-      },
-      weights: {
-        keywords: Number(document.getElementById('weight-keywords')?.value || 40),
-        location: Number(document.getElementById('weight-location')?.value || 20),
-        company: Number(document.getElementById('weight-company')?.value || 15),
-        semantic: Number(document.getElementById('weight-semantic')?.value || 25)
-      },
-      display: {
-        min_score: Number(document.getElementById('score-range')?.value || 15),
-        limit: Number(document.getElementById('max-range')?.value || 50)
+      if (["head", "director", "vp", "chief", "enterprise", "strategic", "global", "lead", "senior"].some(term => title.includes(term))) {
+        return "senior";
       }
-    };
-  }
-
-  function normalizeJob(job) {
-    const breakdown = job.score_breakdown || {};
-    const finalScore = Number(breakdown.final ?? job.score ?? 0);
-
-    return {
-      company: normalizeText(job.company),
-      position: normalizeText(job.position),
-      location: normalizeText(job.location),
-      link: normalizeText(job.link),
-      source: normalizeText(job.source),
-      description: normalizeText(job.description),
-      score_breakdown: {
-        keywords: Number(breakdown.keywords || 0),
-        location: Number(breakdown.location || 0),
-        company: Number(breakdown.company || 0),
-        semantic: Number(breakdown.semantic || 0),
-        final: finalScore
+      if (["associate", "specialist", "representative", "analyst", "coordinator", "assistant", "junior"].some(term => title.includes(term))) {
+        return "junior";
       }
-    };
-  }
+      return "mid";
+    }
 
-  function expandKeywords(keywords) {
-    const expanded = new Set();
+    function normalizeJob(job) {
+      const breakdown = job.score_breakdown || {};
+      return {
+        company: normalizeText(job.company),
+        position: normalizeText(job.position),
+        location: normalizeText(job.location),
+        link: normalizeText(job.link),
+        source: normalizeText(job.source),
+        description: normalizeText(job.description),
+        level: normalizeLower(job.level) || inferLevel(job.position),
+        score_breakdown: {
+          keywords: Number(breakdown.keywords || 0),
+          location: Number(breakdown.location || 0),
+          company: Number(breakdown.company || 0),
+          semantic: Number(breakdown.semantic || 0),
+          final: Number(breakdown.final || job.score || 0)
+        }
+      };
+    }
 
-    (keywords || []).forEach(keyword => {
-      const normalized = normalizeLower(keyword);
+    function createTagInput(containerId) {
+      const container = document.getElementById(containerId);
+      const input = document.createElement("input");
+      input.type = "text";
+      input.className = "tag-input";
+      input.placeholder = "Ajouter puis Entree";
+
+      const tagList = document.createElement("div");
+      tagList.className = "tag-list";
+
+      container.append(tagList, input);
+
+      const defaultTags = (container.dataset.defaultTags || "")
+        .split(",")
+        .map(value => value.trim())
+        .filter(Boolean);
+
+      defaultTags.forEach(tag => addTag(tagList, tag));
+
+      input.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter") return;
+        event.preventDefault();
+        const value = input.value.trim();
+        if (!value) return;
+        addTag(tagList, value);
+        input.value = "";
+      });
+    }
+
+    function addTag(tagList, value) {
+      const normalized = value.trim();
       if (!normalized) return;
 
-      expanded.add(normalized);
+      const exists = Array.from(tagList.querySelectorAll(".tag")).some(
+        tag => tag.dataset.value.toLowerCase() === normalized.toLowerCase()
+      );
+      if (exists) return;
 
-      Object.entries(ROLE_FAMILIES).forEach(([family, terms]) => {
-        if (normalized === family || terms.includes(normalized)) {
-          terms.forEach(term => expanded.add(term));
-        }
+      const tag = document.createElement("button");
+      tag.type = "button";
+      tag.className = "tag";
+      tag.dataset.value = normalized;
+      tag.textContent = normalized;
+      tag.addEventListener("click", () => {
+        tag.remove();
+        refreshVisibleJobs();
       });
-    });
-
-    return [...expanded];
-  }
-
-  function jobBlob(job) {
-    return normalizeLower([
-      job.company,
-      job.position,
-      job.location,
-      job.description
-    ].join(' '));
-  }
-
-  function jobMatchesFilters(job, filters) {
-    const blob = jobBlob(job);
-
-    if (filters.sources.length) {
-      const selectedSources = filters.sources.map(normalizeSourceName);
-      const jobSource = normalizeSourceName(job.source);
-      if (!selectedSources.includes(jobSource)) {
-        return false;
-      }
+      tagList.appendChild(tag);
     }
 
-    if (filters.exclude.some(term => blob.includes(normalizeLower(term)))) {
-      return false;
+    function setTagValues(containerId, values) {
+      const tagList = document.querySelector(`#${containerId} .tag-list`);
+      if (!tagList) return;
+      tagList.innerHTML = "";
+      values.forEach(value => addTag(tagList, value));
     }
 
-    return true;
-  }
-
-  function computeKeywordScore(job, keywords) {
-    const expanded = expandKeywords(keywords);
-    if (!expanded.length) return 0;
-
-    const title = normalizeLower(job.position);
-    const description = normalizeLower(job.description);
-
-    let score = 0;
-
-    if (keywords.some(term => title.includes(normalizeLower(term)))) score = Math.max(score, 90);
-    if (expanded.some(term => title.includes(term))) score = Math.max(score, 75);
-    if (keywords.some(term => description.includes(normalizeLower(term)))) score = Math.max(score, 55);
-    if (expanded.some(term => description.includes(term))) score = Math.max(score, 40);
-
-    const titleHits = expanded.filter(term => title.includes(term)).length;
-    const descHits = expanded.filter(term => description.includes(term)).length;
-
-    score += Math.min(20, titleHits * 4 + descHits * 2);
-
-    return Math.min(100, Math.round(score));
-  }
-
-  function computeLocationScore(job, locations) {
-    if (!locations.length) return 0;
-
-    const jobLocation = normalizeLower(job.location);
-    let best = 0;
-
-    locations.forEach(location => {
-      const loc = normalizeLower(location);
-
-      if (loc === jobLocation) best = Math.max(best, 100);
-      else if (jobLocation.includes(loc)) best = Math.max(best, 80);
-      else if (loc === 'remote' && jobLocation.includes('remote')) best = Math.max(best, 90);
-    });
-
-    return best;
-  }
-
-  function computeCompanyScore(job, companies) {
-    if (!companies.length) return 0;
-
-    const company = normalizeLower(job.company);
-
-    for (const target of companies) {
-      const normalizedTarget = normalizeLower(target);
-      if (company === normalizedTarget) return 100;
-      if (company.includes(normalizedTarget)) return 70;
+    function getTagValues(containerId) {
+      return Array.from(document.querySelectorAll(`#${containerId} .tag`)).map(tag => tag.dataset.value);
     }
 
-    return 0;
-  }
+    function renderSourceOptions() {
+      const container = document.getElementById("source-list");
+      container.innerHTML = "";
 
-  function computeSemanticScore(job, keywords) {
-    const profileText = document.getElementById('ideal-profile')?.value || '';
-    const referenceTokens = new Set([
-      ...tokenize(expandKeywords(keywords).join(' ')),
-      ...tokenize(profileText)
-    ]);
+      ALL_SOURCES.forEach((source) => {
+        const metadata = SOURCE_METADATA[source] || {
+          type: "Source emploi",
+          description: "Source emploi generaliste.",
+          focus: "Utile pour elargir le scan."
+        };
 
-    if (!referenceTokens.size) return 0;
-
-    const jobTokens = new Set(tokenize([
-      job.position,
-      job.description,
-      job.company
-    ].join(' ')));
-
-    if (!jobTokens.size) return 0;
-
-    let overlap = 0;
-    referenceTokens.forEach(token => {
-      if (jobTokens.has(token)) overlap += 1;
-    });
-
-    const denominator = Math.max(6, Math.floor(referenceTokens.size * 0.35));
-    return Math.min(100, Math.round((overlap / denominator) * 100));
-  }
-
-  function computeFinalScore(job, filters, weights) {
-    const keywordScore = computeKeywordScore(job, filters.keywords);
-    const locationScore = computeLocationScore(job, filters.locations);
-    const companyScore = computeCompanyScore(job, filters.companies);
-    const semanticScore = computeSemanticScore(job, filters.keywords);
-
-    const hasProfile = normalizeText(document.getElementById('ideal-profile')?.value || '') !== '';
-
-    const activeParts = [];
-
-    if (filters.keywords.length) {
-      activeParts.push({
-        score: keywordScore,
-        weight: Number(weights.keywords || 0)
-      });
-    }
-
-    if (filters.locations.length && locationScore > 0) {
-      activeParts.push({
-        score: locationScore,
-        weight: Number(weights.location || 0)
-      });
-    }
-
-    if (filters.companies.length && companyScore > 0) {
-      activeParts.push({
-        score: companyScore,
-        weight: Number(weights.company || 0)
-      });
-    }
-
-    if (hasProfile && semanticScore > 0) {
-      activeParts.push({
-        score: semanticScore,
-        weight: Number(weights.semantic || 0)
-      });
-    }
-
-    const totalWeight = activeParts.reduce((sum, item) => sum + item.weight, 0);
-
-    const final = totalWeight
-      ? activeParts.reduce((sum, item) => sum + item.score * item.weight, 0) / totalWeight
-      : keywordScore;
-
-    return {
-      keywords: keywordScore,
-      location: locationScore,
-      company: companyScore,
-      semantic: semanticScore,
-      final: Math.round(final)
-    };
-  }
-
-  function applyClientFiltering(jobs, config) {
-    return jobs
-      .map(normalizeJob)
-      .filter(job => jobMatchesFilters(job, config.filters))
-      .map(job => ({
-        ...job,
-        score_breakdown: computeFinalScore(job, config.filters, config.weights)
-      }))
-      .filter(job => job.score_breakdown.final >= config.display.min_score)
-      .sort((a, b) => b.score_breakdown.final - a.score_breakdown.final)
-      .slice(0, config.display.limit);
-  }
-
-  function renderJobs(jobs, totalCount) {
-    const container = document.getElementById('results-content');
-
-    if (!totalCount) {
-      container.innerHTML = `
-        <div class="results-empty">
-          <span class="empty-icon">🔍</span>
-          <p>Lancez un scan depuis l'onglet Configuration pour voir les résultats ici.</p>
-        </div>
-      `;
-      return;
-    }
-
-    if (!jobs.length) {
-      container.innerHTML = `
-        <div class="results-empty">
-          <span class="empty-icon">📭</span>
-          <p>Aucune offre ne correspond aux filtres actuels.</p>
-          <p style="margin-top:0.5rem;font-size:0.85rem;">${totalCount} offres ont bien été collectées, mais aucune n'est visible avec ce score minimum et ces critères.</p>
-        </div>
-      `;
-      return;
-    }
-
-    let html = `
-      <p class="status-msg" style="color:var(--accent);margin-bottom:0.5rem">
-        ✅ ${jobs.length} offres visibles sur ${totalCount} collectées
-      </p>
-    `;
-
-    jobs.forEach(job => {
-      const score = Number(job.score_breakdown?.final || 0);
-      const href = job.link || '#';
-
-      html += `
-        <a class="job-card" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;">
-          <div class="job-logo">💼</div>
-          <div class="job-info">
-            <div class="job-title">${escapeHtml(job.position || 'Sans titre')}</div>
-            <div class="job-company">${escapeHtml(job.company || 'Entreprise inconnue')}</div>
-            <div class="job-meta">
-              <span class="job-tag">📍 ${escapeHtml(job.location || 'N/A')}</span>
-              <span class="job-tag">🔗 ${escapeHtml(job.source || 'Source inconnue')}</span>
-              <span class="job-tag">KW ${job.score_breakdown.keywords}</span>
-              <span class="job-tag">LOC ${job.score_breakdown.location}</span>
-              <span class="job-tag">ENT ${job.score_breakdown.company}</span>
-              <span class="job-tag">SEM ${job.score_breakdown.semantic}</span>
+        const label = document.createElement("label");
+        label.className = "source-card";
+        label.innerHTML = `
+          <div class="source-card-top">
+            <input class="source-checkbox" type="checkbox" value="${escapeHtml(source)}" checked />
+            <div>
+              <span class="source-card-title">${escapeHtml(source)}</span>
+              <span class="source-card-type">${escapeHtml(metadata.type)}</span>
             </div>
-            ${job.description ? `<div style="font-size:0.82rem;color:var(--muted);margin-top:0.75rem;">${escapeHtml(job.description.slice(0, 220))}${job.description.length > 220 ? '…' : ''}</div>` : ''}
           </div>
-          <div class="job-score" style="color:${scoreColor(score)}">
-            ${score}
-            <span class="score-label">score</span>
-          </div>
-        </a>
-      `;
-    });
+          <p class="source-card-description">${escapeHtml(metadata.description)}</p>
+          <p class="source-card-focus"><strong>Utile pour :</strong> ${escapeHtml(metadata.focus)}</p>
+        `;
+        container.appendChild(label);
+      });
+    }
 
-    container.innerHTML = html;
-  }
+    function getSelectedSources() {
+      return Array.from(document.querySelectorAll(".source-checkbox:checked")).map(checkbox => checkbox.value);
+    }
 
-  function refreshResults() {
-    if (!allJobs.length) return;
-    const config = getUserConfig();
-    const visibleJobs = applyClientFiltering(allJobs, config);
-    renderJobs(visibleJobs, allJobs.length);
-  }
+    function setSelectedSources(values) {
+      const allowed = new Set(values);
+      document.querySelectorAll(".source-checkbox").forEach((checkbox) => {
+        checkbox.checked = allowed.has(checkbox.value);
+      });
+    }
 
-  async function runRealScan() {
-    const btn = document.getElementById('run-btn');
-    const label = document.getElementById('run-label');
-    const container = document.getElementById('results-content');
-    const config = getUserConfig();
+    function getSelectedLevel() {
+      return document.getElementById("level-filter").value;
+    }
 
-    btn.disabled = true;
-    label.textContent = '⏳ Lancement du scan…';
+    function setSelectedLevel(value) {
+      document.getElementById("level-filter").value = value;
+    }
 
-    switchTab('results');
+    function syncRangeLabel(inputId, labelId) {
+      document.getElementById(labelId).textContent = document.getElementById(inputId).value;
+    }
 
-    container.innerHTML = `
-      <p class="status-msg" id="status-msg">Connexion au backend…</p>
-      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-    `;
+    function updateRangeLabel(inputId, labelId) {
+      const input = document.getElementById(inputId);
+      const sync = () => {
+        syncRangeLabel(inputId, labelId);
+        if (inputId === "score-range" || inputId === "max-range") {
+          updateDisplaySummary();
+          refreshVisibleJobs();
+        }
+      };
+      sync();
+      input.addEventListener("input", sync);
+    }
 
-    try {
-      const res = await fetch(`${API_BASE}/scan`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          sources: config.filters.sources,
-          min_score: config.display.min_score,
-          max_jobs: config.display.limit
-        })
+    function setRangeValue(inputId, labelId, value) {
+      const input = document.getElementById(inputId);
+      input.value = value;
+      syncRangeLabel(inputId, labelId);
+    }
+
+    function composeActiveConfig() {
+      const preset = PRESETS[state.activePreset];
+      const focus = FOCUS_PRESETS[state.activeFocus];
+
+      return {
+        keywords: uniqueValues([...preset.keywords, ...focus.keywords]),
+        excludes: uniqueValues([...preset.excludes, ...(focus.excludes || [])]),
+        locations: uniqueValues([...preset.locations, ...(focus.locations || [])]),
+        companies: uniqueValues([...preset.companies, ...focus.companies]),
+        sources: uniqueValues(focus.sources && focus.sources.length ? focus.sources : preset.sources),
+        level: focus.level || preset.level || "all",
+        weights: { ...preset.weights, ...focus.weights },
+        display: { ...preset.display, ...focus.display },
+        presetDescription: preset.description,
+        focusDescription: focus.description
+      };
+    }
+
+    function buildScanPayload() {
+      const selectedLevel = getSelectedLevel();
+
+      return {
+        filters: {
+          keywords: getTagValues("keywords-wrap"),
+          exclude: getTagValues("exclude-wrap"),
+          locations: getTagValues("location-wrap"),
+          levels: selectedLevel === "all" ? ["junior", "mid", "senior"] : [selectedLevel],
+          sources: getSelectedSources(),
+          companies: getTagValues("company-wrap")
+        },
+        weights: {
+          keywords: Number(document.getElementById("weight-keywords").value),
+          location: Number(document.getElementById("weight-location").value),
+          company: Number(document.getElementById("weight-company").value),
+          semantic: 30
+        },
+        display: {
+          limit: 500,
+          min_score: 0
+        }
+      };
+    }
+
+    function updateDisplaySummary() {
+      const limit = document.getElementById("max-range").value;
+      const minScore = document.getElementById("score-range").value;
+      const level = LEVEL_LABELS[getSelectedLevel()] || "tous niveaux";
+      const sources = getSelectedSources().length;
+
+      document.getElementById("display-summary").textContent =
+        `Limite visible: ${limit}, score minimum: ${minScore}, niveau: ${level}, sources cochees: ${sources}`;
+    }
+
+    function applyCurrentConfiguration(statusText) {
+      const config = composeActiveConfig();
+
+      setTagValues("keywords-wrap", config.keywords);
+      setTagValues("exclude-wrap", config.excludes);
+      setTagValues("location-wrap", config.locations);
+      setTagValues("company-wrap", config.companies);
+      setSelectedSources(config.sources);
+      setSelectedLevel(config.level);
+
+      setRangeValue("weight-keywords", "weight-keywords-value", config.weights.keywords);
+      setRangeValue("weight-location", "weight-location-value", config.weights.location);
+      setRangeValue("weight-company", "weight-company-value", config.weights.company);
+      setRangeValue("score-range", "score-range-value", config.display.minScore);
+      setRangeValue("max-range", "max-range-value", config.display.limit);
+
+      document.getElementById("preset-description").textContent = config.presetDescription;
+      document.getElementById("focus-description").textContent = config.focusDescription;
+
+      document.querySelectorAll(".preset-button").forEach((button) => {
+        button.classList.toggle("active", button.dataset.preset === state.activePreset);
       });
 
-      const data = await res.json();
+      document.querySelectorAll(".focus-button").forEach((button) => {
+        button.classList.toggle("active", button.dataset.focus === state.activeFocus);
+      });
 
-      if (!res.ok) {
-        throw new Error(data.error || 'Impossible de lancer le scan');
-      }
-
-      label.textContent = '⏳ Scan en cours…';
-      pollScanStatus();
-    } catch (e) {
-      container.innerHTML = `
-        <div class="results-empty">
-          <span class="empty-icon">❌</span>
-          <p>Erreur : ${escapeHtml(e.message)}</p>
-        </div>
-      `;
-      btn.disabled = false;
-      label.textContent = '🚀 Lancer le scan';
+      updateDisplaySummary();
+      document.getElementById("status-text").textContent = statusText;
+      refreshVisibleJobs();
     }
-  }
 
-  function scanIsFinished(data) {
-    const status = String(data.status || '').toLowerCase();
-    return data.running === false || Number(data.progress || 0) >= 100 || status.includes('termine') || status.includes('terminé');
-  }
+    function applyPreset(name) {
+      if (!PRESETS[name]) return;
+      state.activePreset = name;
+      state.activeFocus = "all";
+      applyCurrentConfiguration("Preset applique. Lance un nouveau scan pour recalculer les resultats avec ce profil.");
+    }
 
-  function pollScanStatus() {
-    const btn = document.getElementById('run-btn');
-    const label = document.getElementById('run-label');
-    const container = document.getElementById('results-content');
+    function applyFocus(name) {
+      if (!FOCUS_PRESETS[name]) return;
+      state.activeFocus = name;
+      applyCurrentConfiguration("Focus sectoriel applique. Lance un nouveau scan si tu veux recalculer le scoring avec cette orientation.");
+    }
 
-    if (pollTimer) clearInterval(pollTimer);
+    function jobBlob(job) {
+      return normalizeLower([job.company, job.position, job.location, job.description, job.level].join(" "));
+    }
 
-    pollTimer = setInterval(async () => {
-      try {
-        const res = await fetch(`${API_BASE}/status`);
-        const data = await res.json();
+    function applyClientFilters(jobs) {
+      const selectedSources = new Set(getSelectedSources());
+      const selectedLevel = getSelectedLevel();
+      const minScore = Number(document.getElementById("score-range").value);
+      const limit = Number(document.getElementById("max-range").value);
+      const excludeTerms = getTagValues("exclude-wrap").map(normalizeLower);
+      const targetCompanies = getTagValues("company-wrap").map(normalizeLower);
 
-        const statusMsg = document.getElementById('status-msg');
-        const progressFill = document.getElementById('progress-fill');
+      return jobs
+        .filter(job => !selectedSources.size || selectedSources.has(job.source))
+        .filter(job => selectedLevel === "all" || job.level === selectedLevel)
+        .filter(job => Number(job.score_breakdown.final || 0) >= minScore)
+        .filter(job => {
+          const blob = jobBlob(job);
+          return !excludeTerms.some(term => term && blob.includes(term));
+        })
+        .filter(job => {
+          if (!targetCompanies.length) return true;
+          const company = normalizeLower(job.company);
+          return targetCompanies.some(target => company.includes(target));
+        })
+        .sort((a, b) => Number(b.score_breakdown.final || 0) - Number(a.score_breakdown.final || 0))
+        .slice(0, limit);
+    }
 
-        if (statusMsg) statusMsg.textContent = data.status || 'Scan en cours…';
-        if (progressFill) progressFill.style.width = `${data.progress || 0}%`;
+    function renderJobs(jobs) {
+      const list = document.getElementById("jobs-list");
+      list.innerHTML = "";
+      document.getElementById("count-text").textContent = `${jobs.length} offre${jobs.length > 1 ? "s" : ""} visible${jobs.length > 1 ? "s" : ""}`;
 
-        if (scanIsFinished(data)) {
-          clearInterval(pollTimer);
-          pollTimer = null;
-
-          if (statusMsg) statusMsg.textContent = 'Chargement des offres…';
-
-          await loadRealJobs();
-
-          btn.disabled = false;
-          label.textContent = '🚀 Lancer le scan';
-        }
-      } catch (e) {
-        clearInterval(pollTimer);
-        pollTimer = null;
-        container.innerHTML = `
-          <div class="results-empty">
-            <span class="empty-icon">❌</span>
-            <p>Erreur pendant le suivi du scan : ${escapeHtml(e.message)}</p>
-          </div>
-        `;
-        btn.disabled = false;
-        label.textContent = '🚀 Lancer le scan';
-      }
-    }, 2000);
-  }
-
-  async function loadRealJobs() {
-    const container = document.getElementById('results-content');
-
-    try {
-      container.innerHTML = `
-        <p class="status-msg">Chargement des offres…</p>
-        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-      `;
-
-      let jobs = [];
-
-      for (let attempt = 0; attempt < 4; attempt++) {
-        const res = await fetch(`${API_BASE}/jobs`);
-        const data = await res.json();
-        jobs = Array.isArray(data.jobs) ? data.jobs.map(normalizeJob) : [];
-
-        if (jobs.length) break;
-        await sleep(1000);
-      }
-
-      allJobs = jobs;
-
-      if (!allJobs.length) {
-        container.innerHTML = `
-          <div class="results-empty">
-            <span class="empty-icon">📭</span>
-            <p>Aucune offre récupérée depuis le backend.</p>
-          </div>
-        `;
+      if (!jobs.length) {
+        const empty = document.createElement("p");
+        empty.className = "empty-state";
+        empty.textContent = "Aucune offre visible pour ces criteres.";
+        list.appendChild(empty);
         return;
       }
 
-      refreshResults();
-    } catch (e) {
-      container.innerHTML = `
-        <div class="results-empty">
-          <span class="empty-icon">❌</span>
-          <p>Impossible de charger les offres : ${escapeHtml(e.message)}</p>
-        </div>
-      `;
-    }
-  }
+      jobs.forEach((job) => {
+        const article = document.createElement("a");
+        article.className = "job-card";
+        article.href = job.link || "#";
+        article.target = "_blank";
+        article.rel = "noreferrer noopener";
 
-  function bindLiveFilters() {
-    [
-      'score-range',
-      'max-range',
-      'weight-keywords',
-      'weight-location',
-      'weight-company',
-      'weight-semantic',
-      'ideal-profile'
-    ].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener('input', refreshResults);
-    });
-
-    document.querySelectorAll('.checkbox-group input[type="checkbox"]').forEach(input => {
-      input.addEventListener('change', refreshResults);
-    });
-
-    loadRealJobs().catch(() => {});
-  }
-
-  document.addEventListener('DOMContentLoaded', bindLiveFilters);
-
-  async function testApiKey() {
-    const key = document.getElementById('anthropic-key').value.trim();
-    const status = document.getElementById('api-status');
-
-    if (!key) {
-      status.textContent = '⚠️ Entrez une clé API.';
-      status.style.color = '#ffd57e';
-      return;
+        article.innerHTML = `
+          <div class="job-top">
+            <div>
+              <p class="source-pill">${escapeHtml(job.source)}</p>
+              <div class="job-title">${escapeHtml(job.position || "Sans titre")}</div>
+              <p class="company-line">${escapeHtml(job.company || "Entreprise inconnue")} • ${escapeHtml(job.location || "N/A")} • ${escapeHtml(job.level || "mid")}</p>
+            </div>
+            <div class="score-box">
+              <strong>${Math.round(Number(job.score_breakdown.final || 0))}</strong>
+              <span>score</span>
+            </div>
+          </div>
+          <p class="job-description">${escapeHtml(job.description || "").slice(0, 240)}${(job.description || "").length > 240 ? "..." : ""}</p>
+          <div class="job-breakdown">
+            <span>Keywords: ${Math.round(Number(job.score_breakdown.keywords || 0))}</span>
+            <span>Location: ${Math.round(Number(job.score_breakdown.location || 0))}</span>
+            <span>Company: ${Math.round(Number(job.score_breakdown.company || 0))}</span>
+            <span>Semantic: ${Math.round(Number(job.score_breakdown.semantic || 0))}</span>
+            <span>Niveau: ${escapeHtml(job.level || "mid")}</span>
+          </div>
+          <div class="job-link">Voir l'offre</div>
+        `;
+        list.appendChild(article);
+      });
     }
 
-    status.textContent = '⏳ Test en cours…';
-    status.style.color = 'var(--muted)';
+    function refreshVisibleJobs() {
+      renderJobs(applyClientFilters(state.allJobs));
+    }
 
-    try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': key,
-          'anthropic-version': '2023-06-01'
-        },
-        body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
-          max_tokens: 10,
-          messages: [{ role: 'user', content: 'Hi' }]
-        })
+    async function loadJobsFromBackend() {
+      try {
+        const response = await fetch(`${API_BASE}/jobs?limit=500&min_score=0`);
+        const data = await response.json();
+        state.allJobs = Array.isArray(data.jobs) ? data.jobs.map(normalizeJob) : [];
+        refreshVisibleJobs();
+      } catch (error) {
+        document.getElementById("status-text").textContent = `Impossible de charger les offres : ${error.message}`;
+      }
+    }
+
+    function scanIsFinished(data) {
+      const status = normalizeLower(data.status);
+      return data.running === false || Number(data.progress || 0) >= 100 || status.includes("termine") || status.includes("terminé");
+    }
+
+    async function pollStatus() {
+      const response = await fetch(`${API_BASE}/status`);
+      const data = await response.json();
+
+      document.getElementById("progress-text").textContent = `${data.progress || 0}%`;
+      document.getElementById("progress-fill").style.width = `${data.progress || 0}%`;
+      document.getElementById("status-text").textContent = data.status || "Scan en cours...";
+      document.getElementById("count-text").textContent = `${data.count || 0} offre${(data.count || 0) > 1 ? "s" : ""}`;
+
+      if (scanIsFinished(data)) {
+        clearInterval(state.poller);
+        state.poller = null;
+        document.getElementById("status-text").textContent = "Chargement des offres...";
+        await loadJobsFromBackend();
+      }
+    }
+
+    async function launchScan() {
+      const selectedSources = getSelectedSources();
+      if (!selectedSources.length) {
+        document.getElementById("status-text").textContent = "Selectionne au moins une source avant de lancer un scan.";
+        return;
+      }
+
+      const payload = buildScanPayload();
+      updateDisplaySummary();
+
+      document.getElementById("status-text").textContent = "Connexion au backend...";
+      document.getElementById("progress-fill").style.width = "0%";
+      document.getElementById("progress-text").textContent = "0%";
+
+      try {
+        const response = await fetch(`${API_BASE}/scan`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        document.getElementById("status-text").textContent = data.message || "Scan demarre";
+
+        if (!response.ok) return;
+
+        if (state.poller) clearInterval(state.poller);
+        await pollStatus();
+        state.poller = setInterval(pollStatus, 1500);
+      } catch (error) {
+        document.getElementById("status-text").textContent = `Erreur reseau : ${error.message}`;
+      }
+    }
+
+    function init() {
+      ["keywords-wrap", "exclude-wrap", "location-wrap", "company-wrap"].forEach(createTagInput);
+      renderSourceOptions();
+
+      updateRangeLabel("weight-keywords", "weight-keywords-value");
+      updateRangeLabel("weight-location", "weight-location-value");
+      updateRangeLabel("weight-company", "weight-company-value");
+      updateRangeLabel("score-range", "score-range-value");
+      updateRangeLabel("max-range", "max-range-value");
+
+      document.getElementById("scan-button").addEventListener("click", launchScan);
+
+      document.querySelectorAll(".preset-button").forEach((button) => {
+        button.addEventListener("click", () => applyPreset(button.dataset.preset));
       });
 
-      if (res.ok) {
-        status.textContent = '✅ Clé valide — connexion réussie !';
-        status.style.color = '#b8ff57';
-      } else {
-        status.textContent = '❌ Clé invalide ou expirée.';
-        status.style.color = '#ff8c7e';
-      }
-    } catch (e) {
-      status.textContent = '❌ Erreur réseau : ' + e.message;
-      status.style.color = '#ff8c7e';
-    }
-  }
-
-  async function analyzeJobWithAI() {
-    const key = document.getElementById('anthropic-key').value.trim();
-    const profile = document.getElementById('ideal-profile').value.trim();
-    const title = document.getElementById('test-job-title').value.trim();
-    const company = document.getElementById('test-job-company').value.trim();
-    const output = document.getElementById('ai-output');
-    const btnLabel = document.getElementById('ai-btn-label');
-
-    if (!profile) {
-      alert("Décrivez d'abord votre profil idéal dans le champ ci-dessus.");
-      return;
-    }
-    if (!title) {
-      alert("Entrez un titre de poste à analyser.");
-      return;
-    }
-
-    output.classList.add('visible');
-    output.innerHTML = '<span style="color:var(--muted)">Analyse en cours<span class="cursor-blink">▌</span></span>';
-    btnLabel.textContent = '⏳ Analyse…';
-
-    const systemPrompt = "Tu es un expert en recrutement et analyse de compatibilité candidat/offre. Tu dois analyser si une offre d'emploi correspond au profil idéal d'un candidat en utilisant la similarité sémantique. Réponds en français, de façon concise et structurée.";
-
-    const userPrompt =
-      'Profil idéal du candidat :\n"' + profile + '"\n\n' +
-      'Offre à analyser :\n' +
-      'Titre : ' + title + (company ? '\nEntreprise : ' + company : '') + '\n\n' +
-      'Analyse en 3 points :\n' +
-      '1. Score de similarité sémantique (0-100) et justification en 1 phrase\n' +
-      "2. Pourquoi ce rôle est (ou n'est pas) pertinent en 2-3 phrases\n" +
-      '3. Verdict : ✅ À postuler / ⚠️ À considérer / ❌ Hors profil';
-
-    if (!key) {
-      await simulateStreaming(output, getDemoAnalysis(title));
-      btnLabel.textContent = '✨ Analyser la similarité avec mon profil';
-      return;
-    }
-
-    try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': key,
-          'anthropic-version': '2023-06-01',
-          'anthropic-beta': 'messages-2023-12-15'
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 400,
-          stream: true,
-          system: systemPrompt,
-          messages: [{ role: 'user', content: userPrompt }]
-        })
+      document.querySelectorAll(".focus-button").forEach((button) => {
+        button.addEventListener("click", () => applyFocus(button.dataset.focus));
       });
 
-      output.innerHTML = '';
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = '';
+      document.getElementById("select-all-sources").addEventListener("click", () => {
+        setSelectedSources(ALL_SOURCES);
+        updateDisplaySummary();
+        refreshVisibleJobs();
+      });
 
-      while (true) {
-        const result = await reader.read();
-        if (result.done) break;
-        buffer += decoder.decode(result.value, { stream: true });
-        const lines = buffer.split('\n');
-        buffer = lines.pop();
+      document.getElementById("clear-all-sources").addEventListener("click", () => {
+        setSelectedSources([]);
+        updateDisplaySummary();
+        refreshVisibleJobs();
+      });
 
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue;
-          const data = line.slice(6);
-          if (data === '[DONE]') continue;
+      document.querySelectorAll(".source-checkbox").forEach((checkbox) => {
+        checkbox.addEventListener("change", () => {
+          updateDisplaySummary();
+          refreshVisibleJobs();
+        });
+      });
 
-          try {
-            const evt = JSON.parse(data);
-            if (evt.type === 'content_block_delta' && evt.delta && evt.delta.text) {
-              output.innerHTML += evt.delta.text
-                .replace(/\n/g, '<br>')
-                .replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--text)">$1</strong>');
-              output.scrollTop = output.scrollHeight;
-            }
-          } catch (err) {}
-        }
-      }
-    } catch (e) {
-      output.innerHTML = `<span style="color:#ff8c7e">Erreur : ${escapeHtml(e.message)}. Vérifiez votre clé API et réessayez.</span>`;
+      document.getElementById("level-filter").addEventListener("change", () => {
+        updateDisplaySummary();
+        refreshVisibleJobs();
+      });
+
+      applyCurrentConfiguration("Configuration chargee. Choisis un preset ou un focus puis lance un scan.");
+      loadJobsFromBackend();
     }
 
-    btnLabel.textContent = '✨ Analyser la similarité avec mon profil';
-  }
-
-  function getDemoAnalysis(title) {
-    return `**Score de similarité sémantique : 78/100**
-Ce rôle partage une forte proximité sémantique avec un profil business au sens large.
-
-**Pourquoi ce rôle est pertinent**
-"${title}" peut couvrir des responsabilités proches de la vente, des partenariats, de la croissance, des opérations ou de la relation client. Même si le titre exact diffère, la nature du poste peut rester très compatible avec un périmètre business.
-
-**Verdict : ✅ À considérer**
-Le titre ne doit pas être le seul critère.
-
-<span style="color:var(--muted);font-size:0.75rem;font-style:italic">Mode démo — ajoutez votre clé API Anthropic pour une analyse réelle en streaming.</span>`;
-  }
-
-  async function simulateStreaming(output, text) {
-    output.innerHTML = '';
-    const words = text.split(' ');
-
-    for (const word of words) {
-      output.innerHTML += word + ' ';
-      output.innerHTML = output.innerHTML
-        .replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--text)">$1</strong>')
-        .replace(/\n/g, '<br>');
-      await sleep(18);
-    }
-  }
-
-  function saveNotion(btn) {
-    const oldText = btn.textContent;
-    btn.textContent = '✅ Configuration sauvegardée !';
-    setTimeout(() => btn.textContent = oldText, 2000);
-  }
-</script>
+    init();
+  </script>
 </body>
 </html>
