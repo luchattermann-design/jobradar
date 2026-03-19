@@ -899,9 +899,6 @@
       <div class="form-group">
         <label>Entreprises à favoriser</label>
         <div class="tags-input-wrap" id="company-wrap" onclick="document.getElementById('company-input').focus()">
-          <span class="tag">hubspot <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">salesforce <button type="button" onclick="removeTag(this)">×</button></span>
-          <span class="tag">stripe <button type="button" onclick="removeTag(this)">×</button></span>
           <input class="tags-input" id="company-input" placeholder="Ajouter une entreprise…" onkeydown="addTag(event, 'company-wrap')">
         </div>
       </div>
@@ -911,8 +908,8 @@
         <div class="form-group">
           <label>Score minimum</label>
           <div class="slider-row">
-            <input id="score-range" type="range" min="0" max="100" value="35" oninput="document.getElementById('score-val').textContent=this.value; refreshResults()">
-            <span class="slider-val" id="score-val">35</span>
+            <input id="score-range" type="range" min="0" max="100" value="15" oninput="document.getElementById('score-val').textContent=this.value; refreshResults()">
+            <span class="slider-val" id="score-val">15</span>
           </div>
         </div>
         <div class="form-group">
@@ -1137,7 +1134,7 @@
   <p>Open source — construit avec ❤️ pour les chercheurs d'emploi</p>
 </footer>
 
- <script>
+<script>
   const API_BASE = "https://jobradar-backend-2.onrender.com";
 
   const TAB_NAMES = ['config', 'ai', 'results', 'notion'];
@@ -1382,7 +1379,7 @@
         semantic: Number(document.getElementById('weight-semantic')?.value || 25)
       },
       display: {
-        min_score: Number(document.getElementById('score-range')?.value || 35),
+        min_score: Number(document.getElementById('score-range')?.value || 15),
         limit: Number(document.getElementById('max-range')?.value || 50)
       }
     };
@@ -1462,17 +1459,19 @@
     const title = normalizeLower(job.position);
     const description = normalizeLower(job.description);
 
-    let points = 0;
+    let score = 0;
 
-    expanded.forEach(term => {
-      if (title.includes(term)) {
-        points += 2;
-      } else if (description.includes(term)) {
-        points += 1;
-      }
-    });
+    if (keywords.some(term => title.includes(normalizeLower(term)))) score = Math.max(score, 90);
+    if (expanded.some(term => title.includes(term))) score = Math.max(score, 75);
+    if (keywords.some(term => description.includes(normalizeLower(term)))) score = Math.max(score, 55);
+    if (expanded.some(term => description.includes(term))) score = Math.max(score, 40);
 
-    return Math.min(100, Math.round((points / (expanded.length * 2)) * 100));
+    const titleHits = expanded.filter(term => title.includes(term)).length;
+    const descHits = expanded.filter(term => description.includes(term)).length;
+
+    score += Math.min(20, titleHits * 4 + descHits * 2);
+
+    return Math.min(100, Math.round(score));
   }
 
   function computeLocationScore(job, locations) {
@@ -1538,19 +1537,43 @@
     const companyScore = computeCompanyScore(job, filters.companies);
     const semanticScore = computeSemanticScore(job, filters.keywords);
 
-    const wk = Number(weights.keywords || 0);
-    const wl = Number(weights.location || 0);
-    const wc = Number(weights.company || 0);
-    const ws = Number(weights.semantic || 0);
+    const hasProfile = normalizeText(document.getElementById('ideal-profile')?.value || '') !== '';
 
-    const totalWeight = Math.max(1, wk + wl + wc + ws);
+    const activeParts = [];
 
-    const final = (
-      keywordScore * wk +
-      locationScore * wl +
-      companyScore * wc +
-      semanticScore * ws
-    ) / totalWeight;
+    if (filters.keywords.length) {
+      activeParts.push({
+        score: keywordScore,
+        weight: Number(weights.keywords || 0)
+      });
+    }
+
+    if (filters.locations.length && locationScore > 0) {
+      activeParts.push({
+        score: locationScore,
+        weight: Number(weights.location || 0)
+      });
+    }
+
+    if (filters.companies.length && companyScore > 0) {
+      activeParts.push({
+        score: companyScore,
+        weight: Number(weights.company || 0)
+      });
+    }
+
+    if (hasProfile && semanticScore > 0) {
+      activeParts.push({
+        score: semanticScore,
+        weight: Number(weights.semantic || 0)
+      });
+    }
+
+    const totalWeight = activeParts.reduce((sum, item) => sum + item.weight, 0);
+
+    const final = totalWeight
+      ? activeParts.reduce((sum, item) => sum + item.score * item.weight, 0) / totalWeight
+      : keywordScore;
 
     return {
       keywords: keywordScore,
