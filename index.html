@@ -1137,7 +1137,7 @@
   <p>Open source — construit avec ❤️ pour les chercheurs d'emploi</p>
 </footer>
 
-<script>
+ <script>
   const API_BASE = "https://jobradar-backend-2.onrender.com";
 
   const TAB_NAMES = ['config', 'ai', 'results', 'notion'];
@@ -1264,19 +1264,6 @@
     ]
   };
 
-  function SOURCE_ALIASES(value) {
-    const raw = String(value || '').trim().toLowerCase();
-    const aliases = {
-      'ycombinator jobs': 'ycombinator',
-      'yc': 'ycombinator',
-      'hacker news': 'hacker news hiring',
-      'hn': 'hacker news hiring',
-      'wwr': 'we work remotely',
-      'wttj': 'welcome to the jungle'
-    };
-    return aliases[raw] || raw;
-  }
-
   function switchTab(name) {
     document.querySelectorAll('.tab-btn').forEach((b, i) => {
       b.classList.toggle('active', TAB_NAMES[i] === name);
@@ -1342,6 +1329,10 @@
     return normalizeText(value).toLowerCase();
   }
 
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   function tokenize(text) {
     return normalizeLower(text)
       .replace(/[^a-z0-9\s]/g, ' ')
@@ -1358,6 +1349,19 @@
   function getSelectedSources() {
     return Array.from(document.querySelectorAll('.checkbox-group input[type="checkbox"]:checked'))
       .map(input => input.value);
+  }
+
+  function normalizeSourceName(value) {
+    const raw = normalizeLower(value);
+    const aliases = {
+      'ycombinator jobs': 'ycombinator',
+      'yc': 'ycombinator',
+      'hacker news': 'hacker news hiring',
+      'hn': 'hacker news hiring',
+      'wwr': 'we work remotely',
+      'wttj': 'welcome to the jungle'
+    };
+    return aliases[raw] || raw;
   }
 
   function getUserConfig() {
@@ -1437,12 +1441,14 @@
     const blob = jobBlob(job);
 
     if (filters.sources.length) {
-      const selected = filters.sources.map(SOURCE_ALIASES);
-      const source = SOURCE_ALIASES(job.source);
-      if (!selected.includes(source)) return false;
+      const selectedSources = filters.sources.map(normalizeSourceName);
+      const jobSource = normalizeSourceName(job.source);
+      if (!selectedSources.includes(jobSource)) {
+        return false;
+      }
     }
 
-    if (filters.exclude.some(term => blob.includes(term))) {
+    if (filters.exclude.some(term => blob.includes(normalizeLower(term)))) {
       return false;
     }
 
@@ -1683,6 +1689,11 @@
     }
   }
 
+  function scanIsFinished(data) {
+    const status = String(data.status || '').toLowerCase();
+    return data.running === false || Number(data.progress || 0) >= 100 || status.includes('termine') || status.includes('terminé');
+  }
+
   function pollScanStatus() {
     const btn = document.getElementById('run-btn');
     const label = document.getElementById('run-label');
@@ -1701,10 +1712,14 @@
         if (statusMsg) statusMsg.textContent = data.status || 'Scan en cours…';
         if (progressFill) progressFill.style.width = `${data.progress || 0}%`;
 
-        if (!data.running) {
+        if (scanIsFinished(data)) {
           clearInterval(pollTimer);
           pollTimer = null;
+
+          if (statusMsg) statusMsg.textContent = 'Chargement des offres…';
+
           await loadRealJobs();
+
           btn.disabled = false;
           label.textContent = '🚀 Lancer le scan';
         }
@@ -1727,10 +1742,34 @@
     const container = document.getElementById('results-content');
 
     try {
-      const res = await fetch(`${API_BASE}/jobs`);
-      const data = await res.json();
+      container.innerHTML = `
+        <p class="status-msg">Chargement des offres…</p>
+        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+      `;
 
-      allJobs = Array.isArray(data.jobs) ? data.jobs.map(normalizeJob) : [];
+      let jobs = [];
+
+      for (let attempt = 0; attempt < 4; attempt++) {
+        const res = await fetch(`${API_BASE}/jobs`);
+        const data = await res.json();
+        jobs = Array.isArray(data.jobs) ? data.jobs.map(normalizeJob) : [];
+
+        if (jobs.length) break;
+        await sleep(1000);
+      }
+
+      allJobs = jobs;
+
+      if (!allJobs.length) {
+        container.innerHTML = `
+          <div class="results-empty">
+            <span class="empty-icon">📭</span>
+            <p>Aucune offre récupérée depuis le backend.</p>
+          </div>
+        `;
+        return;
+      }
+
       refreshResults();
     } catch (e) {
       container.innerHTML = `
@@ -1919,7 +1958,7 @@ Le titre ne doit pas être le seul critère.
       output.innerHTML = output.innerHTML
         .replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--text)">$1</strong>')
         .replace(/\n/g, '<br>');
-      await new Promise(r => setTimeout(r, 18));
+      await sleep(18);
     }
   }
 
