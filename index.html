@@ -1,3 +1,1142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JobRadar — Votre agent emploi automatisé</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #1a1a1a;
+    --border: rgba(255,255,255,0.08);
+    --accent: #b8ff57;
+    --accent2: #7fff00;
+    --text: #f0ede8;
+    --muted: #7a7a72;
+    --muted2: #4a4a44;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 3rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(20px);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--accent);
+    color: #0a0a0a;
+    padding: 0.55rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    font-family: var(--font-body);
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 3rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(ellipse, rgba(184,255,87,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(184,255,87,0.08);
+    border: 1px solid rgba(184,255,87,0.2);
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.35rem 0.9rem;
+    border-radius: 99px;
+    margin-bottom: 2rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    width: fit-content;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(3rem, 7vw, 6.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    max-width: 900px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+    display: block;
+  }
+  .hero-sub {
+    margin-top: 2rem;
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 520px;
+    font-weight: 300;
+    line-height: 1.7;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #0a0a0a;
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 400;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.04); }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .stat-val {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 0.15rem; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .ticker-wrap {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 0.8rem 0;
+    overflow: hidden;
+    background: var(--bg2);
+  }
+  .ticker {
+    display: flex;
+    gap: 3rem;
+    width: max-content;
+    animation: ticker 30s linear infinite;
+  }
+  .ticker-item {
+    font-size: 0.8rem;
+    color: var(--muted);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .ticker-item::before { content: '●'; color: var(--accent); font-size: 0.5rem; }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  section { padding: 6rem 3rem; }
+  .section-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    max-width: 700px;
+  }
+  h2 span { color: var(--accent); }
+
+  .how { background: var(--bg); }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5px;
+    margin-top: 3.5rem;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .step {
+    background: var(--bg2);
+    padding: 2.5rem;
+    transition: background 0.2s;
+  }
+  .step:hover { background: var(--bg3); }
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--muted2);
+    line-height: 1;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.04em;
+  }
+  .step-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+  .step-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+  .step-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: rgba(184,255,87,0.1);
+    border: 1px solid rgba(184,255,87,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .features { background: var(--bg2); }
+  .feat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5px;
+    margin-top: 3.5rem;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .feat-card {
+    background: var(--bg);
+    padding: 2.5rem;
+    transition: background 0.2s;
+    position: relative;
+  }
+  .feat-card:hover { background: var(--bg3); }
+  .feat-card.large { grid-column: span 2; }
+  .feat-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+    display: block;
+  }
+  .feat-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+  .feat-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+  .feat-badge {
+    position: absolute;
+    top: 1.5rem; right: 1.5rem;
+    background: rgba(184,255,87,0.1);
+    border: 1px solid rgba(184,255,87,0.2);
+    color: var(--accent);
+    font-size: 0.72rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 99px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .sources { background: var(--bg); }
+  .sources-intro { color: var(--muted); margin-top: 1rem; max-width: 480px; font-size: 0.95rem; }
+  .sources-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 3rem;
+  }
+  .source-pill {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 0.55rem 1.25rem;
+    border-radius: 99px;
+    font-size: 0.875rem;
+    color: var(--text);
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .source-pill:hover {
+    border-color: rgba(184,255,87,0.3);
+    background: rgba(184,255,87,0.05);
+    color: var(--accent);
+  }
+
+  .app-section { background: var(--bg2); }
+  .app-section h2 { margin-bottom: 0.75rem; }
+  .app-section p { color: var(--muted); margin-bottom: 2.5rem; max-width: 500px; font-size: 0.95rem; }
+
+  .config-app {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    max-width: 860px;
+  }
+  .app-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .tab-btn {
+    padding: 1rem 1.5rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab-btn.active { color: var(--text); border-bottom-color: var(--accent); }
+  .tab-btn:hover:not(.active) { color: var(--text); }
+  .tab-panel { display: none; padding: 2rem; }
+  .tab-panel.active { display: block; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+  .form-group label { font-size: 0.8rem; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+  .form-group input, .form-group select, .form-group textarea {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    font-family: var(--font-body);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: rgba(184,255,87,0.4);
+  }
+  .form-group input::placeholder { color: var(--muted2); }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  select option { background: #1a1a1a; }
+
+  .tags-input-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    min-height: 46px;
+    align-items: center;
+    cursor: text;
+    transition: border-color 0.2s;
+  }
+  .tags-input-wrap:focus-within { border-color: rgba(184,255,87,0.4); }
+  .tag {
+    background: rgba(184,255,87,0.12);
+    border: 1px solid rgba(184,255,87,0.25);
+    color: var(--accent);
+    font-size: 0.78rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 99px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .tag button { background: none; border: none; color: inherit; cursor: pointer; font-size: 0.9rem; line-height: 1; padding: 0; opacity: 0.6; }
+  .tag button:hover { opacity: 1; }
+  .tags-input {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-family: var(--font-body);
+    flex: 1;
+    min-width: 120px;
+    padding: 0.2rem 0.4rem;
+  }
+  .tags-input::placeholder { color: var(--muted2); }
+
+  .slider-row { display: flex; align-items: center; gap: 1rem; }
+  .slider-row input[type=range] {
+    flex: 1;
+    accent-color: var(--accent);
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  .slider-val {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1rem;
+    min-width: 40px;
+    text-align: right;
+  }
+
+  .form-section-title {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.25rem;
+    margin-top: 1.75rem;
+  }
+  .form-section-title:first-child { margin-top: 0; }
+
+  .checkbox-group { display: flex; flex-direction: column; gap: 0.5rem; }
+  .checkbox-item { display: flex; align-items: center; gap: 0.65rem; cursor: pointer; font-size: 0.9rem; color: var(--text); }
+  .checkbox-item input[type=checkbox] { accent-color: var(--accent); width: 15px; height: 15px; }
+
+  .run-btn, .ai-analyze-btn {
+    width: 100%;
+    background: var(--accent);
+    color: #0a0a0a;
+    border: none;
+    border-radius: 8px;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: var(--font-body);
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .run-btn:hover, .ai-analyze-btn:hover { background: var(--accent2); transform: translateY(-1px); }
+  .run-btn:active, .ai-analyze-btn:active { transform: translateY(0); }
+  .run-btn:disabled, .ai-analyze-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+  .results-empty {
+    text-align: center;
+    padding: 3rem;
+    color: var(--muted);
+  }
+  .results-empty .empty-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+
+  .job-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s;
+    cursor: pointer;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .job-card:hover { border-color: rgba(184,255,87,0.25); background: var(--bg3); }
+  .job-logo {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+  .job-info { flex: 1; }
+  .job-title { font-weight: 500; font-size: 0.95rem; margin-bottom: 0.2rem; }
+  .job-company { font-size: 0.82rem; color: var(--muted); }
+  .job-meta { display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap; }
+  .job-tag {
+    font-size: 0.72rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 99px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .job-score {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .score-label { font-size: 0.65rem; color: var(--muted); text-align: center; font-weight: 400; display: block; }
+
+  .progress-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 99px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 99px;
+    width: 0%;
+    transition: width 0.3s;
+  }
+  .status-msg { font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem; }
+
+  .faq { background: var(--bg); }
+  .faq-list { max-width: 700px; margin-top: 3rem; }
+  .faq-item { border-bottom: 1px solid var(--border); }
+  .faq-q {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 1.25rem 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .faq-q:hover { color: var(--accent); }
+  .faq-icon { font-size: 1.2rem; transition: transform 0.3s; flex-shrink: 0; color: var(--muted); }
+  .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--accent); }
+  .faq-a {
+    font-size: 0.9rem;
+    color: var(--muted);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s;
+    line-height: 1.7;
+  }
+  .faq-item.open .faq-a { max-height: 240px; padding-bottom: 1.25rem; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg2);
+  }
+  .footer-logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--text);
+  }
+  .footer-logo span { color: var(--accent); }
+  footer p { font-size: 0.8rem; color: var(--muted); }
+
+  .ai-badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: rgba(127,119,221,0.12);
+    border: 1px solid rgba(127,119,221,0.25);
+    color: #AFA9EC;
+    font-size: 0.72rem; font-weight: 500;
+    padding: 0.25rem 0.65rem; border-radius: 99px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .ai-badge::before { content:''; width:5px; height:5px; background:#AFA9EC; border-radius:50%; animation: pulse 2s infinite; }
+  .profile-textarea {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text);
+    padding: 1rem; font-size: 0.9rem; font-family: var(--font-body);
+    outline: none; resize: vertical; min-height: 110px; width: 100%;
+    line-height: 1.6; transition: border-color 0.2s;
+  }
+  .profile-textarea:focus { border-color: rgba(127,119,221,0.5); }
+  .profile-textarea::placeholder { color: var(--muted2); font-style: italic; }
+  .ai-info-box {
+    background: rgba(127,119,221,0.06);
+    border: 1px solid rgba(127,119,221,0.15);
+    border-radius: 8px; padding: 1rem; margin: 1rem 0;
+    font-size: 0.82rem; color: var(--muted); line-height: 1.6;
+  }
+  .ai-info-box strong { color: #AFA9EC; }
+  .api-key-row { display: flex; gap: 0.5rem; align-items: center; }
+  .api-key-row input { flex: 1; }
+  .test-btn {
+    background: rgba(127,119,221,0.15); border: 1px solid rgba(127,119,221,0.3);
+    color: #AFA9EC; padding: 0.7rem 1rem; border-radius: 8px;
+    font-size: 0.82rem; font-family: var(--font-body); cursor: pointer;
+    white-space: nowrap; transition: all 0.2s;
+  }
+  .test-btn:hover { background: rgba(127,119,221,0.25); }
+  .streaming-output {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 1rem; margin-top: 1rem; font-size: 0.85rem; color: var(--muted);
+    min-height: 60px; line-height: 1.7; display: none;
+    font-family: monospace;
+  }
+  .streaming-output.visible { display: block; }
+  .cursor-blink { animation: blink 1s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .hero { padding: 7rem 1.5rem 4rem; }
+    .hero-stats { gap: 2rem; flex-wrap: wrap; }
+    .feat-grid { grid-template-columns: 1fr; }
+    .feat-card.large { grid-column: span 1; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .steps { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Job<span>Radar</span></a>
+  <ul class="nav-links">
+    <li><a href="#how">Comment ça marche</a></li>
+    <li><a href="#features">Fonctionnalités</a></li>
+    <li><a href="#app">Démo</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="#app" class="nav-cta">Essayer gratuitement →</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-tag">Agent IA de recherche d'emploi</div>
+  <h1>Trouvez votre<em>job idéal.</em>Automatiquement.</h1>
+  <p class="hero-sub">JobRadar scanne des dizaines de plateformes d'offres d'emploi, score chaque poste selon vos critères, et affiche les meilleurs directement dans votre interface.</p>
+  <div class="hero-actions">
+    <a href="#app" class="btn-primary">Configurer mon agent →</a>
+    <a href="#how" class="btn-secondary">Voir comment ça marche</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-val">9+</div>
+      <div class="stat-label">Sources scannées</div>
+    </div>
+    <div>
+      <div class="stat-val">100%</div>
+      <div class="stat-label">Automatisé</div>
+    </div>
+    <div>
+      <div class="stat-val">0€</div>
+      <div class="stat-label">Open source</div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">Greenhouse</span>
+    <span class="ticker-item">Lever</span>
+    <span class="ticker-item">Welcome to the Jungle</span>
+    <span class="ticker-item">RemoteOK</span>
+    <span class="ticker-item">Ashby</span>
+    <span class="ticker-item">YCombinator Jobs</span>
+    <span class="ticker-item">Himalayas</span>
+    <span class="ticker-item">We Work Remotely</span>
+    <span class="ticker-item">Hacker News</span>
+    <span class="ticker-item">Greenhouse</span>
+    <span class="ticker-item">Lever</span>
+    <span class="ticker-item">Welcome to the Jungle</span>
+    <span class="ticker-item">RemoteOK</span>
+    <span class="ticker-item">Ashby</span>
+    <span class="ticker-item">YCombinator Jobs</span>
+    <span class="ticker-item">Himalayas</span>
+    <span class="ticker-item">We Work Remotely</span>
+    <span class="ticker-item">Hacker News</span>
+  </div>
+</div>
+
+<section class="how" id="how">
+  <div class="section-label">Processus</div>
+  <h2>Simple comme <span>4 étapes</span></h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-icon">🎯</div>
+      <div class="step-num">01</div>
+      <div class="step-title">Définissez vos critères</div>
+      <div class="step-desc">Titres de postes, localisations, entreprises cibles, mots-clés à exclure. Vous configurez votre recherche selon vos priorités.</div>
+    </div>
+    <div class="step">
+      <div class="step-icon">🤖</div>
+      <div class="step-num">02</div>
+      <div class="step-title">L'agent scanne tout</div>
+      <div class="step-desc">JobRadar parcourt les plateformes, récupère les offres et applique un scoring selon vos préférences.</div>
+    </div>
+    <div class="step">
+      <div class="step-icon">📊</div>
+      <div class="step-num">03</div>
+      <div class="step-title">Les offres sont triées</div>
+      <div class="step-desc">Les résultats sont filtrés, dédoublonnés et classés par score pour vous montrer les plus pertinentes.</div>
+    </div>
+    <div class="step">
+      <div class="step-icon">✨</div>
+      <div class="step-num">04</div>
+      <div class="step-title">Vous postulez en focus</div>
+      <div class="step-desc">Plus de scroll infini. Vous avez une liste triée des meilleures opportunités à consulter directement.</div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="section-label">Fonctionnalités</div>
+  <h2>Tout ce dont vous avez <span>besoin</span></h2>
+  <div class="feat-grid">
+    <div class="feat-card large">
+      <span class="feat-icon">✨</span>
+      <div class="feat-title">Recherche sémantique IA</div>
+      <div class="feat-desc">Décrivez votre job idéal en prose naturelle. L'IA peut vous aider à repérer des rôles proches sémantiquement, même si le titre exact n'apparaît pas dans vos mots-clés.</div>
+      <span class="feat-badge">Nouveau</span>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🎯</span>
+      <div class="feat-title">Scoring intelligent</div>
+      <div class="feat-desc">Score basé sur les mots-clés, la localisation, le niveau de seniorité et la pertinence du poste.</div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🔄</span>
+      <div class="feat-title">Anti-doublons</div>
+      <div class="feat-desc">Les résultats sont dédoublonnés à partir du lien pour éviter les répétitions inutiles.</div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">📡</span>
+      <div class="feat-title">Backend connecté</div>
+      <div class="feat-desc">Le site est connecté à un backend en ligne qui lance le scan réel et renvoie les vraies offres.</div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🗂️</span>
+      <div class="feat-title">Évolutif</div>
+      <div class="feat-desc">La base est prête pour intégrer ensuite Notion, email récapitulatif ou automatisation quotidienne.</div>
+    </div>
+  </div>
+</section>
+
+<section class="sources">
+  <div class="section-label">Couverture</div>
+  <h2>Plusieurs plateformes <span>couvertes</span></h2>
+  <p class="sources-intro">JobRadar interroge plusieurs sources d’offres pour trouver les opportunités les plus pertinentes selon vos critères.</p>
+  <div class="sources-grid">
+    <div class="source-pill">🟢 Greenhouse</div>
+    <div class="source-pill">⚡ Lever</div>
+    <div class="source-pill">🌿 Welcome to the Jungle</div>
+    <div class="source-pill">🌍 RemoteOK</div>
+    <div class="source-pill">🔷 Ashby</div>
+    <div class="source-pill">🚀 YCombinator Jobs</div>
+    <div class="source-pill">🏔️ Himalayas</div>
+    <div class="source-pill">🧑‍💻 We Work Remotely</div>
+    <div class="source-pill">📰 Hacker News</div>
+  </div>
+</section>
+
+<section class="app-section" id="app">
+  <div class="section-label">Interface</div>
+  <h2>Configurez votre <span>agent</span></h2>
+  <p>Définissez vos critères de recherche ci-dessous. Aucune ligne de code requise.</p>
+
+  <div class="config-app">
+    <div class="app-tabs">
+      <button class="tab-btn active" onclick="switchTab('config')">⚙️ Configuration</button>
+      <button class="tab-btn" onclick="switchTab('ai')">✨ IA Sémantique</button>
+      <button class="tab-btn" onclick="switchTab('results')">📋 Résultats</button>
+      <button class="tab-btn" onclick="switchTab('notion')">🗂️ Connexion Notion</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-config">
+      <div class="form-section-title">Postes recherchés</div>
+      <div class="form-group">
+        <label>Mots-clés de postes</label>
+        <div class="tags-input-wrap" id="keywords-wrap" onclick="document.getElementById('keyword-input').focus()">
+          <span class="tag">sales <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">account executive <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">account manager <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">business development <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">customer success <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">partnerships <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">revenue operations <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">business operations <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">growth <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">marketing <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">strategy <button type="button" onclick="removeTag(this)">×</button></span>
+          <input class="tags-input" id="keyword-input" placeholder="Ajouter un mot-clé…" onkeydown="addTag(event, 'keywords-wrap')">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Mots à exclure</label>
+        <div class="tags-input-wrap" id="exclude-wrap" onclick="document.getElementById('exclude-input').focus()">
+          <span class="tag">intern <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">internship <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">director <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">vp <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">head of <button type="button" onclick="removeTag(this)">×</button></span>
+          <input class="tags-input" id="exclude-input" placeholder="Ajouter un mot à exclure…" onkeydown="addTag(event, 'exclude-wrap')">
+        </div>
+      </div>
+
+      <div class="form-section-title">Localisation</div>
+      <div class="form-group">
+        <label>Pays / Villes prioritaires</label>
+        <div class="tags-input-wrap" id="location-wrap" onclick="document.getElementById('location-input').focus()">
+          <span class="tag">switzerland <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">barcelona <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">paris <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">london <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">remote <button type="button" onclick="removeTag(this)">×</button></span>
+          <input class="tags-input" id="location-input" placeholder="Ajouter une ville ou un pays…" onkeydown="addTag(event, 'location-wrap')">
+        </div>
+      </div>
+
+      <div class="form-section-title">Entreprises cibles</div>
+      <div class="form-group">
+        <label>Entreprises à favoriser</label>
+        <div class="tags-input-wrap" id="company-wrap" onclick="document.getElementById('company-input').focus()">
+          <span class="tag">hubspot <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">salesforce <button type="button" onclick="removeTag(this)">×</button></span>
+          <span class="tag">stripe <button type="button" onclick="removeTag(this)">×</button></span>
+          <input class="tags-input" id="company-input" placeholder="Ajouter une entreprise…" onkeydown="addTag(event, 'company-wrap')">
+        </div>
+      </div>
+
+      <div class="form-section-title">Affichage</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Score minimum</label>
+          <div class="slider-row">
+            <input id="score-range" type="range" min="0" max="100" value="35" oninput="document.getElementById('score-val').textContent=this.value; refreshResults()">
+            <span class="slider-val" id="score-val">35</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Limite affichée</label>
+          <div class="slider-row">
+            <input id="max-range" type="range" min="5" max="100" value="50" oninput="document.getElementById('max-val').textContent=this.value; refreshResults()">
+            <span class="slider-val" id="max-val">50</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-title">Pondération du score</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Poids mots-clés</label>
+          <div class="slider-row">
+            <input id="weight-keywords" type="range" min="0" max="100" value="40" oninput="document.getElementById('weight-keywords-val').textContent=this.value; refreshResults()">
+            <span class="slider-val" id="weight-keywords-val">40</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Poids localisation</label>
+          <div class="slider-row">
+            <input id="weight-location" type="range" min="0" max="100" value="20" oninput="document.getElementById('weight-location-val').textContent=this.value; refreshResults()">
+            <span class="slider-val" id="weight-location-val">20</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Poids entreprise</label>
+          <div class="slider-row">
+            <input id="weight-company" type="range" min="0" max="100" value="15" oninput="document.getElementById('weight-company-val').textContent=this.value; refreshResults()">
+            <span class="slider-val" id="weight-company-val">15</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Poids sémantique</label>
+          <div class="slider-row">
+            <input id="weight-semantic" type="range" min="0" max="100" value="25" oninput="document.getElementById('weight-semantic-val').textContent=this.value; refreshResults()">
+            <span class="slider-val" id="weight-semantic-val">25</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-title">Sources affichées</div>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox" value="Greenhouse" checked> Greenhouse</label>
+        <label class="checkbox-item"><input type="checkbox" value="Lever" checked> Lever</label>
+        <label class="checkbox-item"><input type="checkbox" value="Welcome to the Jungle" checked> Welcome to the Jungle</label>
+        <label class="checkbox-item"><input type="checkbox" value="RemoteOK" checked> RemoteOK</label>
+        <label class="checkbox-item"><input type="checkbox" value="Ashby" checked> Ashby</label>
+        <label class="checkbox-item"><input type="checkbox" value="YCombinator" checked> YCombinator Jobs</label>
+        <label class="checkbox-item"><input type="checkbox" value="Himalayas" checked> Himalayas</label>
+        <label class="checkbox-item"><input type="checkbox" value="We Work Remotely" checked> We Work Remotely</label>
+        <label class="checkbox-item"><input type="checkbox" value="Hacker News Hiring" checked> Hacker News</label>
+      </div>
+
+      <button id="run-btn" class="run-btn" onclick="runRealScan()">
+        <span id="run-label">🚀 Lancer le scan</span>
+      </button>
+    </div>
+
+    <div class="tab-panel" id="tab-ai">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem;">
+        <div>
+          <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:0.35rem;">Recherche sémantique par IA</div>
+          <div style="font-size:0.85rem;color:var(--muted);">Module de démonstration côté front</div>
+        </div>
+        <span class="ai-badge">IA active</span>
+      </div>
+
+      <div class="form-section-title">Votre profil idéal</div>
+      <div class="form-group">
+        <label>Décrivez votre job idéal en quelques phrases</label>
+        <textarea class="profile-textarea" id="ideal-profile" placeholder="Ex : Je recherche un poste orienté clients dans une entreprise tech ou SaaS, de niveau junior à intermédiaire. J'aime travailler sur l'adoption produit, la fidélisation et le développement commercial. Je suis ouvert aux rôles en anglais ou en français, en Suisse, Allemagne, France ou en remote..."></textarea>
+      </div>
+
+      <div class="ai-info-box">
+        <strong>Comment ça marche ?</strong> Cette partie sert de démo de réflexion sémantique côté front. Elle n'est pas encore reliée à ton backend de scan d'offres.
+      </div>
+
+      <div class="form-section-title">Clé API Anthropic</div>
+      <div class="form-group">
+        <label>Clé API (optionnelle pour la démo)</label>
+        <div class="api-key-row">
+          <input type="password" id="anthropic-key" placeholder="sk-ant-api03-…" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:0.7rem 1rem;font-size:0.9rem;font-family:var(--font-body);outline:none;transition:border-color 0.2s;">
+          <button class="test-btn" type="button" onclick="testApiKey()">Tester la clé</button>
+        </div>
+        <div id="api-status" style="font-size:0.78rem;margin-top:0.4rem;color:var(--muted);"></div>
+      </div>
+
+      <div class="form-section-title">Pondération du score</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Poids score mots-clés</label>
+          <div class="slider-row">
+            <input type="range" min="0" max="100" value="50" id="kw-weight"
+              oninput="document.getElementById('kw-w-val').textContent=this.value+'%'; document.getElementById('sem-weight').value=100-this.value; document.getElementById('sem-w-val').textContent=(100-this.value)+'%'">
+            <span class="slider-val" id="kw-w-val">50%</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Poids score sémantique IA</label>
+          <div class="slider-row">
+            <input type="range" min="0" max="100" value="50" id="sem-weight"
+              oninput="document.getElementById('sem-w-val').textContent=this.value+'%'; document.getElementById('kw-weight').value=100-this.value; document.getElementById('kw-w-val').textContent=(100-this.value)+'%'">
+            <span class="slider-val" id="sem-w-val">50%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-title">Tester l'analyse sémantique</div>
+      <div class="form-group">
+        <label>Titre d'une offre à analyser</label>
+        <input type="text" id="test-job-title" placeholder="Ex : Growth & Partnerships Associate" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:0.7rem 1rem;font-size:0.9rem;font-family:var(--font-body);outline:none;width:100%;">
+      </div>
+      <div class="form-group">
+        <label>Entreprise (optionnel)</label>
+        <input type="text" id="test-job-company" placeholder="Ex : Stripe" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:0.7rem 1rem;font-size:0.9rem;font-family:var(--font-body);outline:none;width:100%;">
+      </div>
+
+      <button class="ai-analyze-btn" type="button" onclick="analyzeJobWithAI()">
+        <span id="ai-btn-label">✨ Analyser la similarité avec mon profil</span>
+      </button>
+
+      <div class="streaming-output" id="ai-output"></div>
+    </div>
+
+    <div class="tab-panel" id="tab-results">
+      <div id="results-content">
+        <div class="results-empty">
+          <span class="empty-icon">🔍</span>
+          <p>Lancez un scan depuis l'onglet Configuration pour voir les résultats ici.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-notion">
+      <div class="form-section-title">Connexion Notion</div>
+      <div class="form-group">
+        <label>Notion Token (Integration Secret)</label>
+        <input type="password" placeholder="secret_xxxxxxxxxxxxxxxxxxxx" id="notion-token">
+      </div>
+      <div class="form-group">
+        <label>Database ID</label>
+        <input type="text" placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" id="database-id">
+      </div>
+      <div class="form-section-title">Email récapitulatif</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Adresse Gmail</label>
+          <input type="email" placeholder="vous@gmail.com">
+        </div>
+        <div class="form-group">
+          <label>Mot de passe application</label>
+          <input type="password" placeholder="xxxx xxxx xxxx xxxx">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Envoyer le récap à</label>
+        <input type="email" placeholder="vous@gmail.com">
+      </div>
+      <div style="background: rgba(184,255,87,0.06); border: 1px solid rgba(184,255,87,0.15); border-radius: 8px; padding: 1rem; margin-top: 0.5rem;">
+        <p style="font-size: 0.82rem; color: var(--muted); line-height: 1.6;">
+          💡 <strong style="color: var(--text);">Comment obtenir un mot de passe d'application Gmail ?</strong><br>
+          Allez dans Compte Google → Sécurité → Validation en 2 étapes → Mots de passe d'application. Créez-en un pour "Messagerie" et copiez les 16 caractères.
+        </p>
+      </div>
+      <button class="run-btn" type="button" onclick="saveNotion(this)">
+        💾 Sauvegarder la configuration
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="section-label">Questions fréquentes</div>
+  <h2>Tout ce que vous <span>voulez savoir</span></h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Dois-je savoir coder pour utiliser JobRadar ?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Non. L'interface web permet de lancer le scan et de consulter les résultats sans écrire de code.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Combien d'offres l'agent trouve-t-il par scan ?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Cela dépend de vos critères. Le backend scanne plusieurs sources, filtre les offres et vous renvoie les résultats les plus pertinents selon le score minimum défini.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Est-ce que toutes les sources sont fiables ?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Les sources basées sur API sont généralement les plus stables. D'autres peuvent évoluer ou limiter les appels selon leur structure.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Mes données sont-elles en sécurité ?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Le site appelle un backend déployé en ligne pour récupérer les offres. Évite de mettre des secrets sensibles directement dans un front public tant que tu n'as pas sécurisé ce flux côté serveur.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Comment automatiser l'exécution quotidienne ?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">La version actuelle lance un scan à la demande depuis l'interface. L'automatisation quotidienne pourra être ajoutée ensuite côté backend ou via un scheduler externe.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Job<span>Radar</span></div>
+  <p>Open source — construit avec ❤️ pour les chercheurs d'emploi</p>
+</footer>
+
 <script>
   const API_BASE = "https://jobradar-backend-2.onrender.com";
 
@@ -124,6 +1263,19 @@
       "go to market strategy"
     ]
   };
+
+  function SOURCE_ALIASES(value) {
+    const raw = String(value || '').trim().toLowerCase();
+    const aliases = {
+      'ycombinator jobs': 'ycombinator',
+      'yc': 'ycombinator',
+      'hacker news': 'hacker news hiring',
+      'hn': 'hacker news hiring',
+      'wwr': 'we work remotely',
+      'wttj': 'welcome to the jungle'
+    };
+    return aliases[raw] || raw;
+  }
 
   function switchTab(name) {
     document.querySelectorAll('.tab-btn').forEach((b, i) => {
@@ -284,8 +1436,10 @@
   function jobMatchesFilters(job, filters) {
     const blob = jobBlob(job);
 
-    if (filters.sources.length && !filters.sources.includes(job.source)) {
-      return false;
+    if (filters.sources.length) {
+      const selected = filters.sources.map(SOURCE_ALIASES);
+      const source = SOURCE_ALIASES(job.source);
+      if (!selected.includes(source)) return false;
     }
 
     if (filters.exclude.some(term => blob.includes(term))) {
@@ -673,20 +1827,16 @@
     output.innerHTML = '<span style="color:var(--muted)">Analyse en cours<span class="cursor-blink">▌</span></span>';
     btnLabel.textContent = '⏳ Analyse…';
 
-    const systemPrompt = `Tu es un expert en recrutement et analyse de compatibilité candidat/offre. 
-Tu dois analyser si une offre d'emploi correspond au profil idéal d'un candidat en utilisant la similarité sémantique.
-Réponds en français, de façon concise et structurée.`;
+    const systemPrompt = "Tu es un expert en recrutement et analyse de compatibilité candidat/offre. Tu dois analyser si une offre d'emploi correspond au profil idéal d'un candidat en utilisant la similarité sémantique. Réponds en français, de façon concise et structurée.";
 
-    const userPrompt = `Profil idéal du candidat :
-"${profile}"
-
-Offre à analyser :
-Titre : ${title}${company ? `\nEntreprise : ${company}` : ''}
-
-Analyse en 3 points :
-1. Score de similarité sémantique (0-100) et justification en 1 phrase
-2. Pourquoi ce rôle est (ou n'est pas) pertinent en 2-3 phrases
-3. Verdict : ✅ À postuler / ⚠️ À considérer / ❌ Hors profil`;
+    const userPrompt =
+      'Profil idéal du candidat :\n"' + profile + '"\n\n' +
+      'Offre à analyser :\n' +
+      'Titre : ' + title + (company ? '\nEntreprise : ' + company : '') + '\n\n' +
+      'Analyse en 3 points :\n' +
+      '1. Score de similarité sémantique (0-100) et justification en 1 phrase\n' +
+      "2. Pourquoi ce rôle est (ou n'est pas) pertinent en 2-3 phrases\n" +
+      '3. Verdict : ✅ À postuler / ⚠️ À considérer / ❌ Hors profil';
 
     if (!key) {
       await simulateStreaming(output, getDemoAnalysis(title));
@@ -718,9 +1868,9 @@ Analyse en 3 points :
       let buffer = '';
 
       while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
+        const result = await reader.read();
+        if (result.done) break;
+        buffer += decoder.decode(result.value, { stream: true });
         const lines = buffer.split('\n');
         buffer = lines.pop();
 
@@ -731,13 +1881,13 @@ Analyse en 3 points :
 
           try {
             const evt = JSON.parse(data);
-            if (evt.type === 'content_block_delta' && evt.delta?.text) {
+            if (evt.type === 'content_block_delta' && evt.delta && evt.delta.text) {
               output.innerHTML += evt.delta.text
                 .replace(/\n/g, '<br>')
                 .replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--text)">$1</strong>');
               output.scrollTop = output.scrollHeight;
             }
-          } catch (e) {}
+          } catch (err) {}
         }
       }
     } catch (e) {
@@ -779,3 +1929,5 @@ Le titre ne doit pas être le seul critère.
     setTimeout(() => btn.textContent = oldText, 2000);
   }
 </script>
+</body>
+</html>
