@@ -3,42 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JobRadar - Scan business large</title>
+  <title>JobRadar - Filtres multiples</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #090b10;
-      --bg2: #11141c;
-      --bg3: #171b24;
-      --panel: rgba(17, 20, 28, 0.86);
-      --border: rgba(255,255,255,0.09);
-      --text: #f3efe6;
-      --muted: #9a988f;
-      --muted2: #6b695f;
-      --accent: #b8ff57;
-      --accent2: #8de63a;
-      --secondary: #6ed7ff;
-      --danger: #ff8c7e;
-      --warn: #ffd57e;
+      --bg: #0b0d11;
+      --bg2: #141820;
+      --bg3: #1a202b;
+      --panel: rgba(18, 22, 30, 0.92);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #f2eee7;
+      --muted: #a19a90;
+      --muted2: #7d766d;
+      --accent: #a8ff38;
+      --accent2: #7fe31e;
+      --secondary: #66c7ff;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
       --font-display: "Syne", sans-serif;
       --font-body: "DM Sans", sans-serif;
-      --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
     }
+
+    * { box-sizing: border-box; }
 
     html { scroll-behavior: smooth; }
 
     body {
+      margin: 0;
       min-height: 100vh;
-      background:
-        radial-gradient(circle at top left, rgba(184,255,87,0.07), transparent 25%),
-        radial-gradient(circle at top right, rgba(110,215,255,0.08), transparent 22%),
-        linear-gradient(180deg, #07090d 0%, var(--bg) 100%);
-      color: var(--text);
       font-family: var(--font-body);
-      line-height: 1.6;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(168, 255, 56, 0.10), transparent 25%),
+        radial-gradient(circle at top right, rgba(102, 199, 255, 0.10), transparent 25%),
+        linear-gradient(180deg, #07090d 0%, #0b0d11 100%);
       overflow-x: hidden;
     }
 
@@ -53,19 +51,19 @@
     }
 
     .page-shell {
-      width: min(1360px, calc(100% - 32px));
+      width: min(1380px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 24px 0 56px;
+      padding: 28px 0 56px;
       position: relative;
       z-index: 1;
     }
 
-    nav {
+    .nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding: 10px 0 28px;
+      margin-bottom: 24px;
     }
 
     .nav-logo {
@@ -84,19 +82,18 @@
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 24px;
       align-items: end;
-      margin-bottom: 28px;
-      padding: 12px 0 10px;
+      margin-bottom: 24px;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      color: var(--accent);
       text-transform: uppercase;
       letter-spacing: 0.12em;
       font-size: 0.78rem;
-      margin-bottom: 18px;
+      color: var(--accent);
+      margin: 0 0 14px;
     }
 
     .eyebrow::before {
@@ -105,210 +102,205 @@
       height: 7px;
       border-radius: 50%;
       background: var(--accent);
-      box-shadow: 0 0 18px rgba(184,255,87,0.75);
+      box-shadow: 0 0 18px rgba(168, 255, 56, 0.7);
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.02;
     }
 
     h1 {
       font-family: var(--font-display);
-      font-size: clamp(2.8rem, 7vw, 5.6rem);
-      line-height: 0.95;
+      font-size: clamp(2.7rem, 6vw, 5.2rem);
       letter-spacing: -0.04em;
       max-width: 12ch;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .hero-copy {
-      color: var(--muted);
+      margin: 0;
       max-width: 70ch;
+      color: var(--muted);
       font-size: 1rem;
+      line-height: 1.6;
     }
 
     .primary-button,
-    .secondary-button,
-    .preset-button,
-    .focus-button {
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 12px 14px;
-      font: inherit;
+    .secondary-button {
+      border: 0;
       cursor: pointer;
+      font: inherit;
       transition: 0.2s ease;
     }
 
     .primary-button {
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-      color: #081008;
-      border: 0;
-      box-shadow: var(--shadow);
-      font-weight: 700;
-      padding: 16px 24px;
+      padding: 16px 26px;
       border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      color: #0b1203;
+      font-weight: 700;
+      box-shadow: var(--shadow);
+      white-space: nowrap;
     }
 
     .primary-button:hover { transform: translateY(-1px); }
 
     .secondary-button {
-      background: rgba(255,255,255,0.05);
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
       color: var(--text);
+      border: 1px solid var(--border);
     }
 
-    .secondary-button:hover,
-    .preset-button:hover,
-    .focus-button:hover {
-      border-color: rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.08);
+    .secondary-button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.14);
     }
 
     .layout {
       display: grid;
-      grid-template-columns: minmax(360px, 470px) minmax(0, 1fr);
+      grid-template-columns: minmax(360px, 500px) minmax(0, 1fr);
       gap: 24px;
     }
 
     .panel {
+      padding: 24px;
+      border-radius: 28px;
       background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 28px;
       box-shadow: var(--shadow);
-      backdrop-filter: blur(18px);
-      padding: 24px;
+      backdrop-filter: blur(14px);
     }
 
     .panel h2 {
       font-family: var(--font-display);
-      font-size: 1.7rem;
+      font-size: 1.8rem;
       letter-spacing: -0.03em;
       margin-bottom: 18px;
     }
 
     .group + .group { margin-top: 24px; }
 
-    .group h3 {
+    .group-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .group-title h3 {
       font-family: var(--font-display);
-      font-size: 1.02rem;
-      margin-bottom: 8px;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
     }
 
-    .helper,
-    .preset-copy,
-    .sources-copy,
-    .status-note,
-    .empty-state,
-    .job-meta,
-    .job-description,
-    .company-line,
-    #status-text,
-    #count-text,
-    #display-summary {
+    .helper {
+      margin: 0 0 12px;
       color: var(--muted);
-    }
-
-    .preset-copy,
-    .sources-copy {
-      margin-bottom: 12px;
       font-size: 0.92rem;
+      line-height: 1.5;
     }
 
-    .preset-grid,
-    .focus-grid {
+    .mini-note {
+      margin: 8px 0 0;
+      color: var(--muted2);
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    .choice-grid {
       display: grid;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .preset-grid {
       grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 10px;
     }
 
-    .focus-grid {
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    }
-
-    .preset-button,
-    .focus-button {
-      background: rgba(255,255,255,0.06);
-      color: var(--text);
-      text-align: left;
-    }
-
-    .preset-button.active {
-      background: linear-gradient(135deg, #20473f 0%, #2c7a6d 100%);
-      color: #f7fff9;
-      border-color: transparent;
-    }
-
-    .focus-button.active {
-      background: linear-gradient(135deg, #5e4b1f 0%, #8a6c28 100%);
-      color: #fffaf0;
-      border-color: transparent;
-    }
-
-    label {
-      display: block;
-      margin: 16px 0 8px;
-      font-size: 0.94rem;
-    }
-
-    .tags-wrap,
-    .select-input {
-      width: 100%;
+    .choice-card {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px 14px;
       border: 1px solid var(--border);
-      background: var(--bg2);
       border-radius: 18px;
+      background: var(--bg2);
+      cursor: pointer;
+      min-height: 64px;
     }
 
-    .tags-wrap {
-      padding: 12px;
-      min-height: 54px;
+    .choice-card input {
+      margin-top: 3px;
+      accent-color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .choice-card span {
+      font-size: 0.93rem;
+      line-height: 1.35;
+      color: var(--text);
+    }
+
+    .tag-wrap {
+      padding: 14px;
+      border-radius: 18px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      min-height: 62px;
     }
 
     .tag-list {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .tag {
       border: 0;
       border-radius: 999px;
-      padding: 7px 12px;
-      background: rgba(184,255,87,0.12);
+      padding: 8px 12px;
+      background: rgba(168, 255, 56, 0.12);
       color: var(--accent);
       cursor: pointer;
       font: inherit;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
     }
 
     .tag-input {
       width: 100%;
-      background: transparent;
       border: 0;
       outline: none;
+      background: transparent;
       color: var(--text);
       font: inherit;
-      padding: 4px 2px;
+      padding: 6px 0 2px;
     }
 
     .tag-input::placeholder { color: var(--muted2); }
 
-    .select-input {
-      color: var(--text);
+    .toggle-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .toggle-card {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
       padding: 12px 14px;
-      outline: none;
-      font: inherit;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--bg2);
+      cursor: pointer;
+      color: var(--text);
+      font-size: 0.92rem;
     }
 
-    .slider-line {
-      margin-top: 14px;
-    }
-
-    .slider-line label {
-      margin: 0 0 6px;
-    }
-
-    input[type="range"] {
-      width: 100%;
+    .toggle-card input {
       accent-color: var(--accent);
     }
 
@@ -319,9 +311,9 @@
       margin-bottom: 12px;
     }
 
-    .checkbox-grid {
+    .source-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 12px;
     }
 
@@ -330,20 +322,21 @@
       flex-direction: column;
       gap: 10px;
       padding: 14px;
-      border: 1px solid var(--border);
       border-radius: 18px;
+      border: 1px solid var(--border);
       background: var(--bg2);
-      min-height: 190px;
+      min-height: 206px;
+      cursor: pointer;
     }
 
     .source-card-top {
       display: flex;
-      gap: 10px;
       align-items: flex-start;
+      gap: 10px;
     }
 
-    .source-checkbox {
-      margin-top: 4px;
+    .source-card-top input {
+      margin-top: 3px;
       accent-color: var(--accent);
     }
 
@@ -358,32 +351,49 @@
       margin-top: 5px;
       padding: 4px 8px;
       border-radius: 999px;
-      background: rgba(110,215,255,0.12);
-      color: var(--secondary);
       font-size: 0.76rem;
+      color: var(--secondary);
+      background: rgba(102, 199, 255, 0.12);
     }
 
     .source-card-description,
     .source-card-focus {
-      font-size: 0.88rem;
+      margin: 0;
       color: var(--muted);
+      font-size: 0.88rem;
       line-height: 1.45;
     }
 
     .source-card-focus strong { color: var(--text); }
 
+    .range-row + .range-row { margin-top: 14px; }
+
+    .range-row label {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 6px;
+      font-size: 0.94rem;
+      color: var(--text);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
     .status-card {
-      border: 1px solid var(--border);
+      padding: 18px;
       border-radius: 22px;
       background: var(--bg2);
-      padding: 18px;
-      margin-bottom: 18px;
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
     }
 
     .status-line,
-    .results-header,
+    .results-top,
     .job-top,
-    .job-breakdown {
+    .job-tags {
       display: flex;
       justify-content: space-between;
       gap: 16px;
@@ -393,8 +403,8 @@
       width: 100%;
       height: 12px;
       border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
       overflow: hidden;
-      background: rgba(255,255,255,0.08);
       margin: 12px 0;
     }
 
@@ -406,10 +416,19 @@
       transition: width 0.25s ease;
     }
 
+    #status-text,
+    #count-text,
+    #display-summary,
+    .empty-state,
+    .job-meta,
+    .job-description {
+      color: var(--muted);
+    }
+
     .jobs-list {
       display: grid;
       gap: 14px;
-      margin-top: 16px;
+      margin-top: 18px;
     }
 
     .job-card {
@@ -425,34 +444,55 @@
 
     .job-card:hover {
       transform: translateY(-1px);
-      border-color: rgba(184,255,87,0.25);
       background: var(--bg3);
-    }
-
-    .source-pill {
-      display: inline-block;
-      margin-bottom: 8px;
-      padding: 5px 9px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      background: rgba(184,255,87,0.12);
-      color: var(--accent);
+      border-color: rgba(168, 255, 56, 0.22);
     }
 
     .job-title {
-      font-size: 1.08rem;
+      font-size: 1.06rem;
       font-weight: 700;
+      color: var(--text);
       margin-bottom: 4px;
     }
 
+    .job-meta {
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .job-description {
+      margin: 0 0 12px;
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      background: rgba(168, 255, 56, 0.12);
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .job-tags {
+      flex-wrap: wrap;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
     .score-box {
-      min-width: 90px;
+      min-width: 88px;
       text-align: center;
       padding: 12px;
       border-radius: 18px;
-      color: #fff;
-      background: linear-gradient(135deg, #20473f 0%, #2c7a6d 100%);
+      color: #091006;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
       flex-shrink: 0;
+      font-weight: 700;
     }
 
     .score-box strong {
@@ -462,66 +502,64 @@
       margin-bottom: 4px;
     }
 
-    .job-meta {
-      font-size: 0.88rem;
-      margin-bottom: 12px;
-    }
-
-    .job-description {
-      font-size: 0.92rem;
-      margin-bottom: 12px;
-    }
-
-    .job-breakdown {
-      flex-wrap: wrap;
-      font-size: 0.84rem;
-      margin-bottom: 12px;
-    }
-
     .job-link {
       color: var(--accent);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
     }
 
     .empty-state {
-      padding: 24px 0;
       text-align: center;
+      padding: 32px 16px;
+      line-height: 1.6;
     }
 
-    footer {
-      padding-top: 26px;
+    .footer-note {
+      margin-top: 18px;
       color: var(--muted2);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       text-align: center;
     }
 
-    @media (max-width: 980px) {
+    @media (max-width: 1024px) {
       .hero,
-      .layout,
-      .status-line,
-      .results-header,
-      .job-top {
+      .layout {
         grid-template-columns: 1fr;
-        display: grid;
       }
 
       h1 { max-width: none; }
+    }
+
+    @media (max-width: 640px) {
+      .page-shell {
+        width: min(100% - 20px, 1380px);
+      }
+
+      .panel {
+        padding: 18px;
+        border-radius: 22px;
+      }
+
+      .source-grid,
+      .choice-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
   <div class="page-shell">
-    <nav>
+    <div class="nav">
       <a href="#" class="nav-logo">Job<span>Radar</span></a>
-    </nav>
+    </div>
 
     <header class="hero">
       <div>
         <p class="eyebrow">Business School Search</p>
-        <h1>Choisissez mieux vos sources et vos jobs business</h1>
+        <h1>Configure tout en multi-choix, sans te bloquer</h1>
         <p class="hero-copy">
-          Cette version aide l'utilisateur a comprendre chaque source, a choisir les bons univers de postes,
-          et a filtrer les offres par type de metier, secteur, niveau et score.
+          Tu peux maintenant cocher plusieurs familles de métiers, plusieurs niveaux, plusieurs sources
+          et saisir tes pays ou villes à l'écrit. Si tu ne coches rien dans une catégorie, JobRadar considère
+          que tu veux tout inclure.
         </p>
       </div>
       <button id="scan-button" class="primary-button">Lancer le scan</button>
@@ -532,105 +570,137 @@
         <h2>Configuration</h2>
 
         <div class="group">
-          <h3>Presets metiers</h3>
-          <p class="preset-copy" id="preset-description">
-            Preset par defaut: Sales & Account Management pour les roles commerciaux, account management et customer success.
-          </p>
-          <div class="preset-grid">
-            <button type="button" class="preset-button active" data-preset="sales">Sales & Account</button>
-            <button type="button" class="preset-button" data-preset="marketing">Marketing & Growth</button>
-            <button type="button" class="preset-button" data-preset="strategy">Strategy, Ops & Finance</button>
-            <button type="button" class="preset-button" data-preset="luxury">Luxury / FMCG / Brand</button>
-            <button type="button" class="preset-button" data-preset="consulting">Consulting / Strategy only</button>
+          <div class="group-title">
+            <h3>Familles de métiers</h3>
           </div>
-
-          <p class="preset-copy" id="focus-description">
-            Focus sectoriel par defaut: aucun. Utilise un focus si tu veux orienter le scan vers un univers particulier.
+          <p class="helper">
+            Coche ce que tu veux explorer. Si tu ne coches rien, on inclut toutes les familles business.
           </p>
-          <div class="focus-grid">
-            <button type="button" class="focus-button active" data-focus="all">Tous secteurs</button>
-            <button type="button" class="focus-button" data-focus="tech">Tech / SaaS</button>
-            <button type="button" class="focus-button" data-focus="luxury">Luxe</button>
-            <button type="button" class="focus-button" data-focus="consulting">Conseil</button>
-            <button type="button" class="focus-button" data-focus="fmcg">FMCG</button>
-            <button type="button" class="focus-button" data-focus="finance">Finance</button>
-          </div>
+          <div id="role-family-grid" class="choice-grid"></div>
         </div>
 
         <div class="group">
-          <h3>Filtres</h3>
-
-          <label>Keywords</label>
-          <div id="keywords-wrap" class="tags-wrap" data-default-tags=""></div>
-
-          <label>Exclusions</label>
-          <div id="exclude-wrap" class="tags-wrap" data-default-tags=""></div>
-
-          <label>Localisations</label>
-          <div id="location-wrap" class="tags-wrap" data-default-tags=""></div>
-
-          <label>Entreprises cibles</label>
-          <div id="company-wrap" class="tags-wrap" data-default-tags=""></div>
-
-          <label for="level-filter">Niveau</label>
-          <select id="level-filter" class="select-input">
-            <option value="all" selected>Tous niveaux</option>
-            <option value="junior">Junior</option>
-            <option value="mid">Mid</option>
-            <option value="senior">Senior</option>
-          </select>
+          <div class="group-title">
+            <h3>Focus sectoriels</h3>
+          </div>
+          <p class="helper">
+            Tu peux en choisir plusieurs. Si tu ne coches rien, il n’y a pas de restriction sectorielle.
+          </p>
+          <div id="sector-grid" class="choice-grid"></div>
         </div>
 
         <div class="group">
-          <h3>Sources actives</h3>
-          <p class="sources-copy">
-            Chaque source explique de quel type de site il s'agit et pour quels besoins elle est surtout utile.
+          <div class="group-title">
+            <h3>Mots-clés additionnels</h3>
+          </div>
+          <p class="helper">
+            Ajoute librement des mots-clés complémentaires. Tu peux en mettre plusieurs.
           </p>
+          <div id="extra-keywords-wrap" class="tag-wrap"></div>
+        </div>
 
+        <div class="group">
+          <div class="group-title">
+            <h3>Exclusions</h3>
+          </div>
+          <p class="helper">
+            Tout ce que tu mets ici sera exclu. Tu peux ajouter plusieurs termes.
+          </p>
+          <div
+            id="exclude-wrap"
+            class="tag-wrap"
+            data-default-tags="intern,internship,director,vp,head of,chief"
+          ></div>
+        </div>
+
+        <div class="group">
+          <div class="group-title">
+            <h3>Pays et villes</h3>
+          </div>
+          <p class="helper">
+            Saisis les pays ou villes que tu veux, uniquement à l’écrit. Si tu ne mets rien, c’est comme si tous les pays étaient autorisés.
+          </p>
+          <div id="countries-wrap" class="tag-wrap"></div>
+          <div class="toggle-row">
+            <label class="toggle-card">
+              <input id="all-countries-toggle" type="checkbox" checked />
+              <span>Tous les pays du monde</span>
+            </label>
+          </div>
+          <p class="mini-note">
+            Si cette case est cochée, les pays/villes saisis ne bloquent pas les résultats.
+          </p>
+        </div>
+
+        <div class="group">
+          <div class="group-title">
+            <h3>Entreprises cibles</h3>
+          </div>
+          <p class="helper">
+            Ajoute plusieurs entreprises si tu veux leur donner de l’importance.
+          </p>
+          <div id="company-wrap" class="tag-wrap"></div>
+        </div>
+
+        <div class="group">
+          <div class="group-title">
+            <h3>Niveaux</h3>
+          </div>
+          <p class="helper">
+            Tu peux cocher plusieurs niveaux. Si tu ne coches rien, on garde tous les niveaux.
+          </p>
+          <div id="level-grid" class="choice-grid"></div>
+        </div>
+
+        <div class="group">
+          <div class="group-title">
+            <h3>Sources</h3>
+          </div>
+          <p class="helper">
+            Tu peux cocher plusieurs sources. Si tu ne coches rien, JobRadar considère que toutes les sources sont actives.
+          </p>
           <div class="source-actions">
-            <button type="button" class="secondary-button" id="select-all-sources">Tout cocher</button>
-            <button type="button" class="secondary-button" id="clear-all-sources">Tout decocher</button>
+            <button type="button" id="select-all-sources" class="secondary-button">Tout cocher</button>
+            <button type="button" id="clear-all-sources" class="secondary-button">Tout décocher</button>
           </div>
-
-          <div id="source-list" class="checkbox-grid"></div>
+          <div id="source-list" class="source-grid"></div>
         </div>
 
         <div class="group">
-          <h3>Poids</h3>
-
-          <div class="slider-line">
-            <label for="weight-keywords">Poids mots-cles: <span id="weight-keywords-value">40</span></label>
+          <div class="group-title">
+            <h3>Poids</h3>
+          </div>
+          <div class="range-row">
+            <label for="weight-keywords"><span>Poids mots-clés</span><strong id="weight-keywords-value">40</strong></label>
             <input id="weight-keywords" type="range" min="0" max="100" value="40" />
           </div>
-
-          <div class="slider-line">
-            <label for="weight-location">Poids localisation: <span id="weight-location-value">20</span></label>
+          <div class="range-row">
+            <label for="weight-location"><span>Poids localisation</span><strong id="weight-location-value">20</strong></label>
             <input id="weight-location" type="range" min="0" max="100" value="20" />
           </div>
-
-          <div class="slider-line">
-            <label for="weight-company">Poids entreprise: <span id="weight-company-value">10</span></label>
+          <div class="range-row">
+            <label for="weight-company"><span>Poids entreprise</span><strong id="weight-company-value">10</strong></label>
             <input id="weight-company" type="range" min="0" max="100" value="10" />
           </div>
         </div>
 
         <div class="group">
-          <h3>Affichage</h3>
-
-          <div class="slider-line">
-            <label for="score-range">Score minimum: <span id="score-range-value">12</span></label>
-            <input id="score-range" type="range" min="0" max="100" value="12" />
+          <div class="group-title">
+            <h3>Affichage</h3>
           </div>
-
-          <div class="slider-line">
-            <label for="max-range">Limite visible: <span id="max-range-value">80</span></label>
-            <input id="max-range" type="range" min="5" max="150" step="5" value="80" />
+          <div class="range-row">
+            <label for="score-range"><span>Score minimum</span><strong id="score-range-value">10</strong></label>
+            <input id="score-range" type="range" min="0" max="100" value="10" />
+          </div>
+          <div class="range-row">
+            <label for="max-range"><span>Limite visible</span><strong id="max-range-value">90</strong></label>
+            <input id="max-range" type="range" min="5" max="150" step="5" value="90" />
           </div>
         </div>
       </section>
 
       <section class="panel">
-        <h2>Resultats</h2>
+        <h2>Résultats</h2>
 
         <div class="status-card">
           <div class="status-line">
@@ -640,25 +710,182 @@
           <div class="progress-bar">
             <div id="progress-fill" class="progress-fill"></div>
           </div>
-          <p id="status-text">Configuration chargee. Choisis un preset ou un focus puis lance un scan.</p>
-          <p id="count-text">0 offre</p>
+          <p id="status-text">Prêt à lancer un scan.</p>
+          <p id="count-text">0 offre visible</p>
         </div>
 
-        <div class="results-header">
-          <p id="display-summary">Limite visible: 80, score minimum: 12, niveau: tous niveaux, sources cochees: 22</p>
+        <div class="results-top">
+          <p id="display-summary">Configuration en cours de chargement...</p>
         </div>
 
         <div id="jobs-list" class="jobs-list"></div>
+
+        <p class="footer-note">
+          Les cases peuvent être utilisées en multi-choix. Aucune case cochée = tout inclus.
+        </p>
       </section>
     </main>
-
-    <footer>
-      Open source front sur GitHub Pages, connecte au backend JobRadar Render.
-    </footer>
   </div>
 
   <script>
     const API_BASE = "https://jobradar-backend-2.onrender.com";
+    const ALL_LEVELS = ["junior", "mid", "senior"];
+
+    const ROLE_OPTIONS = {
+      sales: {
+        label: "Sales",
+        keywords: ["sales", "sales executive", "sales representative", "commercial", "inside sales", "new business"]
+      },
+      account_executive: {
+        label: "Account Executive",
+        keywords: ["account executive", "mid-market account executive", "enterprise account executive", "ae"]
+      },
+      key_account: {
+        label: "Key Account",
+        keywords: ["key account manager", "strategic account manager", "global account manager", "national account manager"]
+      },
+      account_manager: {
+        label: "Account Manager",
+        keywords: ["account manager", "client partner", "relationship manager", "portfolio manager"]
+      },
+      customer_success: {
+        label: "Customer Success",
+        keywords: ["customer success", "customer success manager", "client success", "renewals", "onboarding", "implementation"]
+      },
+      business_development: {
+        label: "Business Development",
+        keywords: ["business development", "business development manager", "business development representative", "sdr", "bdr", "prospecting", "pipeline"]
+      },
+      partnerships: {
+        label: "Partnerships",
+        keywords: ["partnerships", "channel partnerships", "alliances", "partner manager", "ecosystem"]
+      },
+      revops: {
+        label: "RevOps / Sales Ops",
+        keywords: ["revenue operations", "revops", "sales operations", "customer success operations", "crm", "gtm operations"]
+      },
+      bizops: {
+        label: "Business Ops",
+        keywords: ["business operations", "bizops", "commercial operations", "planning", "reporting"]
+      },
+      growth: {
+        label: "Growth",
+        keywords: ["growth", "growth manager", "acquisition", "activation", "retention marketing", "expansion"]
+      },
+      marketing: {
+        label: "Marketing",
+        keywords: ["marketing", "growth marketing", "field marketing", "campaign", "content marketing", "demand generation"]
+      },
+      product_marketing: {
+        label: "Product Marketing",
+        keywords: ["product marketing", "product marketing manager", "positioning", "messaging", "launch", "sales enablement"]
+      },
+      brand: {
+        label: "Brand Management",
+        keywords: ["brand manager", "brand management", "brand marketing", "luxury brand manager", "trade marketing"]
+      },
+      category: {
+        label: "Category Management",
+        keywords: ["category manager", "category development manager", "category management", "assortment", "merchandising"]
+      },
+      crm: {
+        label: "CRM / Lifecycle",
+        keywords: ["crm", "crm manager", "lifecycle marketing", "automation", "segmentation", "email marketing"]
+      },
+      strategy: {
+        label: "Strategy",
+        keywords: ["strategy", "strategy associate", "commercial strategy", "go to market", "pricing"]
+      },
+      consulting: {
+        label: "Consulting",
+        keywords: ["consulting", "consultant", "management consultant", "problem solving", "recommendations"]
+      },
+      finance: {
+        label: "Finance / FP&A",
+        keywords: ["finance", "fp&a", "fp&a analyst", "budgeting", "forecasting", "management reporting", "margin"]
+      },
+      analyst: {
+        label: "Business Analyst",
+        keywords: ["business analyst", "commercial analyst", "analyst", "kpi", "performance analysis", "data analysis"]
+      },
+      project_management: {
+        label: "Project / Program",
+        keywords: ["project manager", "program manager", "project management", "stakeholder management", "delivery"]
+      },
+      operations: {
+        label: "Operations",
+        keywords: ["operations", "operations manager", "operations associate", "process improvement", "execution"]
+      },
+      supply_chain: {
+        label: "Supply Chain",
+        keywords: ["supply chain", "supply chain analyst", "inventory", "planning", "flow"]
+      },
+      procurement: {
+        label: "Procurement",
+        keywords: ["procurement", "procurement manager", "sourcing", "supplier negotiations", "vendor management"]
+      },
+      ecommerce: {
+        label: "E-commerce",
+        keywords: ["e-commerce", "ecommerce", "e-commerce manager", "conversion", "online commercial performance"]
+      },
+      market_research: {
+        label: "Market Research",
+        keywords: ["market research", "market research analyst", "customer insights", "consumer insights", "competitive analysis"]
+      },
+      retail: {
+        label: "Retail / Merchandising",
+        keywords: ["retail", "retail merchandising manager", "merchandising", "shopper marketing", "point of sale", "sell-out"]
+      },
+      enablement: {
+        label: "Sales Enablement",
+        keywords: ["sales enablement", "enablement", "playbooks", "training", "commercial excellence"]
+      },
+      education: {
+        label: "Customer Education",
+        keywords: ["customer education", "customer training", "adoption programs", "webinars"]
+      }
+    };
+
+    const SECTOR_OPTIONS = {
+      tech: {
+        label: "Tech / SaaS",
+        keywords: ["saas", "software", "b2b", "startup", "scale-up", "gtm", "product-led"]
+      },
+      luxury: {
+        label: "Luxe",
+        keywords: ["luxury", "premium", "high-end", "selective retail"]
+      },
+      consulting: {
+        label: "Conseil",
+        keywords: ["consulting", "strategy consulting", "advisory", "transformation", "problem solving"]
+      },
+      fmcg: {
+        label: "FMCG",
+        keywords: ["fmcg", "consumer goods", "cpg", "shopper marketing", "sell-out"]
+      },
+      finance: {
+        label: "Finance",
+        keywords: ["finance", "fp&a", "pricing", "controlling", "commercial finance"]
+      },
+      startup: {
+        label: "Startups",
+        keywords: ["startup", "founding", "early stage", "growth", "hands-on"]
+      },
+      corporate: {
+        label: "Corporate",
+        keywords: ["corporate", "international", "regional", "headquarters", "matrix"]
+      },
+      remote: {
+        label: "Remote",
+        keywords: ["remote", "distributed", "work from anywhere", "hybrid"]
+      }
+    };
+
+    const LEVEL_OPTIONS = {
+      junior: "Junior",
+      mid: "Mid",
+      senior: "Senior"
+    };
 
     const ALL_SOURCES = [
       "Greenhouse",
@@ -687,247 +914,121 @@
 
     const SOURCE_METADATA = {
       Greenhouse: {
-        type: "ATS / pages carrieres",
-        description: "Offres publiees via Greenhouse, tres frequent chez les startups, scale-ups et entreprises tech.",
-        focus: "Tres utile pour sales, customer success, account management, operations et marketing en environnement startup/SaaS."
+        type: "ATS / pages carrières",
+        description: "Regroupe surtout des offres publiées via Greenhouse, fréquent chez les startups, scale-ups et sociétés tech.",
+        focus: "Très utile pour business, sales, customer success, operations et marketing en environnement startup ou SaaS."
       },
       Lever: {
-        type: "ATS / pages carrieres",
-        description: "Source issue des entreprises qui publient leurs offres via Lever, souvent orientee tech et croissance.",
+        type: "ATS / pages carrières",
+        description: "Source issue des entreprises qui publient leurs offres via Lever, avec beaucoup d'acteurs tech et croissance.",
         focus: "Souvent pertinent pour sales, business development, account management, partnerships et growth."
       },
       Ashby: {
-        type: "ATS / pages carrieres",
-        description: "Plateforme de recrutement moderne utilisee par de nombreuses startups et scale-ups.",
-        focus: "Utile pour account management, revops, customer success, operations et GTM."
+        type: "ATS / pages carrières",
+        description: "Plateforme de recrutement utilisée par de nombreuses startups et scale-ups modernes.",
+        focus: "Utile pour account management, revops, customer success, operations et go-to-market."
       },
       RemoteOK: {
         type: "Remote-first",
-        description: "Job board centre sur le travail a distance, avec une forte composante tech et digital.",
-        focus: "A privilegier pour des roles remote en sales, support client, growth, marketing ou operations."
+        description: "Job board centré sur le travail à distance, avec une forte composante tech et digital.",
+        focus: "À privilégier pour des rôles remote en sales, support client, growth, marketing ou operations."
       },
       YCombinator: {
         type: "Startups",
-        description: "Univers startup tres oriente early-stage, innovation et roles generalistes de croissance.",
-        focus: "Ideal pour founding roles, business development, account executive, operations et growth."
+        description: "Écosystème startup très orienté early-stage, innovation et postes très larges.",
+        focus: "Idéal pour business development, account executive, operations, growth et rôles startup."
       },
       "Welcome to the Jungle": {
-        type: "Generaliste Europe",
-        description: "Plateforme tres utilisee en France et en Europe, avec bonne presence startup, scale-up et corporate.",
-        focus: "Tres utile pour marketing, customer success, account management, partnerships et roles business generalistes."
+        type: "Généraliste Europe",
+        description: "Plateforme très utilisée en France et en Europe, avec startup, scale-up et corporate.",
+        focus: "Très utile pour marketing, customer success, account management, partnerships et rôles business généralistes."
       },
       Himalayas: {
         type: "Remote-first",
-        description: "Plateforme remote avec bonne visibilite sur les postes digitaux et internationaux.",
+        description: "Plateforme remote avec bonne présence de rôles digitaux et internationaux.",
         focus: "Bonne source pour remote business, customer success, growth, marketing, operations et business analyst."
       },
       "We Work Remotely": {
         type: "Remote-first",
-        description: "Job board historique du remote, surtout connu pour les postes internet, startup et digital.",
+        description: "Job board historique du remote, très utilisé pour des postes internet et startup.",
         focus: "Souvent utile pour customer success, account executive, marketing, revops et support business remote."
       },
       "Hacker News": {
         type: "Startup / community",
-        description: "Source plus informelle issue de l'ecosysteme startup, avec des roles souvent transverses.",
-        focus: "Utile si tu es ouvert aux startups en forte croissance, roles hybrides et postes business tres larges."
+        description: "Source plus informelle issue de l’écosystème startup, souvent avec des rôles hybrides.",
+        focus: "Utile si tu es ouvert aux startups en forte croissance, postes business larges et rôles transverses."
       },
       Otta: {
         type: "Tech / startups",
-        description: "Plateforme moderne orientee startups et scale-ups, forte sur les metiers tech et business.",
-        focus: "Tres pratique pour business development, account executive, customer success, ops et product marketing."
+        description: "Plateforme moderne orientée startups et scale-ups, forte sur les métiers business de croissance.",
+        focus: "Très pratique pour business development, account executive, customer success, ops et product marketing."
       },
       Wellfound: {
         type: "Startups",
-        description: "Anciennement AngelList Talent, tres oriente startup et contact direct avec l'ecosysteme entrepreneurial.",
+        description: "Anciennement AngelList Talent, très orienté startup et environnement entrepreneurial.",
         focus: "Utile pour sales, growth, partnerships, ops et account management en startup."
       },
       LinkedIn: {
-        type: "Generaliste",
-        description: "Grande plateforme emploi avec un volume important d'offres dans presque tous les secteurs white-collar.",
-        focus: "Bonne source large pour presque tous les metiers d'ecole de commerce, du junior au senior."
+        type: "Généraliste",
+        description: "Grande plateforme généraliste avec beaucoup d’offres sur presque tous les secteurs white-collar.",
+        focus: "Bonne source large pour presque tous les métiers d’école de commerce, du junior au senior."
       },
       Indeed: {
-        type: "Generaliste",
-        description: "Agregateur et job board tres large, utile pour elargir fortement le volume d'offres.",
-        focus: "A privilegier si tu veux maximiser les options sur sales, marketing, support client, ops et analyste."
+        type: "Généraliste",
+        description: "Agrégateur et job board très large, utile pour maximiser fortement le volume d’offres.",
+        focus: "À privilégier pour sales, marketing, support client, operations, analyste et finance."
       },
       Glassdoor: {
-        type: "Generaliste + avis",
-        description: "Plateforme emploi connue aussi pour les avis employeurs, avec couverture assez large.",
-        focus: "Interessante pour des roles business generalistes si tu veux aussi evaluer les employeurs."
+        type: "Généraliste + avis",
+        description: "Plateforme emploi connue aussi pour les avis employeurs, avec une couverture assez large.",
+        focus: "Intéressante pour des rôles business généralistes si tu veux aussi évaluer les employeurs."
       },
       Flexa: {
         type: "Flexible work",
-        description: "Plateforme orientee travail flexible, remote ou hybride.",
-        focus: "Tres utile si ton critere principal est la flexibilite pour des metiers business et digitaux."
+        description: "Plateforme orientée travail flexible, remote ou hybride.",
+        focus: "Très utile si ton critère principal est la flexibilité pour des métiers business et digitaux."
       },
       EuroTechJobs: {
         type: "Tech Europe",
-        description: "Plateforme europeenne orientee emplois tech et digitaux avec dimension internationale.",
-        focus: "Peut etre utile pour growth, revops, account et partnerships en environnement tech europeen."
+        description: "Plateforme européenne orientée emplois tech et digitaux avec dimension internationale.",
+        focus: "Peut être utile pour growth, revops, account et partnerships en environnement tech européen."
       },
       "Built In": {
         type: "Tech / startups",
-        description: "Site emploi centre sur les entreprises tech avec fiches societes et nombreux postes startup/scale-up.",
-        focus: "Particulierement pertinent pour GTM, sales, product marketing et customer success."
+        description: "Site emploi centré sur les entreprises tech avec fiches sociétés et nombreux postes startup ou scale-up.",
+        focus: "Particulièrement pertinent pour GTM, sales, product marketing et customer success."
       },
       JobTeaser: {
-        type: "Etudiants / jeunes diplomes",
-        description: "Plateforme tres connue chez les etudiants et jeunes diplomes, souvent connectee aux ecoles.",
-        focus: "A cocher pour stages, graduate programs, VIE, alternances ou premiers CDI business."
+        type: "Étudiants / jeunes diplômés",
+        description: "Plateforme très connue chez les étudiants et jeunes diplômés, souvent connectée aux écoles.",
+        focus: "À cocher pour stages, graduate programs, VIE, alternances ou premiers CDI business."
       },
       "Talent.com": {
-        type: "Generaliste / agregateur",
-        description: "Agregateur large qui aide a capter du volume sur de nombreux secteurs et niveaux d'anciennete.",
-        focus: "Utile pour ratisser large sur les metiers business si tu veux maximiser le nombre d'options."
+        type: "Généraliste / agrégateur",
+        description: "Agrégateur large qui aide à capter du volume sur de nombreux secteurs et niveaux.",
+        focus: "Utile pour ratisser large sur les métiers business si tu veux maximiser tes options."
       },
       StepStone: {
-        type: "Generaliste Europe",
-        description: "Plateforme europeenne bien implantee sur les postes white-collar et corporate.",
+        type: "Généraliste Europe",
+        description: "Plateforme européenne bien implantée sur les postes white-collar et corporate.",
         focus: "Bonne source pour marketing, account management, finance, procurement, supply chain et operations."
       },
       Adzuna: {
-        type: "Generaliste / agregateur",
-        description: "Agregateur emploi large qui fait remonter beaucoup d'offres issues de sites differents.",
-        focus: "Pratique pour elargir le volume total d'offres sur business, finance, sales et marketing."
+        type: "Généraliste / agrégateur",
+        description: "Agrégateur emploi large qui fait remonter beaucoup d'offres issues de sites différents.",
+        focus: "Pratique pour élargir le volume total d'offres sur business, finance, sales et marketing."
       },
       Reed: {
-        type: "Generaliste UK",
+        type: "Généraliste UK",
         description: "Site emploi historique au Royaume-Uni avec beaucoup de postes business et white-collar.",
-        focus: "A privilegier si Londres ou le marche UK t'interessent pour sales, finance et operations."
-      }
-    };
-
-    const DEFAULT_EXCLUDES = ["intern", "internship", "director", "vp", "head of", "chief"];
-    const DEFAULT_LOCATIONS = ["switzerland", "barcelona", "madrid", "paris", "london", "berlin", "amsterdam", "dublin", "remote"];
-
-    const LEVEL_LABELS = {
-      all: "tous niveaux",
-      junior: "junior",
-      mid: "mid",
-      senior: "senior"
-    };
-
-    const PRESETS = {
-      sales: {
-        description: "Preset par defaut: Sales & Account Management pour les roles commerciaux, account management et customer success.",
-        keywords: ["sales", "account executive", "key account manager", "strategic account manager", "account manager", "customer success", "business development", "sales development", "partnerships", "revenue operations", "sales enablement"],
-        excludes: DEFAULT_EXCLUDES,
-        locations: DEFAULT_LOCATIONS,
-        companies: [],
-        sources: ALL_SOURCES,
-        level: "all",
-        weights: { keywords: 45, location: 20, company: 10 },
-        display: { minScore: 12, limit: 80 }
-      },
-      marketing: {
-        description: "Marketing & Growth pour les roles acquisition, CRM, product marketing, category, brand, demand generation et e-commerce.",
-        keywords: ["growth", "growth marketing", "marketing", "product marketing", "brand management", "category management", "crm", "lifecycle marketing", "demand generation", "market research", "e-commerce", "trade marketing"],
-        excludes: DEFAULT_EXCLUDES,
-        locations: DEFAULT_LOCATIONS,
-        companies: [],
-        sources: ALL_SOURCES,
-        level: "all",
-        weights: { keywords: 45, location: 15, company: 10 },
-        display: { minScore: 10, limit: 90 }
-      },
-      strategy: {
-        description: "Strategy, Ops & Finance pour les roles business analyst, consulting, operations, finance, procurement, supply chain et project management.",
-        keywords: ["strategy", "consulting", "finance", "business analyst", "commercial analyst", "business operations", "operations", "project management", "revenue operations", "supply chain", "procurement", "market research"],
-        excludes: DEFAULT_EXCLUDES,
-        locations: DEFAULT_LOCATIONS,
-        companies: [],
-        sources: ALL_SOURCES,
-        level: "all",
-        weights: { keywords: 40, location: 20, company: 10 },
-        display: { minScore: 10, limit: 90 }
-      },
-      luxury: {
-        description: "Luxury / FMCG / Brand pour les roles brand, category, trade marketing, shopper marketing, consumer insights, retail et e-commerce.",
-        keywords: ["luxury", "fmcg", "brand management", "luxury brand manager", "category management", "category development manager", "trade marketing", "shopper marketing", "consumer insights", "market research", "retail", "e-commerce"],
-        excludes: DEFAULT_EXCLUDES,
-        locations: DEFAULT_LOCATIONS,
-        companies: [],
-        sources: ALL_SOURCES,
-        level: "all",
-        weights: { keywords: 45, location: 15, company: 10 },
-        display: { minScore: 10, limit: 90 }
-      },
-      consulting: {
-        description: "Consulting / Strategy only pour les roles tres orientes analyse, problem solving, market research, pricing, business analysis et conseil.",
-        keywords: ["consulting", "management consultant", "strategy", "strategy associate", "business analyst", "commercial analyst", "pricing", "market research", "consumer insights", "project management"],
-        excludes: DEFAULT_EXCLUDES,
-        locations: DEFAULT_LOCATIONS,
-        companies: [],
-        sources: ALL_SOURCES,
-        level: "all",
-        weights: { keywords: 45, location: 20, company: 10 },
-        display: { minScore: 10, limit: 75 }
-      }
-    };
-
-    const FOCUS_PRESETS = {
-      all: {
-        description: "Focus sectoriel par defaut: aucun. Utilise un focus si tu veux orienter le scan vers un univers particulier.",
-        keywords: [],
-        companies: [],
-        sources: ALL_SOURCES,
-        level: "all",
-        weights: {},
-        display: {}
-      },
-      tech: {
-        description: "Focus Tech / SaaS: roles business frequents dans les startups et scale-ups logicielles.",
-        keywords: ["saas", "b2b", "account executive", "customer success", "revenue operations", "product marketing", "demand generation", "partnerships"],
-        companies: ["HubSpot", "Notion", "Intercom", "Airtable", "Atlassian"],
-        sources: ALL_SOURCES,
-        level: "all",
-        weights: { keywords: 50 },
-        display: { minScore: 10 }
-      },
-      luxury: {
-        description: "Focus Luxe: premium, selective retail, brand management, retail excellence et consumer insights.",
-        keywords: ["luxury", "premium", "luxury brand manager", "brand management", "consumer insights", "retail", "trade marketing"],
-        companies: ["L'Oreal"],
-        sources: ALL_SOURCES,
-        level: "all",
-        weights: { keywords: 50 },
-        display: { minScore: 10 }
-      },
-      consulting: {
-        description: "Focus Conseil: roles structures autour de l'analyse, du problem solving, du cadrage et des recommandations.",
-        keywords: ["consulting", "management consultant", "strategy", "business analyst", "project management", "pricing", "market research"],
-        companies: ["Accenture", "IBM", "Oracle"],
-        sources: ALL_SOURCES,
-        level: "all",
-        weights: { keywords: 50 },
-        display: { minScore: 10 }
-      },
-      fmcg: {
-        description: "Focus FMCG: category, trade marketing, shopper marketing, retail, supply chain et procurement.",
-        keywords: ["fmcg", "category management", "category development manager", "trade marketing", "shopper marketing", "supply chain", "procurement", "e-commerce"],
-        companies: ["Danone", "HelloFresh"],
-        sources: ALL_SOURCES,
-        level: "all",
-        weights: { keywords: 50 },
-        display: { minScore: 10 }
-      },
-      finance: {
-        description: "Focus Finance: finance, FP&A, pricing, analyses business et performance commerciale.",
-        keywords: ["finance", "fp&a", "pricing", "business analyst", "commercial analyst", "revenue operations", "market research"],
-        companies: ["SAP", "Workday", "Oracle"],
-        sources: ALL_SOURCES,
-        level: "all",
-        weights: { keywords: 50 },
-        display: { minScore: 10 }
+        focus: "À privilégier si Londres ou le marché UK t'intéressent pour sales, finance et operations."
       }
     };
 
     const state = {
       poller: null,
-      activePreset: "sales",
-      activeFocus: "all",
-      allJobs: []
+      allJobs: [],
+      totalScored: 0
     };
 
     function uniqueValues(values) {
@@ -942,8 +1043,8 @@
       return normalizeText(value).toLowerCase();
     }
 
-    function escapeHtml(str) {
-      return String(str)
+    function escapeHtml(value) {
+      return String(value)
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
@@ -951,115 +1052,39 @@
         .replaceAll("'", "&#39;");
     }
 
-    function inferLevel(position) {
-      const title = normalizeLower(position);
-
-      if (["head", "director", "vp", "chief", "enterprise", "strategic", "global", "lead", "senior"].some(term => title.includes(term))) {
-        return "senior";
-      }
-      if (["associate", "specialist", "representative", "analyst", "coordinator", "assistant", "junior"].some(term => title.includes(term))) {
-        return "junior";
-      }
-      return "mid";
+    function scoreColor(score) {
+      if (score >= 80) return "#a8ff38";
+      if (score >= 60) return "#ffd57e";
+      return "#ff8c7e";
     }
 
-    function normalizeJob(job) {
-      const breakdown = job.score_breakdown || {};
-      return {
-        company: normalizeText(job.company),
-        position: normalizeText(job.position),
-        location: normalizeText(job.location),
-        link: normalizeText(job.link),
-        source: normalizeText(job.source),
-        description: normalizeText(job.description),
-        level: normalizeLower(job.level) || inferLevel(job.position),
-        score_breakdown: {
-          keywords: Number(breakdown.keywords || 0),
-          location: Number(breakdown.location || 0),
-          company: Number(breakdown.company || 0),
-          semantic: Number(breakdown.semantic || 0),
-          final: Number(breakdown.final || job.score || 0)
-        }
-      };
-    }
-
-    function createTagInput(containerId) {
+    function renderChoiceGroup(containerId, inputName, options, type = "checkbox") {
       const container = document.getElementById(containerId);
-      const input = document.createElement("input");
-      input.type = "text";
-      input.className = "tag-input";
-      input.placeholder = "Ajouter puis Entree";
+      container.innerHTML = "";
 
-      const tagList = document.createElement("div");
-      tagList.className = "tag-list";
-
-      container.append(tagList, input);
-
-      const defaultTags = (container.dataset.defaultTags || "")
-        .split(",")
-        .map(value => value.trim())
-        .filter(Boolean);
-
-      defaultTags.forEach(tag => addTag(tagList, tag));
-
-      input.addEventListener("keydown", (event) => {
-        if (event.key !== "Enter") return;
-        event.preventDefault();
-        const value = input.value.trim();
-        if (!value) return;
-        addTag(tagList, value);
-        input.value = "";
+      Object.entries(options).forEach(([value, config]) => {
+        const label = document.createElement("label");
+        label.className = "choice-card";
+        label.innerHTML = `
+          <input type="${type}" name="${inputName}" value="${escapeHtml(value)}" />
+          <span>${escapeHtml(typeof config === "string" ? config : config.label)}</span>
+        `;
+        container.appendChild(label);
       });
     }
 
-    function addTag(tagList, value) {
-      const normalized = value.trim();
-      if (!normalized) return;
-
-      const exists = Array.from(tagList.querySelectorAll(".tag")).some(
-        tag => tag.dataset.value.toLowerCase() === normalized.toLowerCase()
-      );
-      if (exists) return;
-
-      const tag = document.createElement("button");
-      tag.type = "button";
-      tag.className = "tag";
-      tag.dataset.value = normalized;
-      tag.textContent = normalized;
-      tag.addEventListener("click", () => {
-        tag.remove();
-        refreshVisibleJobs();
-      });
-      tagList.appendChild(tag);
-    }
-
-    function setTagValues(containerId, values) {
-      const tagList = document.querySelector(`#${containerId} .tag-list`);
-      if (!tagList) return;
-      tagList.innerHTML = "";
-      values.forEach(value => addTag(tagList, value));
-    }
-
-    function getTagValues(containerId) {
-      return Array.from(document.querySelectorAll(`#${containerId} .tag`)).map(tag => tag.dataset.value);
-    }
-
-    function renderSourceOptions() {
+    function renderSources() {
       const container = document.getElementById("source-list");
       container.innerHTML = "";
 
       ALL_SOURCES.forEach((source) => {
-        const metadata = SOURCE_METADATA[source] || {
-          type: "Source emploi",
-          description: "Source emploi generaliste.",
-          focus: "Utile pour elargir le scan."
-        };
+        const metadata = SOURCE_METADATA[source];
 
         const label = document.createElement("label");
         label.className = "source-card";
         label.innerHTML = `
           <div class="source-card-top">
-            <input class="source-checkbox" type="checkbox" value="${escapeHtml(source)}" checked />
+            <input type="checkbox" name="source-choice" value="${escapeHtml(source)}" />
             <div>
               <span class="source-card-title">${escapeHtml(source)}</span>
               <span class="source-card-type">${escapeHtml(metadata.type)}</span>
@@ -1072,77 +1097,107 @@
       });
     }
 
-    function getSelectedSources() {
-      return Array.from(document.querySelectorAll(".source-checkbox:checked")).map(checkbox => checkbox.value);
-    }
+    function createTagInput(containerId, placeholder, initialValues = []) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
 
-    function setSelectedSources(values) {
-      const allowed = new Set(values);
-      document.querySelectorAll(".source-checkbox").forEach((checkbox) => {
-        checkbox.checked = allowed.has(checkbox.value);
+      const tagList = document.createElement("div");
+      tagList.className = "tag-list";
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.className = "tag-input";
+      input.placeholder = placeholder;
+
+      container.append(tagList, input);
+
+      initialValues.forEach((value) => addTag(containerId, value));
+
+      input.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== ",") return;
+        event.preventDefault();
+        const value = input.value.trim();
+        if (!value) return;
+        addTag(containerId, value);
+        input.value = "";
+        updateDisplaySummary();
+        refreshVisibleJobs();
       });
     }
 
-    function getSelectedLevel() {
-      return document.getElementById("level-filter").value;
+    function addTag(containerId, value) {
+      const container = document.getElementById(containerId);
+      const tagList = container.querySelector(".tag-list");
+      const normalized = value.trim();
+      if (!normalized) return;
+
+      const exists = Array.from(tagList.querySelectorAll(".tag")).some(
+        (tag) => normalizeLower(tag.dataset.value) === normalizeLower(normalized)
+      );
+      if (exists) return;
+
+      const tag = document.createElement("button");
+      tag.type = "button";
+      tag.className = "tag";
+      tag.dataset.value = normalized;
+      tag.textContent = normalized;
+      tag.addEventListener("click", () => {
+        tag.remove();
+        updateDisplaySummary();
+        refreshVisibleJobs();
+      });
+
+      tagList.appendChild(tag);
     }
 
-    function setSelectedLevel(value) {
-      document.getElementById("level-filter").value = value;
+    function getTags(containerId) {
+      return Array.from(document.querySelectorAll(`#${containerId} .tag`)).map((tag) => tag.dataset.value);
     }
 
-    function syncRangeLabel(inputId, labelId) {
-      document.getElementById(labelId).textContent = document.getElementById(inputId).value;
+    function getCheckedValues(inputName) {
+      return Array.from(document.querySelectorAll(`input[name="${inputName}"]:checked`)).map((input) => input.value);
     }
 
-    function updateRangeLabel(inputId, labelId) {
-      const input = document.getElementById(inputId);
-      const sync = () => {
-        syncRangeLabel(inputId, labelId);
-        if (inputId === "score-range" || inputId === "max-range") {
-          updateDisplaySummary();
-          refreshVisibleJobs();
-        }
-      };
-      sync();
-      input.addEventListener("input", sync);
+    function getEffectiveRoleKeys() {
+      const selected = getCheckedValues("role-family");
+      return selected.length ? selected : Object.keys(ROLE_OPTIONS);
     }
 
-    function setRangeValue(inputId, labelId, value) {
-      const input = document.getElementById(inputId);
-      input.value = value;
-      syncRangeLabel(inputId, labelId);
+    function getEffectiveSectorKeys() {
+      return getCheckedValues("sector-focus");
     }
 
-    function composeActiveConfig() {
-      const preset = PRESETS[state.activePreset];
-      const focus = FOCUS_PRESETS[state.activeFocus];
+    function getEffectiveLevels() {
+      const selected = getCheckedValues("level-choice");
+      return selected.length ? selected : ALL_LEVELS;
+    }
 
-      return {
-        keywords: uniqueValues([...preset.keywords, ...focus.keywords]),
-        excludes: uniqueValues([...preset.excludes, ...(focus.excludes || [])]),
-        locations: uniqueValues([...preset.locations, ...(focus.locations || [])]),
-        companies: uniqueValues([...preset.companies, ...focus.companies]),
-        sources: uniqueValues(focus.sources && focus.sources.length ? focus.sources : preset.sources),
-        level: focus.level || preset.level || "all",
-        weights: { ...preset.weights, ...focus.weights },
-        display: { ...preset.display, ...focus.display },
-        presetDescription: preset.description,
-        focusDescription: focus.description
-      };
+    function getEffectiveSources() {
+      const selected = getCheckedValues("source-choice");
+      return selected.length ? selected : ALL_SOURCES;
+    }
+
+    function getLocationFilters() {
+      if (document.getElementById("all-countries-toggle").checked) return [];
+      return getTags("countries-wrap");
+    }
+
+    function buildKeywordUniverse() {
+      const roleKeywords = getEffectiveRoleKeys().flatMap((key) => ROLE_OPTIONS[key].keywords);
+      const sectorKeywords = getEffectiveSectorKeys().flatMap((key) => SECTOR_OPTIONS[key].keywords);
+      const extraKeywords = getTags("extra-keywords-wrap");
+      return uniqueValues([...roleKeywords, ...sectorKeywords, ...extraKeywords]);
     }
 
     function buildScanPayload() {
-      const selectedLevel = getSelectedLevel();
-
       return {
         filters: {
-          keywords: getTagValues("keywords-wrap"),
-          exclude: getTagValues("exclude-wrap"),
-          locations: getTagValues("location-wrap"),
-          levels: selectedLevel === "all" ? ["junior", "mid", "senior"] : [selectedLevel],
-          sources: getSelectedSources(),
-          companies: getTagValues("company-wrap")
+          keywords: buildKeywordUniverse(),
+          exclude: getTags("exclude-wrap"),
+          locations: getLocationFilters(),
+          levels: getEffectiveLevels(),
+          sources: getEffectiveSources(),
+          companies: getTags("company-wrap")
         },
         weights: {
           keywords: Number(document.getElementById("weight-keywords").value),
@@ -1157,59 +1212,52 @@
       };
     }
 
-    function updateDisplaySummary() {
-      const limit = document.getElementById("max-range").value;
-      const minScore = document.getElementById("score-range").value;
-      const level = LEVEL_LABELS[getSelectedLevel()] || "tous niveaux";
-      const sources = getSelectedSources().length;
+    function updateRangeLabel(inputId, outputId) {
+      const input = document.getElementById(inputId);
+      const output = document.getElementById(outputId);
 
-      document.getElementById("display-summary").textContent =
-        `Limite visible: ${limit}, score minimum: ${minScore}, niveau: ${level}, sources cochees: ${sources}`;
+      const sync = () => {
+        output.textContent = input.value;
+        if (inputId === "score-range" || inputId === "max-range") {
+          updateDisplaySummary();
+          refreshVisibleJobs();
+        }
+      };
+
+      sync();
+      input.addEventListener("input", sync);
     }
 
-    function applyCurrentConfiguration(statusText) {
-      const config = composeActiveConfig();
+    function inferLevel(position) {
+      const title = normalizeLower(position);
 
-      setTagValues("keywords-wrap", config.keywords);
-      setTagValues("exclude-wrap", config.excludes);
-      setTagValues("location-wrap", config.locations);
-      setTagValues("company-wrap", config.companies);
-      setSelectedSources(config.sources);
-      setSelectedLevel(config.level);
-
-      setRangeValue("weight-keywords", "weight-keywords-value", config.weights.keywords);
-      setRangeValue("weight-location", "weight-location-value", config.weights.location);
-      setRangeValue("weight-company", "weight-company-value", config.weights.company);
-      setRangeValue("score-range", "score-range-value", config.display.minScore);
-      setRangeValue("max-range", "max-range-value", config.display.limit);
-
-      document.getElementById("preset-description").textContent = config.presetDescription;
-      document.getElementById("focus-description").textContent = config.focusDescription;
-
-      document.querySelectorAll(".preset-button").forEach((button) => {
-        button.classList.toggle("active", button.dataset.preset === state.activePreset);
-      });
-
-      document.querySelectorAll(".focus-button").forEach((button) => {
-        button.classList.toggle("active", button.dataset.focus === state.activeFocus);
-      });
-
-      updateDisplaySummary();
-      document.getElementById("status-text").textContent = statusText;
-      refreshVisibleJobs();
+      if (["head", "director", "vp", "chief", "enterprise", "strategic", "global", "lead", "senior"].some((term) => title.includes(term))) {
+        return "senior";
+      }
+      if (["associate", "specialist", "representative", "analyst", "coordinator", "assistant", "junior"].some((term) => title.includes(term))) {
+        return "junior";
+      }
+      return "mid";
     }
 
-    function applyPreset(name) {
-      if (!PRESETS[name]) return;
-      state.activePreset = name;
-      state.activeFocus = "all";
-      applyCurrentConfiguration("Preset applique. Lance un nouveau scan pour recalculer les resultats avec ce profil.");
-    }
-
-    function applyFocus(name) {
-      if (!FOCUS_PRESETS[name]) return;
-      state.activeFocus = name;
-      applyCurrentConfiguration("Focus sectoriel applique. Lance un nouveau scan si tu veux recalculer le scoring avec cette orientation.");
+    function normalizeJob(job) {
+      const breakdown = job.score_breakdown || {};
+      return {
+        company: normalizeText(job.company),
+        description: normalizeText(job.description),
+        link: normalizeText(job.link),
+        location: normalizeText(job.location),
+        position: normalizeText(job.position),
+        source: normalizeText(job.source),
+        level: normalizeLower(job.level) || inferLevel(job.position),
+        score_breakdown: {
+          company: Number(breakdown.company || 0),
+          final: Number(breakdown.final || 0),
+          keywords: Number(breakdown.keywords || 0),
+          location: Number(breakdown.location || 0),
+          semantic: Number(breakdown.semantic || 0)
+        }
+      };
     }
 
     function jobBlob(job) {
@@ -1217,25 +1265,39 @@
     }
 
     function applyClientFilters(jobs) {
-      const selectedSources = new Set(getSelectedSources());
-      const selectedLevel = getSelectedLevel();
+      const selectedLevelsRaw = getCheckedValues("level-choice");
+      const selectedSourcesRaw = getCheckedValues("source-choice");
+      const levelFilters = selectedLevelsRaw.length ? selectedLevelsRaw : ALL_LEVELS;
+      const sourceFilters = selectedSourcesRaw.length ? selectedSourcesRaw : ALL_SOURCES;
+      const keywordUniverse = buildKeywordUniverse().map(normalizeLower);
+      const excludeTerms = getTags("exclude-wrap").map(normalizeLower);
+      const locationTerms = getLocationFilters().map(normalizeLower);
+      const companyTerms = getTags("company-wrap").map(normalizeLower);
       const minScore = Number(document.getElementById("score-range").value);
       const limit = Number(document.getElementById("max-range").value);
-      const excludeTerms = getTagValues("exclude-wrap").map(normalizeLower);
-      const targetCompanies = getTagValues("company-wrap").map(normalizeLower);
 
       return jobs
-        .filter(job => !selectedSources.size || selectedSources.has(job.source))
-        .filter(job => selectedLevel === "all" || job.level === selectedLevel)
-        .filter(job => Number(job.score_breakdown.final || 0) >= minScore)
-        .filter(job => {
+        .filter((job) => sourceFilters.includes(job.source))
+        .filter((job) => levelFilters.includes(job.level))
+        .filter((job) => Number(job.score_breakdown.final || 0) >= minScore)
+        .filter((job) => {
           const blob = jobBlob(job);
-          return !excludeTerms.some(term => term && blob.includes(term));
+          return !excludeTerms.some((term) => term && blob.includes(term));
         })
-        .filter(job => {
-          if (!targetCompanies.length) return true;
+        .filter((job) => {
+          if (!keywordUniverse.length) return true;
+          const blob = jobBlob(job);
+          return keywordUniverse.some((term) => term && blob.includes(term));
+        })
+        .filter((job) => {
+          if (!locationTerms.length) return true;
+          const location = normalizeLower(job.location);
+          return locationTerms.some((term) => term && location.includes(term));
+        })
+        .filter((job) => {
+          if (!companyTerms.length) return true;
           const company = normalizeLower(job.company);
-          return targetCompanies.some(target => company.includes(target));
+          return companyTerms.some((term) => term && company.includes(term));
         })
         .sort((a, b) => Number(b.score_breakdown.final || 0) - Number(a.score_breakdown.final || 0))
         .slice(0, limit);
@@ -1244,46 +1306,55 @@
     function renderJobs(jobs) {
       const list = document.getElementById("jobs-list");
       list.innerHTML = "";
-      document.getElementById("count-text").textContent = `${jobs.length} offre${jobs.length > 1 ? "s" : ""} visible${jobs.length > 1 ? "s" : ""}`;
+
+      const totalLoaded = state.allJobs.length;
+      const countText = totalLoaded
+        ? `${jobs.length} offre${jobs.length > 1 ? "s" : ""} visible${jobs.length > 1 ? "s" : ""} sur ${totalLoaded}`
+        : `${jobs.length} offre${jobs.length > 1 ? "s" : ""} visible${jobs.length > 1 ? "s" : ""}`;
+
+      document.getElementById("count-text").textContent = countText;
 
       if (!jobs.length) {
-        const empty = document.createElement("p");
+        const empty = document.createElement("div");
         empty.className = "empty-state";
-        empty.textContent = "Aucune offre visible pour ces criteres.";
+        empty.innerHTML = totalLoaded
+          ? `Aucune offre visible avec tes filtres actuels.<br>Il y a bien ${totalLoaded} offres chargées, mais elles sont filtrées par ta configuration.`
+          : `Aucune offre chargée pour le moment. Lance un scan pour récupérer les résultats.`;
         list.appendChild(empty);
         return;
       }
 
       jobs.forEach((job) => {
-        const article = document.createElement("a");
-        article.className = "job-card";
-        article.href = job.link || "#";
-        article.target = "_blank";
-        article.rel = "noreferrer noopener";
+        const score = Math.round(Number(job.score_breakdown.final || 0));
+        const card = document.createElement("a");
+        card.className = "job-card";
+        card.href = job.link || "#";
+        card.target = "_blank";
+        card.rel = "noopener noreferrer";
 
-        article.innerHTML = `
+        card.innerHTML = `
           <div class="job-top">
             <div>
-              <p class="source-pill">${escapeHtml(job.source)}</p>
+              <div class="pill">${escapeHtml(job.source)}</div>
               <div class="job-title">${escapeHtml(job.position || "Sans titre")}</div>
-              <p class="company-line">${escapeHtml(job.company || "Entreprise inconnue")} • ${escapeHtml(job.location || "N/A")} • ${escapeHtml(job.level || "mid")}</p>
+              <div class="job-meta">${escapeHtml(job.company || "Entreprise inconnue")} • ${escapeHtml(job.location || "N/A")} • ${escapeHtml(job.level || "mid")}</div>
             </div>
-            <div class="score-box">
-              <strong>${Math.round(Number(job.score_breakdown.final || 0))}</strong>
+            <div class="score-box" style="background:${scoreColor(score)};color:#081006">
+              <strong>${score}</strong>
               <span>score</span>
             </div>
           </div>
-          <p class="job-description">${escapeHtml(job.description || "").slice(0, 240)}${(job.description || "").length > 240 ? "..." : ""}</p>
-          <div class="job-breakdown">
-            <span>Keywords: ${Math.round(Number(job.score_breakdown.keywords || 0))}</span>
-            <span>Location: ${Math.round(Number(job.score_breakdown.location || 0))}</span>
-            <span>Company: ${Math.round(Number(job.score_breakdown.company || 0))}</span>
-            <span>Semantic: ${Math.round(Number(job.score_breakdown.semantic || 0))}</span>
-            <span>Niveau: ${escapeHtml(job.level || "mid")}</span>
+          <p class="job-description">${escapeHtml((job.description || "").slice(0, 240))}${(job.description || "").length > 240 ? "..." : ""}</p>
+          <div class="job-tags">
+            <span>KW ${Math.round(Number(job.score_breakdown.keywords || 0))}</span>
+            <span>LOC ${Math.round(Number(job.score_breakdown.location || 0))}</span>
+            <span>ENT ${Math.round(Number(job.score_breakdown.company || 0))}</span>
+            <span>SEM ${Math.round(Number(job.score_breakdown.semantic || 0))}</span>
           </div>
           <div class="job-link">Voir l'offre</div>
         `;
-        list.appendChild(article);
+
+        list.appendChild(card);
       });
     }
 
@@ -1298,7 +1369,7 @@
         state.allJobs = Array.isArray(data.jobs) ? data.jobs.map(normalizeJob) : [];
         refreshVisibleJobs();
       } catch (error) {
-        document.getElementById("status-text").textContent = `Impossible de charger les offres : ${error.message}`;
+        document.getElementById("status-text").textContent = `Erreur de chargement des offres : ${error.message}`;
       }
     }
 
@@ -1314,31 +1385,26 @@
       document.getElementById("progress-text").textContent = `${data.progress || 0}%`;
       document.getElementById("progress-fill").style.width = `${data.progress || 0}%`;
       document.getElementById("status-text").textContent = data.status || "Scan en cours...";
-      document.getElementById("count-text").textContent = `${data.count || 0} offre${(data.count || 0) > 1 ? "s" : ""}`;
+      state.totalScored = Number(data.count || 0);
 
       if (scanIsFinished(data)) {
-        clearInterval(state.poller);
-        state.poller = null;
+        if (state.poller) {
+          clearInterval(state.poller);
+          state.poller = null;
+        }
         document.getElementById("status-text").textContent = "Chargement des offres...";
         await loadJobsFromBackend();
+        document.getElementById("status-text").textContent = `Scan terminé. ${data.count || 0} offres scorées côté backend.`;
       }
     }
 
     async function launchScan() {
-      const selectedSources = getSelectedSources();
-      if (!selectedSources.length) {
-        document.getElementById("status-text").textContent = "Selectionne au moins une source avant de lancer un scan.";
-        return;
-      }
-
-      const payload = buildScanPayload();
-      updateDisplaySummary();
-
       document.getElementById("status-text").textContent = "Connexion au backend...";
-      document.getElementById("progress-fill").style.width = "0%";
       document.getElementById("progress-text").textContent = "0%";
+      document.getElementById("progress-fill").style.width = "0%";
 
       try {
+        const payload = buildScanPayload();
         const response = await fetch(`${API_BASE}/scan`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -1346,21 +1412,81 @@
         });
 
         const data = await response.json();
-        document.getElementById("status-text").textContent = data.message || "Scan demarre";
 
-        if (!response.ok) return;
+        if (!response.ok) {
+          document.getElementById("status-text").textContent = data.message || "Impossible de lancer le scan.";
+          return;
+        }
 
+        document.getElementById("status-text").textContent = "Scan démarré...";
         if (state.poller) clearInterval(state.poller);
         await pollStatus();
         state.poller = setInterval(pollStatus, 1500);
       } catch (error) {
-        document.getElementById("status-text").textContent = `Erreur reseau : ${error.message}`;
+        document.getElementById("status-text").textContent = `Erreur réseau : ${error.message}`;
       }
     }
 
+    function updateDisplaySummary() {
+      const roleRaw = getCheckedValues("role-family");
+      const sectorsRaw = getCheckedValues("sector-focus");
+      const levelsRaw = getCheckedValues("level-choice");
+      const sourcesRaw = getCheckedValues("source-choice");
+      const countries = getTags("countries-wrap");
+      const allCountries = document.getElementById("all-countries-toggle").checked;
+
+      const roleText = roleRaw.length ? `${roleRaw.length} famille${roleRaw.length > 1 ? "s" : ""}` : "toutes les familles";
+      const sectorText = sectorsRaw.length ? `${sectorsRaw.length} focus` : "tous secteurs";
+      const levelText = levelsRaw.length ? levelsRaw.join(", ") : "tous niveaux";
+      const sourceText = sourcesRaw.length ? `${sourcesRaw.length} source${sourcesRaw.length > 1 ? "s" : ""}` : "toutes les sources";
+      const countryText = allCountries || !countries.length ? "tous pays" : countries.join(", ");
+
+      document.getElementById("display-summary").textContent =
+        `Filtres actifs : ${roleText}, ${sectorText}, niveaux ${levelText}, pays ${countryText}, ${sourceText}, score minimum ${document.getElementById("score-range").value}, limite ${document.getElementById("max-range").value}.`;
+    }
+
+    function bindLiveEvents() {
+      document.querySelectorAll('input[name="role-family"], input[name="sector-focus"], input[name="level-choice"], input[name="source-choice"]').forEach((input) => {
+        input.addEventListener("change", () => {
+          updateDisplaySummary();
+          refreshVisibleJobs();
+        });
+      });
+
+      document.getElementById("all-countries-toggle").addEventListener("change", () => {
+        updateDisplaySummary();
+        refreshVisibleJobs();
+      });
+
+      document.getElementById("select-all-sources").addEventListener("click", () => {
+        document.querySelectorAll('input[name="source-choice"]').forEach((input) => {
+          input.checked = true;
+        });
+        updateDisplaySummary();
+        refreshVisibleJobs();
+      });
+
+      document.getElementById("clear-all-sources").addEventListener("click", () => {
+        document.querySelectorAll('input[name="source-choice"]').forEach((input) => {
+          input.checked = false;
+        });
+        updateDisplaySummary();
+        refreshVisibleJobs();
+      });
+
+      document.getElementById("scan-button").addEventListener("click", launchScan);
+    }
+
     function init() {
-      ["keywords-wrap", "exclude-wrap", "location-wrap", "company-wrap"].forEach(createTagInput);
-      renderSourceOptions();
+      renderChoiceGroup("role-family-grid", "role-family", ROLE_OPTIONS);
+      renderChoiceGroup("sector-grid", "sector-focus", SECTOR_OPTIONS);
+      renderChoiceGroup("level-grid", "level-choice", LEVEL_OPTIONS);
+      renderSources();
+
+      createTagInput("extra-keywords-wrap", "Ajouter un mot-clé puis Entrée");
+      createTagInput("exclude-wrap", "Ajouter un terme à exclure puis Entrée", ["intern", "internship", "director", "vp", "head of", "chief"]);
+      createTagInput("countries-wrap", "Ajouter un pays ou une ville puis Entrée");
+      createTagInput("company-wrap", "Ajouter une entreprise puis Entrée");
 
       updateRangeLabel("weight-keywords", "weight-keywords-value");
       updateRangeLabel("weight-location", "weight-location-value");
@@ -1368,41 +1494,8 @@
       updateRangeLabel("score-range", "score-range-value");
       updateRangeLabel("max-range", "max-range-value");
 
-      document.getElementById("scan-button").addEventListener("click", launchScan);
-
-      document.querySelectorAll(".preset-button").forEach((button) => {
-        button.addEventListener("click", () => applyPreset(button.dataset.preset));
-      });
-
-      document.querySelectorAll(".focus-button").forEach((button) => {
-        button.addEventListener("click", () => applyFocus(button.dataset.focus));
-      });
-
-      document.getElementById("select-all-sources").addEventListener("click", () => {
-        setSelectedSources(ALL_SOURCES);
-        updateDisplaySummary();
-        refreshVisibleJobs();
-      });
-
-      document.getElementById("clear-all-sources").addEventListener("click", () => {
-        setSelectedSources([]);
-        updateDisplaySummary();
-        refreshVisibleJobs();
-      });
-
-      document.querySelectorAll(".source-checkbox").forEach((checkbox) => {
-        checkbox.addEventListener("change", () => {
-          updateDisplaySummary();
-          refreshVisibleJobs();
-        });
-      });
-
-      document.getElementById("level-filter").addEventListener("change", () => {
-        updateDisplaySummary();
-        refreshVisibleJobs();
-      });
-
-      applyCurrentConfiguration("Configuration chargee. Choisis un preset ou un focus puis lance un scan.");
+      bindLiveEvents();
+      updateDisplaySummary();
       loadJobsFromBackend();
     }
 
