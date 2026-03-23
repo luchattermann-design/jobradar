@@ -23,1482 +23,707 @@
       --font-display: "Syne", sans-serif;
       --font-body: "DM Sans", sans-serif;
     }
-
     * { box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
-
     body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: var(--font-body);
+      margin: 0; min-height: 100vh; font-family: var(--font-body);
       color: var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(168, 255, 56, 0.10), transparent 25%),
-        radial-gradient(circle at top right, rgba(102, 199, 255, 0.10), transparent 25%),
+      background: radial-gradient(circle at top left, rgba(168,255,56,0.10), transparent 25%),
+        radial-gradient(circle at top right, rgba(102,199,255,0.10), transparent 25%),
         linear-gradient(180deg, #07090d 0%, #0b0d11 100%);
       overflow-x: hidden;
     }
-
     body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.05;
+      content: ""; position: fixed; inset: 0; pointer-events: none; opacity: 0.05;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       z-index: 0;
     }
-
-    .page-shell {
-      width: min(1380px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 28px 0 56px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .nav-logo {
-      text-decoration: none;
-      color: var(--text);
-      font-family: var(--font-display);
-      font-size: 1.35rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-    }
-
+    .page-shell { width: min(1380px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 56px; position: relative; z-index: 1; }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+    .nav-logo { text-decoration: none; color: var(--text); font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; letter-spacing: -0.03em; }
     .nav-logo span { color: var(--accent); }
-
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 24px;
-      align-items: end;
-      margin-bottom: 24px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-size: 0.78rem;
-      color: var(--accent);
-      margin: 0 0 14px;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 18px rgba(168, 255, 56, 0.7);
-    }
-
-    h1, h2, h3 {
-      margin: 0;
-      line-height: 1.02;
-    }
-
-    h1 {
-      font-family: var(--font-display);
-      font-size: clamp(2.7rem, 6vw, 5.2rem);
-      letter-spacing: -0.04em;
-      max-width: 12ch;
-      margin-bottom: 16px;
-    }
-
-    .hero-copy {
-      margin: 0;
-      max-width: 70ch;
-      color: var(--muted);
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-
-    .primary-button,
-    .secondary-button {
-      border: 0;
-      cursor: pointer;
-      font: inherit;
-      transition: 0.2s ease;
-    }
-
-    .primary-button {
-      padding: 16px 26px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-      color: #0b1203;
-      font-weight: 700;
-      box-shadow: var(--shadow);
-      white-space: nowrap;
-    }
-
+    .nav-tabs { display: flex; gap: 8px; }
+    .nav-tab { padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--muted); font: inherit; font-size: 0.9rem; cursor: pointer; transition: 0.2s; }
+    .nav-tab.active { background: rgba(168,255,56,0.12); border-color: rgba(168,255,56,0.35); color: var(--accent); }
+    .nav-tab:hover:not(.active) { color: var(--text); background: rgba(255,255,255,0.05); }
+    .page-view { display: none; }
+    .page-view.active { display: block; }
+    .hero { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 24px; align-items: end; margin-bottom: 24px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.78rem; color: var(--accent); margin: 0 0 14px; }
+    .eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 18px rgba(168,255,56,0.7); }
+    h1, h2, h3 { margin: 0; line-height: 1.02; }
+    h1 { font-family: var(--font-display); font-size: clamp(2.7rem,6vw,5.2rem); letter-spacing: -0.04em; max-width: 12ch; margin-bottom: 16px; }
+    .hero-copy { margin: 0; max-width: 70ch; color: var(--muted); font-size: 1rem; line-height: 1.6; }
+    .primary-button, .secondary-button { border: 0; cursor: pointer; font: inherit; transition: 0.2s ease; }
+    .primary-button { padding: 16px 26px; border-radius: 999px; background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%); color: #0b1203; font-weight: 700; box-shadow: var(--shadow); white-space: nowrap; }
     .primary-button:hover { transform: translateY(-1px); }
-
-    .secondary-button {
-      padding: 10px 14px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .secondary-button:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.14);
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(360px, 500px) minmax(0, 1fr);
-      gap: 24px;
-    }
-
-    .panel {
-      padding: 24px;
-      border-radius: 28px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-    }
-
-    .panel h2 {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      letter-spacing: -0.03em;
-      margin-bottom: 18px;
-    }
-
+    .secondary-button { padding: 10px 14px; border-radius: 14px; background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border); }
+    .secondary-button:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.14); }
+    .layout { display: grid; grid-template-columns: minmax(360px,500px) minmax(0,1fr); gap: 24px; }
+    .panel { padding: 24px; border-radius: 28px; background: var(--panel); border: 1px solid var(--border); box-shadow: var(--shadow); backdrop-filter: blur(14px); }
+    .panel h2 { font-family: var(--font-display); font-size: 1.8rem; letter-spacing: -0.03em; margin-bottom: 18px; }
     .group + .group { margin-top: 24px; }
-
-    .group-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-
-    .group-title h3 {
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      letter-spacing: -0.02em;
-    }
-
-    .helper {
-      margin: 0 0 12px;
-      color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.5;
-    }
-
-    .mini-note {
-      margin: 8px 0 0;
-      color: var(--muted2);
-      font-size: 0.84rem;
-      line-height: 1.45;
-    }
-
-    .choice-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
-      gap: 10px;
-    }
-
-    .choice-card {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      padding: 12px 14px;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: var(--bg2);
-      cursor: pointer;
-      min-height: 64px;
-    }
-
-    .choice-card input {
-      margin-top: 3px;
-      accent-color: var(--accent);
-      flex-shrink: 0;
-    }
-
-    .choice-card span {
-      font-size: 0.93rem;
-      line-height: 1.35;
-      color: var(--text);
-    }
-
-    .tag-wrap {
-      padding: 14px;
-      border-radius: 18px;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      min-height: 62px;
-    }
-
-    .tag-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .tag {
-      border: 0;
-      border-radius: 999px;
-      padding: 8px 12px;
-      background: rgba(168, 255, 56, 0.12);
-      color: var(--accent);
-      cursor: pointer;
-      font: inherit;
-      font-size: 0.84rem;
-    }
-
-    .tag-input {
-      width: 100%;
-      border: 0;
-      outline: none;
-      background: transparent;
-      color: var(--text);
-      font: inherit;
-      padding: 6px 0 2px;
-    }
-
+    .group-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+    .group-title h3 { font-family: var(--font-display); font-size: 1.05rem; letter-spacing: -0.02em; }
+    .helper { margin: 0 0 12px; color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
+    .mini-note { margin: 8px 0 0; color: var(--muted2); font-size: 0.84rem; line-height: 1.45; }
+    .choice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px,1fr)); gap: 10px; }
+    .choice-card { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border: 1px solid var(--border); border-radius: 18px; background: var(--bg2); cursor: pointer; min-height: 64px; }
+    .choice-card input { margin-top: 3px; accent-color: var(--accent); flex-shrink: 0; }
+    .choice-card span { font-size: 0.93rem; line-height: 1.35; color: var(--text); }
+    .tag-wrap { padding: 14px; border-radius: 18px; background: var(--bg2); border: 1px solid var(--border); min-height: 62px; }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+    .tag { border: 0; border-radius: 999px; padding: 8px 12px; background: rgba(168,255,56,0.12); color: var(--accent); cursor: pointer; font: inherit; font-size: 0.84rem; }
+    .tag-input { width: 100%; border: 0; outline: none; background: transparent; color: var(--text); font: inherit; padding: 6px 0 2px; }
     .tag-input::placeholder { color: var(--muted2); }
-
-    .toggle-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      margin-top: 8px;
-    }
-
-    .toggle-card {
-      display: inline-flex;
-      gap: 10px;
-      align-items: center;
-      padding: 12px 14px;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      background: var(--bg2);
-      cursor: pointer;
-      color: var(--text);
-      font-size: 0.92rem;
-    }
-
-    .toggle-card input {
-      accent-color: var(--accent);
-    }
-
-    .source-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
-
-    .source-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
-    }
-
-    .source-card {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 14px;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: var(--bg2);
-      min-height: 206px;
-      cursor: pointer;
-    }
-
-    .source-card-top {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-    }
-
-    .source-card-top input {
-      margin-top: 3px;
-      accent-color: var(--accent);
-    }
-
-    .source-card-title {
-      display: block;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .source-card-type {
-      display: inline-block;
-      margin-top: 5px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      font-size: 0.76rem;
-      color: var(--secondary);
-      background: rgba(102, 199, 255, 0.12);
-    }
-
-    .source-card-description,
-    .source-card-focus {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.88rem;
-      line-height: 1.45;
-    }
-
+    .toggle-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 8px; }
+    .toggle-card { display: inline-flex; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 16px; border: 1px solid var(--border); background: var(--bg2); cursor: pointer; color: var(--text); font-size: 0.92rem; }
+    .toggle-card input { accent-color: var(--accent); }
+    .source-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+    .source-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 12px; }
+    .source-card { display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: 18px; border: 1px solid var(--border); background: var(--bg2); min-height: 206px; cursor: pointer; }
+    .source-card-top { display: flex; align-items: flex-start; gap: 10px; }
+    .source-card-top input { margin-top: 3px; accent-color: var(--accent); }
+    .source-card-title { display: block; font-weight: 700; color: var(--text); }
+    .source-card-type { display: inline-block; margin-top: 5px; padding: 4px 8px; border-radius: 999px; font-size: 0.76rem; color: var(--secondary); background: rgba(102,199,255,0.12); }
+    .source-card-description, .source-card-focus { margin: 0; color: var(--muted); font-size: 0.88rem; line-height: 1.45; }
     .source-card-focus strong { color: var(--text); }
-
     .range-row + .range-row { margin-top: 14px; }
+    .range-row label { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 6px; font-size: 0.94rem; color: var(--text); }
+    input[type="range"] { width: 100%; accent-color: var(--accent); }
+    .status-card { padding: 18px; border-radius: 22px; background: var(--bg2); border: 1px solid var(--border); margin-bottom: 16px; }
+    .status-line, .results-top, .job-top, .job-tags { display: flex; justify-content: space-between; gap: 16px; }
+    .progress-bar { width: 100%; height: 12px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; margin: 12px 0; }
+    .progress-fill { width: 0%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--secondary) 0%, var(--accent) 100%); transition: width 0.25s ease; }
+    #status-text, #count-text, #display-summary, .empty-state, .job-meta, .job-description { color: var(--muted); }
+    .jobs-list { display: grid; gap: 14px; margin-top: 18px; }
+    .job-card { display: block; text-decoration: none; color: inherit; padding: 18px; border-radius: 22px; background: var(--bg2); border: 1px solid var(--border); transition: 0.2s ease; }
+    .job-card:hover { transform: translateY(-1px); background: var(--bg3); border-color: rgba(168,255,56,0.22); }
+    .job-title { font-size: 1.06rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .job-meta { font-size: 0.9rem; margin-bottom: 10px; }
+    .job-description { margin: 0 0 12px; font-size: 0.92rem; line-height: 1.55; }
+    .pill { display: inline-flex; align-items: center; padding: 6px 10px; border-radius: 999px; font-size: 0.78rem; background: rgba(168,255,56,0.12); color: var(--accent); margin-bottom: 10px; }
+    .job-tags { flex-wrap: wrap; font-size: 0.82rem; color: var(--muted); margin-bottom: 10px; }
+    .score-box { min-width: 88px; text-align: center; padding: 12px; border-radius: 18px; color: #091006; background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%); flex-shrink: 0; font-weight: 700; }
+    .score-box strong { display: block; font-size: 1.45rem; line-height: 1; margin-bottom: 4px; }
+    .job-link { color: var(--accent); font-size: 0.9rem; }
+    .empty-state { text-align: center; padding: 32px 16px; line-height: 1.6; }
+    .footer-note { margin-top: 18px; color: var(--muted2); font-size: 0.82rem; text-align: center; }
 
-    .range-row label {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 6px;
-      font-size: 0.94rem;
-      color: var(--text);
-    }
-
-    input[type="range"] {
-      width: 100%;
-      accent-color: var(--accent);
-    }
-
-    .status-card {
-      padding: 18px;
-      border-radius: 22px;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      margin-bottom: 16px;
-    }
-
-    .status-line,
-    .results-top,
-    .job-top,
-    .job-tags {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 12px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.08);
-      overflow: hidden;
-      margin: 12px 0;
-    }
-
-    .progress-fill {
-      width: 0%;
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--secondary) 0%, var(--accent) 100%);
-      transition: width 0.25s ease;
-    }
-
-    #status-text,
-    #count-text,
-    #display-summary,
-    .empty-state,
-    .job-meta,
-    .job-description {
-      color: var(--muted);
-    }
-
-    .jobs-list {
-      display: grid;
-      gap: 14px;
-      margin-top: 18px;
-    }
-
-    .job-card {
-      display: block;
-      text-decoration: none;
-      color: inherit;
-      padding: 18px;
-      border-radius: 22px;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      transition: 0.2s ease;
-    }
-
-    .job-card:hover {
-      transform: translateY(-1px);
-      background: var(--bg3);
-      border-color: rgba(168, 255, 56, 0.22);
-    }
-
-    .job-title {
-      font-size: 1.06rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-
-    .job-meta {
-      font-size: 0.9rem;
-      margin-bottom: 10px;
-    }
-
-    .job-description {
-      margin: 0 0 12px;
-      font-size: 0.92rem;
-      line-height: 1.55;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      background: rgba(168, 255, 56, 0.12);
-      color: var(--accent);
-      margin-bottom: 10px;
-    }
-
-    .job-tags {
-      flex-wrap: wrap;
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
-    .score-box {
-      min-width: 88px;
-      text-align: center;
-      padding: 12px;
-      border-radius: 18px;
-      color: #091006;
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-      flex-shrink: 0;
-      font-weight: 700;
-    }
-
-    .score-box strong {
-      display: block;
-      font-size: 1.45rem;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .job-link {
-      color: var(--accent);
-      font-size: 0.9rem;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 32px 16px;
-      line-height: 1.6;
-    }
-
-    .footer-note {
-      margin-top: 18px;
-      color: var(--muted2);
-      font-size: 0.82rem;
-      text-align: center;
-    }
-
-    @media (max-width: 1024px) {
-      .hero,
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      h1 { max-width: none; }
-    }
-
-    @media (max-width: 640px) {
-      .page-shell {
-        width: min(100% - 20px, 1380px);
-      }
-
-      .panel {
-        padding: 18px;
-        border-radius: 22px;
-      }
-
-      .source-grid,
-      .choice-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    /* ── DASHBOARD ── */
+    .dash-header { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 24px; align-items: end; margin-bottom: 28px; }
+    .dash-header h1 { font-family: var(--font-display); font-size: clamp(2rem,4vw,3.5rem); letter-spacing: -0.04em; }
+    .dash-view-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+    .dash-view-tab { padding: 9px 18px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--muted); font: inherit; font-size: 0.88rem; cursor: pointer; transition: 0.2s; }
+    .dash-view-tab.active { background: rgba(168,255,56,0.12); border-color: rgba(168,255,56,0.35); color: var(--accent); }
+    .dash-view-tab:hover:not(.active) { color: var(--text); background: rgba(255,255,255,0.05); }
+    .dash-panel { display: none; }
+    .dash-panel.active { display: block; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 14px; margin-bottom: 24px; }
+    .stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 22px; padding: 20px; text-align: center; }
+    .stat-card .big-num { font-family: var(--font-display); font-size: 2.4rem; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+    .stat-card .stat-lbl { font-size: 0.78rem; color: var(--muted); margin-top: 6px; }
+    .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+    .chart-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 22px; padding: 20px; }
+    .chart-title { font-family: var(--font-display); font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+    .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .bar-label { font-size: 0.82rem; color: var(--text); width: 100px; flex-shrink: 0; }
+    .bar-track { flex: 1; background: rgba(255,255,255,0.06); border-radius: 999px; height: 8px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: inherit; transition: width 0.6s ease; }
+    .bar-count { font-size: 0.78rem; color: var(--muted); width: 24px; text-align: right; flex-shrink: 0; }
+    .kanban { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
+    .kanban-col { background: var(--bg2); border: 1px solid var(--border); border-radius: 22px; min-height: 320px; overflow: hidden; }
+    .kanban-header { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .kanban-title { font-family: var(--font-display); font-size: 0.88rem; font-weight: 700; }
+    .kanban-count { font-size: 0.72rem; background: rgba(255,255,255,0.07); padding: 2px 8px; border-radius: 999px; color: var(--muted); }
+    .kanban-body { padding: 8px; min-height: 200px; }
+    .kanban-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 14px; padding: 12px; margin-bottom: 8px; cursor: pointer; transition: 0.15s; }
+    .kanban-card:hover { border-color: rgba(168,255,56,0.3); }
+    .kanban-card .kc-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 3px; color: var(--text); }
+    .kanban-card .kc-company { font-size: 0.78rem; color: var(--muted); }
+    .kanban-card .kc-date { font-size: 0.72rem; color: var(--muted2); margin-top: 6px; }
+    .kanban-add { width: calc(100% - 16px); margin: 0 8px 8px; background: none; border: 1px dashed rgba(255,255,255,0.1); color: var(--muted2); border-radius: 12px; padding: 8px; font: inherit; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
+    .kanban-add:hover { border-color: rgba(168,255,56,0.3); color: var(--accent); }
+    .app-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    .app-table th { text-align: left; padding: 10px 14px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 500; }
+    .app-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--text); }
+    .app-table tbody tr { cursor: pointer; transition: 0.15s; }
+    .app-table tbody tr:hover td { background: var(--bg2); }
+    .status-badge { font-size: 0.72rem; padding: 3px 10px; border-radius: 999px; font-weight: 600; white-space: nowrap; }
+    .s-todo      { background: rgba(255,255,255,0.07); color: var(--muted); }
+    .s-applied   { background: rgba(168,255,56,0.14); color: var(--accent); }
+    .s-interview { background: rgba(102,199,255,0.14); color: var(--secondary); }
+    .s-offer     { background: rgba(29,200,117,0.14); color: #5DCAA5; }
+    .s-rejected  { background: rgba(255,100,100,0.14); color: #ff8c7e; }
+    .reminder-list { display: flex; flex-direction: column; gap: 12px; }
+    .reminder-item { background: var(--bg2); border: 1px solid var(--border); border-radius: 18px; padding: 16px 20px; display: flex; align-items: center; gap: 16px; cursor: pointer; transition: 0.15s; }
+    .reminder-item:hover { border-color: rgba(168,255,56,0.25); }
+    .reminder-date { font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; color: var(--accent); flex-shrink: 0; min-width: 64px; text-align: center; letter-spacing: -0.03em; }
+    .reminder-date small { display: block; font-size: 0.68rem; color: var(--muted); font-family: var(--font-body); font-weight: 400; margin-top: 2px; }
+    .reminder-info { flex: 1; }
+    .reminder-title { font-size: 0.92rem; font-weight: 600; color: var(--text); }
+    .reminder-sub { font-size: 0.8rem; color: var(--muted); margin-top: 3px; }
+    .reminder-urgent { border-color: rgba(255,100,100,0.3); }
+    .reminder-urgent .reminder-date { color: #ff8c7e; }
+    .list-toolbar { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+    .dash-input { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; color: var(--text); padding: 10px 14px; font: inherit; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
+    .dash-input:focus { border-color: rgba(168,255,56,0.4); }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 500; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 28px; padding: 28px; width: 90%; max-width: 540px; max-height: 92vh; overflow-y: auto; box-shadow: var(--shadow); }
+    .modal-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; margin: 0 0 20px; letter-spacing: -0.03em; }
+    .form-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .form-group2 { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+    .form-group2 label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
+    .btn-danger { background: rgba(255,100,100,0.12); color: #ff8c7e; border: 1px solid rgba(255,100,100,0.25); border-radius: 12px; padding: 10px 16px; font: inherit; font-size: 0.875rem; cursor: pointer; transition: 0.2s; }
+    .btn-cancel { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid var(--border); border-radius: 12px; padding: 10px 16px; font: inherit; font-size: 0.875rem; cursor: pointer; transition: 0.2s; }
+    .btn-save { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #0b1203; border: none; border-radius: 12px; padding: 10px 22px; font: inherit; font-size: 0.875rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    @media(max-width:1024px) { .hero, .layout { grid-template-columns: 1fr; } h1 { max-width: none; } .kanban { grid-template-columns: repeat(2,1fr); } .chart-row { grid-template-columns: 1fr; } }
+    @media(max-width:640px) { .page-shell { width: min(100% - 20px, 1380px); } .panel { padding: 18px; border-radius: 22px; } .source-grid, .choice-grid { grid-template-columns: 1fr; } .kanban { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <div class="page-shell">
     <div class="nav">
       <a href="#" class="nav-logo">Job<span>Radar</span></a>
+      <div class="nav-tabs">
+        <button class="nav-tab active" onclick="switchPage('scan')">🔍 Scanner</button>
+        <button class="nav-tab" onclick="switchPage('dashboard')">📊 Dashboard</button>
+      </div>
     </div>
 
-    <header class="hero">
-      <div>
-        <p class="eyebrow">Business School Search</p>
-        <h1>Configure tout en multi-choix, sans te bloquer</h1>
-        <p class="hero-copy">
-          Tu peux maintenant cocher plusieurs familles de métiers, plusieurs niveaux, plusieurs sources
-          et saisir tes pays ou villes à l'écrit. Si tu ne coches rien dans une catégorie, JobRadar considère
-          que tu veux tout inclure.
-        </p>
+    <!-- ── PAGE SCAN ── -->
+    <div id="page-scan" class="page-view active">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Business School Search</p>
+          <h1>Configure tout en multi-choix, sans te bloquer</h1>
+          <p class="hero-copy">Tu peux maintenant cocher plusieurs familles de métiers, plusieurs niveaux, plusieurs sources et saisir tes pays ou villes à l'écrit.</p>
+        </div>
+        <button id="scan-button" class="primary-button">Lancer le scan</button>
+      </header>
+      <main class="layout">
+        <section class="panel">
+          <h2>Configuration</h2>
+          <div class="group">
+            <div class="group-title"><h3>Familles de métiers</h3></div>
+            <p class="helper">Coche ce que tu veux explorer. Si tu ne coches rien, on inclut toutes les familles business.</p>
+            <div id="role-family-grid" class="choice-grid"></div>
+          </div>
+          <div class="group">
+            <div class="group-title"><h3>Focus sectoriels</h3></div>
+            <p class="helper">Tu peux en choisir plusieurs. Si tu ne coches rien, il n'y a pas de restriction sectorielle.</p>
+            <div id="sector-grid" class="choice-grid"></div>
+          </div>
+          <div class="group">
+            <div class="group-title"><h3>Mots-clés additionnels</h3></div>
+            <p class="helper">Ajoute librement des mots-clés complémentaires.</p>
+            <div id="extra-keywords-wrap" class="tag-wrap"></div>
+          </div>
+          <div class="group">
+            <div class="group-title"><h3>Exclusions</h3></div>
+            <p class="helper">Tout ce que tu mets ici sera exclu.</p>
+            <div id="exclude-wrap" class="tag-wrap"></div>
+          </div>
+          <div class="group">
+            <div class="group-title"><h3>Pays et villes</h3></div>
+            <p class="helper">Saisis les pays ou villes que tu veux. Si tu ne mets rien, tous les pays sont autorisés.</p>
+            <div id="countries-wrap" class="tag-wrap"></div>
+            <div class="toggle-row">
+              <label class="toggle-card">
+                <input id="all-countries-toggle" type="checkbox" checked />
+                <span>Tous les pays du monde</span>
+              </label>
+            </div>
+          </div>
+          <div class="group">
+            <div class="group-title"><h3>Entreprises cibles</h3></div>
+            <p class="helper">Ajoute plusieurs entreprises si tu veux leur donner de l'importance.</p>
+            <div id="company-wrap" class="tag-wrap"></div>
+          </div>
+          <div class="group">
+            <div class="group-title"><h3>Niveaux</h3></div>
+            <p class="helper">Tu peux cocher plusieurs niveaux.</p>
+            <div id="level-grid" class="choice-grid"></div>
+          </div>
+          <div class="group">
+            <div class="group-title"><h3>Sources</h3></div>
+            <p class="helper">Tu peux cocher plusieurs sources.</p>
+            <div class="source-actions">
+              <button type="button" id="select-all-sources" class="secondary-button">Tout cocher</button>
+              <button type="button" id="clear-all-sources" class="secondary-button">Tout décocher</button>
+            </div>
+            <div id="source-list" class="source-grid"></div>
+          </div>
+          <div class="group">
+            <div class="group-title"><h3>Poids</h3></div>
+            <div class="range-row"><label for="weight-keywords"><span>Poids mots-clés</span><strong id="weight-keywords-value">40</strong></label><input id="weight-keywords" type="range" min="0" max="100" value="40" /></div>
+            <div class="range-row"><label for="weight-location"><span>Poids localisation</span><strong id="weight-location-value">20</strong></label><input id="weight-location" type="range" min="0" max="100" value="20" /></div>
+            <div class="range-row"><label for="weight-company"><span>Poids entreprise</span><strong id="weight-company-value">10</strong></label><input id="weight-company" type="range" min="0" max="100" value="10" /></div>
+          </div>
+          <div class="group">
+            <div class="group-title"><h3>Affichage</h3></div>
+            <div class="range-row"><label for="score-range"><span>Score minimum</span><strong id="score-range-value">10</strong></label><input id="score-range" type="range" min="0" max="100" value="10" /></div>
+            <div class="range-row"><label for="max-range"><span>Limite visible</span><strong id="max-range-value">90</strong></label><input id="max-range" type="range" min="5" max="150" step="5" value="90" /></div>
+          </div>
+        </section>
+        <section class="panel">
+          <h2>Résultats</h2>
+          <div class="status-card">
+            <div class="status-line"><span>Progression</span><strong id="progress-text">0%</strong></div>
+            <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+            <p id="status-text">Prêt à lancer un scan.</p>
+            <p id="count-text">0 offre visible</p>
+          </div>
+          <div class="results-top"><p id="display-summary">Configuration en cours de chargement...</p></div>
+          <div id="jobs-list" class="jobs-list"></div>
+          <p class="footer-note">Les cases peuvent être utilisées en multi-choix. Aucune case cochée = tout inclus.</p>
+        </section>
+      </main>
+    </div>
+
+    <!-- ── PAGE DASHBOARD ── -->
+    <div id="page-dashboard" class="page-view">
+      <div class="dash-header">
+        <div>
+          <p class="eyebrow">Suivi candidatures</p>
+          <h1>Mon dashboard</h1>
+        </div>
+        <button class="primary-button" onclick="openAddModal()">+ Ajouter</button>
       </div>
-      <button id="scan-button" class="primary-button">Lancer le scan</button>
-    </header>
+      <div class="dash-view-tabs">
+        <button class="dash-view-tab active" onclick="showDashTab('stats')">📊 Statistiques</button>
+        <button class="dash-view-tab" onclick="showDashTab('kanban')">🗂 Kanban</button>
+        <button class="dash-view-tab" onclick="showDashTab('list')">📋 Liste</button>
+        <button class="dash-view-tab" onclick="showDashTab('reminders')">🔔 Relances</button>
+      </div>
 
-    <main class="layout">
-      <section class="panel">
-        <h2>Configuration</h2>
-
-        <div class="group">
-          <div class="group-title">
-            <h3>Familles de métiers</h3>
-          </div>
-          <p class="helper">
-            Coche ce que tu veux explorer. Si tu ne coches rien, on inclut toutes les familles business.
-          </p>
-          <div id="role-family-grid" class="choice-grid"></div>
+      <!-- STATS -->
+      <div class="dash-panel active" id="dash-stats">
+        <div class="stats-grid" id="stats-grid"></div>
+        <div class="chart-row">
+          <div class="chart-box"><div class="chart-title">Par statut</div><div id="chart-status"></div></div>
+          <div class="chart-box"><div class="chart-title">Par source</div><div id="chart-source"></div></div>
         </div>
-
-        <div class="group">
-          <div class="group-title">
-            <h3>Focus sectoriels</h3>
-          </div>
-          <p class="helper">
-            Tu peux en choisir plusieurs. Si tu ne coches rien, il n’y a pas de restriction sectorielle.
-          </p>
-          <div id="sector-grid" class="choice-grid"></div>
+        <div class="chart-row">
+          <div class="chart-box"><div class="chart-title">Activité — candidatures par semaine</div><div id="chart-timeline"></div></div>
+          <div class="chart-box"><div class="chart-title">Taux de conversion par étape</div><div id="chart-funnel"></div></div>
         </div>
+      </div>
 
-        <div class="group">
-          <div class="group-title">
-            <h3>Mots-clés additionnels</h3>
-          </div>
-          <p class="helper">
-            Ajoute librement des mots-clés complémentaires. Tu peux en mettre plusieurs.
-          </p>
-          <div id="extra-keywords-wrap" class="tag-wrap"></div>
+      <!-- KANBAN -->
+      <div class="dash-panel" id="dash-kanban">
+        <div class="kanban" id="kanban-board"></div>
+      </div>
+
+      <!-- LIST -->
+      <div class="dash-panel" id="dash-list">
+        <div class="list-toolbar">
+          <input class="dash-input" id="list-search" type="text" placeholder="Rechercher…" oninput="renderList()" style="flex:1;min-width:200px;">
+          <select class="dash-input" id="list-filter" onchange="renderList()">
+            <option value="">Tous les statuts</option>
+            <option>À postuler</option><option>Postulé</option>
+            <option>Entretien</option><option>Offre</option><option>Refus</option>
+          </select>
         </div>
-
-        <div class="group">
-          <div class="group-title">
-            <h3>Exclusions</h3>
-          </div>
-          <p class="helper">
-            Tout ce que tu mets ici sera exclu. Tu peux ajouter plusieurs termes.
-          </p>
-          <div
-            id="exclude-wrap"
-            class="tag-wrap"
-            data-default-tags="intern,internship,director,vp,head of,chief"
-          ></div>
+        <div style="overflow-x:auto;">
+          <table class="app-table">
+            <thead><tr>
+              <th>Poste</th><th>Entreprise</th><th>Lieu</th><th>Source</th>
+              <th>Date</th><th>Statut</th><th>Contact RH</th><th></th>
+            </tr></thead>
+            <tbody id="list-body"></tbody>
+          </table>
         </div>
+      </div>
 
-        <div class="group">
-          <div class="group-title">
-            <h3>Pays et villes</h3>
-          </div>
-          <p class="helper">
-            Saisis les pays ou villes que tu veux, uniquement à l’écrit. Si tu ne mets rien, c’est comme si tous les pays étaient autorisés.
-          </p>
-          <div id="countries-wrap" class="tag-wrap"></div>
-          <div class="toggle-row">
-            <label class="toggle-card">
-              <input id="all-countries-toggle" type="checkbox" checked />
-              <span>Tous les pays du monde</span>
-            </label>
-          </div>
-          <p class="mini-note">
-            Si cette case est cochée, les pays/villes saisis ne bloquent pas les résultats.
-          </p>
+      <!-- REMINDERS -->
+      <div class="dash-panel" id="dash-reminders">
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:20px;">Candidatures sans réponse depuis plus de 7 jours.</p>
+        <div class="reminder-list" id="reminders-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="app-modal" onclick="closeModalOverlay(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <p class="modal-title" id="modal-title">Ajouter une candidature</p>
+      <input type="hidden" id="modal-id">
+      <div class="form-row2">
+        <div class="form-group2"><label>Poste *</label><input class="dash-input" id="m-position" placeholder="Customer Success Manager" style="width:100%"></div>
+        <div class="form-group2"><label>Entreprise *</label><input class="dash-input" id="m-company" placeholder="Stripe" style="width:100%"></div>
+      </div>
+      <div class="form-row2">
+        <div class="form-group2"><label>Localisation</label><input class="dash-input" id="m-location" placeholder="Zurich" style="width:100%"></div>
+        <div class="form-group2"><label>Source</label>
+          <select class="dash-input" id="m-source" style="width:100%">
+            <option>LinkedIn</option><option>Greenhouse</option><option>Lever</option><option>Ashby</option>
+            <option>WTTJ</option><option>RemoteOK</option><option>Himalayas</option><option>Hacker News</option><option>Autre</option>
+          </select>
         </div>
-
-        <div class="group">
-          <div class="group-title">
-            <h3>Entreprises cibles</h3>
-          </div>
-          <p class="helper">
-            Ajoute plusieurs entreprises si tu veux leur donner de l’importance.
-          </p>
-          <div id="company-wrap" class="tag-wrap"></div>
+      </div>
+      <div class="form-row2">
+        <div class="form-group2"><label>Statut</label>
+          <select class="dash-input" id="m-status" style="width:100%">
+            <option>À postuler</option><option>Postulé</option><option>Entretien</option><option>Offre</option><option>Refus</option>
+          </select>
         </div>
-
-        <div class="group">
-          <div class="group-title">
-            <h3>Niveaux</h3>
-          </div>
-          <p class="helper">
-            Tu peux cocher plusieurs niveaux. Si tu ne coches rien, on garde tous les niveaux.
-          </p>
-          <div id="level-grid" class="choice-grid"></div>
-        </div>
-
-        <div class="group">
-          <div class="group-title">
-            <h3>Sources</h3>
-          </div>
-          <p class="helper">
-            Tu peux cocher plusieurs sources. Si tu ne coches rien, JobRadar considère que toutes les sources sont actives.
-          </p>
-          <div class="source-actions">
-            <button type="button" id="select-all-sources" class="secondary-button">Tout cocher</button>
-            <button type="button" id="clear-all-sources" class="secondary-button">Tout décocher</button>
-          </div>
-          <div id="source-list" class="source-grid"></div>
-        </div>
-
-        <div class="group">
-          <div class="group-title">
-            <h3>Poids</h3>
-          </div>
-          <div class="range-row">
-            <label for="weight-keywords"><span>Poids mots-clés</span><strong id="weight-keywords-value">40</strong></label>
-            <input id="weight-keywords" type="range" min="0" max="100" value="40" />
-          </div>
-          <div class="range-row">
-            <label for="weight-location"><span>Poids localisation</span><strong id="weight-location-value">20</strong></label>
-            <input id="weight-location" type="range" min="0" max="100" value="20" />
-          </div>
-          <div class="range-row">
-            <label for="weight-company"><span>Poids entreprise</span><strong id="weight-company-value">10</strong></label>
-            <input id="weight-company" type="range" min="0" max="100" value="10" />
-          </div>
-        </div>
-
-        <div class="group">
-          <div class="group-title">
-            <h3>Affichage</h3>
-          </div>
-          <div class="range-row">
-            <label for="score-range"><span>Score minimum</span><strong id="score-range-value">10</strong></label>
-            <input id="score-range" type="range" min="0" max="100" value="10" />
-          </div>
-          <div class="range-row">
-            <label for="max-range"><span>Limite visible</span><strong id="max-range-value">90</strong></label>
-            <input id="max-range" type="range" min="5" max="150" step="5" value="90" />
-          </div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <h2>Résultats</h2>
-
-        <div class="status-card">
-          <div class="status-line">
-            <span>Progression</span>
-            <strong id="progress-text">0%</strong>
-          </div>
-          <div class="progress-bar">
-            <div id="progress-fill" class="progress-fill"></div>
-          </div>
-          <p id="status-text">Prêt à lancer un scan.</p>
-          <p id="count-text">0 offre visible</p>
-        </div>
-
-        <div class="results-top">
-          <p id="display-summary">Configuration en cours de chargement...</p>
-        </div>
-
-        <div id="jobs-list" class="jobs-list"></div>
-
-        <p class="footer-note">
-          Les cases peuvent être utilisées en multi-choix. Aucune case cochée = tout inclus.
-        </p>
-      </section>
-    </main>
+        <div class="form-group2"><label>Date de candidature</label><input class="dash-input" type="date" id="m-date" style="width:100%"></div>
+      </div>
+      <div class="form-group2"><label>Contact RH</label><input class="dash-input" id="m-contact" placeholder="Marie Dupont — marie@stripe.com" style="width:100%"></div>
+      <div class="form-group2"><label>Lien de l'offre</label><input class="dash-input" type="url" id="m-link" placeholder="https://..." style="width:100%"></div>
+      <div class="form-group2"><label>Notes</label>
+        <textarea class="dash-input" id="m-notes" placeholder="Impressions, prochaines étapes…" style="width:100%;min-height:80px;resize:vertical;"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-danger" id="modal-delete-btn" onclick="deleteApp()" style="display:none;margin-right:auto">Supprimer</button>
+        <button class="btn-cancel" onclick="document.getElementById('app-modal').classList.remove('open')">Annuler</button>
+        <button class="btn-save" onclick="saveApp()">Sauvegarder</button>
+      </div>
+    </div>
   </div>
 
   <script>
     const API_BASE = "https://jobradar-backend-2.onrender.com";
     const ALL_LEVELS = ["junior", "mid", "senior"];
 
+    // ── PAGE SWITCHING ──
+    function switchPage(name) {
+      document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach((b,i) => b.classList.toggle('active', ['scan','dashboard'][i] === name));
+      document.getElementById('page-' + name).classList.add('active');
+      if (name === 'dashboard') renderStats();
+    }
+
+    // ── SCAN CONFIG DATA ──
     const ROLE_OPTIONS = {
-      sales: {
-        label: "Sales",
-        keywords: ["sales", "sales executive", "sales representative", "commercial", "inside sales", "new business"]
-      },
-      account_executive: {
-        label: "Account Executive",
-        keywords: ["account executive", "mid-market account executive", "enterprise account executive", "ae"]
-      },
-      key_account: {
-        label: "Key Account",
-        keywords: ["key account manager", "strategic account manager", "global account manager", "national account manager"]
-      },
-      account_manager: {
-        label: "Account Manager",
-        keywords: ["account manager", "client partner", "relationship manager", "portfolio manager"]
-      },
-      customer_success: {
-        label: "Customer Success",
-        keywords: ["customer success", "customer success manager", "client success", "renewals", "onboarding", "implementation"]
-      },
-      business_development: {
-        label: "Business Development",
-        keywords: ["business development", "business development manager", "business development representative", "sdr", "bdr", "prospecting", "pipeline"]
-      },
-      partnerships: {
-        label: "Partnerships",
-        keywords: ["partnerships", "channel partnerships", "alliances", "partner manager", "ecosystem"]
-      },
-      revops: {
-        label: "RevOps / Sales Ops",
-        keywords: ["revenue operations", "revops", "sales operations", "customer success operations", "crm", "gtm operations"]
-      },
-      bizops: {
-        label: "Business Ops",
-        keywords: ["business operations", "bizops", "commercial operations", "planning", "reporting"]
-      },
-      growth: {
-        label: "Growth",
-        keywords: ["growth", "growth manager", "acquisition", "activation", "retention marketing", "expansion"]
-      },
-      marketing: {
-        label: "Marketing",
-        keywords: ["marketing", "growth marketing", "field marketing", "campaign", "content marketing", "demand generation"]
-      },
-      product_marketing: {
-        label: "Product Marketing",
-        keywords: ["product marketing", "product marketing manager", "positioning", "messaging", "launch", "sales enablement"]
-      },
-      brand: {
-        label: "Brand Management",
-        keywords: ["brand manager", "brand management", "brand marketing", "luxury brand manager", "trade marketing"]
-      },
-      category: {
-        label: "Category Management",
-        keywords: ["category manager", "category development manager", "category management", "assortment", "merchandising"]
-      },
-      crm: {
-        label: "CRM / Lifecycle",
-        keywords: ["crm", "crm manager", "lifecycle marketing", "automation", "segmentation", "email marketing"]
-      },
-      strategy: {
-        label: "Strategy",
-        keywords: ["strategy", "strategy associate", "commercial strategy", "go to market", "pricing"]
-      },
-      consulting: {
-        label: "Consulting",
-        keywords: ["consulting", "consultant", "management consultant", "problem solving", "recommendations"]
-      },
-      finance: {
-        label: "Finance / FP&A",
-        keywords: ["finance", "fp&a", "fp&a analyst", "budgeting", "forecasting", "management reporting", "margin"]
-      },
-      analyst: {
-        label: "Business Analyst",
-        keywords: ["business analyst", "commercial analyst", "analyst", "kpi", "performance analysis", "data analysis"]
-      },
-      project_management: {
-        label: "Project / Program",
-        keywords: ["project manager", "program manager", "project management", "stakeholder management", "delivery"]
-      },
-      operations: {
-        label: "Operations",
-        keywords: ["operations", "operations manager", "operations associate", "process improvement", "execution"]
-      },
-      supply_chain: {
-        label: "Supply Chain",
-        keywords: ["supply chain", "supply chain analyst", "inventory", "planning", "flow"]
-      },
-      procurement: {
-        label: "Procurement",
-        keywords: ["procurement", "procurement manager", "sourcing", "supplier negotiations", "vendor management"]
-      },
-      ecommerce: {
-        label: "E-commerce",
-        keywords: ["e-commerce", "ecommerce", "e-commerce manager", "conversion", "online commercial performance"]
-      },
-      market_research: {
-        label: "Market Research",
-        keywords: ["market research", "market research analyst", "customer insights", "consumer insights", "competitive analysis"]
-      },
-      retail: {
-        label: "Retail / Merchandising",
-        keywords: ["retail", "retail merchandising manager", "merchandising", "shopper marketing", "point of sale", "sell-out"]
-      },
-      enablement: {
-        label: "Sales Enablement",
-        keywords: ["sales enablement", "enablement", "playbooks", "training", "commercial excellence"]
-      },
-      education: {
-        label: "Customer Education",
-        keywords: ["customer education", "customer training", "adoption programs", "webinars"]
-      }
+      sales: { label: "Sales", keywords: ["sales","sales executive","sales representative","commercial","inside sales","new business"] },
+      account_executive: { label: "Account Executive", keywords: ["account executive","mid-market account executive","enterprise account executive","ae"] },
+      key_account: { label: "Key Account", keywords: ["key account manager","strategic account manager","global account manager","national account manager"] },
+      account_manager: { label: "Account Manager", keywords: ["account manager","client partner","relationship manager","portfolio manager"] },
+      customer_success: { label: "Customer Success", keywords: ["customer success","customer success manager","client success","renewals","onboarding","implementation"] },
+      business_development: { label: "Business Development", keywords: ["business development","business development manager","business development representative","sdr","bdr","prospecting","pipeline"] },
+      partnerships: { label: "Partnerships", keywords: ["partnerships","channel partnerships","alliances","partner manager","ecosystem"] },
+      revops: { label: "RevOps / Sales Ops", keywords: ["revenue operations","revops","sales operations","customer success operations","crm","gtm operations"] },
+      bizops: { label: "Business Ops", keywords: ["business operations","bizops","commercial operations","planning","reporting"] },
+      growth: { label: "Growth", keywords: ["growth","growth manager","acquisition","activation","retention marketing","expansion"] },
+      marketing: { label: "Marketing", keywords: ["marketing","growth marketing","field marketing","campaign","content marketing","demand generation"] },
+      product_marketing: { label: "Product Marketing", keywords: ["product marketing","product marketing manager","positioning","messaging","launch","sales enablement"] },
+      brand: { label: "Brand Management", keywords: ["brand manager","brand management","brand marketing","luxury brand manager","trade marketing"] },
+      category: { label: "Category Management", keywords: ["category manager","category development manager","category management","assortment","merchandising"] },
+      crm: { label: "CRM / Lifecycle", keywords: ["crm","crm manager","lifecycle marketing","automation","segmentation","email marketing"] },
+      strategy: { label: "Strategy", keywords: ["strategy","strategy associate","commercial strategy","go to market","pricing"] },
+      consulting: { label: "Consulting", keywords: ["consulting","consultant","management consultant","problem solving","recommendations"] },
+      finance: { label: "Finance / FP&A", keywords: ["finance","fp&a","fp&a analyst","budgeting","forecasting","management reporting","margin"] },
+      analyst: { label: "Business Analyst", keywords: ["business analyst","commercial analyst","analyst","kpi","performance analysis","data analysis"] },
+      project_management: { label: "Project / Program", keywords: ["project manager","program manager","project management","stakeholder management","delivery"] },
+      operations: { label: "Operations", keywords: ["operations","operations manager","operations associate","process improvement","execution"] },
+      supply_chain: { label: "Supply Chain", keywords: ["supply chain","supply chain analyst","inventory","planning","flow"] },
+      procurement: { label: "Procurement", keywords: ["procurement","procurement manager","sourcing","supplier negotiations","vendor management"] },
+      ecommerce: { label: "E-commerce", keywords: ["e-commerce","ecommerce","e-commerce manager","conversion","online commercial performance"] },
+      market_research: { label: "Market Research", keywords: ["market research","market research analyst","customer insights","consumer insights","competitive analysis"] },
+      retail: { label: "Retail / Merchandising", keywords: ["retail","retail merchandising manager","merchandising","shopper marketing","point of sale","sell-out"] },
+      enablement: { label: "Sales Enablement", keywords: ["sales enablement","enablement","playbooks","training","commercial excellence"] },
+      education: { label: "Customer Education", keywords: ["customer education","customer training","adoption programs","webinars"] }
     };
-
     const SECTOR_OPTIONS = {
-      tech: {
-        label: "Tech / SaaS",
-        keywords: ["saas", "software", "b2b", "startup", "scale-up", "gtm", "product-led"]
-      },
-      luxury: {
-        label: "Luxe",
-        keywords: ["luxury", "premium", "high-end", "selective retail"]
-      },
-      consulting: {
-        label: "Conseil",
-        keywords: ["consulting", "strategy consulting", "advisory", "transformation", "problem solving"]
-      },
-      fmcg: {
-        label: "FMCG",
-        keywords: ["fmcg", "consumer goods", "cpg", "shopper marketing", "sell-out"]
-      },
-      finance: {
-        label: "Finance",
-        keywords: ["finance", "fp&a", "pricing", "controlling", "commercial finance"]
-      },
-      startup: {
-        label: "Startups",
-        keywords: ["startup", "founding", "early stage", "growth", "hands-on"]
-      },
-      corporate: {
-        label: "Corporate",
-        keywords: ["corporate", "international", "regional", "headquarters", "matrix"]
-      },
-      remote: {
-        label: "Remote",
-        keywords: ["remote", "distributed", "work from anywhere", "hybrid"]
-      }
+      tech: { label: "Tech / SaaS", keywords: ["saas","software","b2b","startup","scale-up","gtm","product-led"] },
+      luxury: { label: "Luxe", keywords: ["luxury","premium","high-end","selective retail"] },
+      consulting: { label: "Conseil", keywords: ["consulting","strategy consulting","advisory","transformation","problem solving"] },
+      fmcg: { label: "FMCG", keywords: ["fmcg","consumer goods","cpg","shopper marketing","sell-out"] },
+      finance: { label: "Finance", keywords: ["finance","fp&a","pricing","controlling","commercial finance"] },
+      startup: { label: "Startups", keywords: ["startup","founding","early stage","growth","hands-on"] },
+      corporate: { label: "Corporate", keywords: ["corporate","international","regional","headquarters","matrix"] },
+      remote: { label: "Remote", keywords: ["remote","distributed","work from anywhere","hybrid"] }
     };
-
-    const LEVEL_OPTIONS = {
-      junior: "Junior",
-      mid: "Mid",
-      senior: "Senior"
-    };
-
-    const ALL_SOURCES = [
-      "Greenhouse",
-      "Lever",
-      "Ashby",
-      "RemoteOK",
-      "YCombinator",
-      "Welcome to the Jungle",
-      "Himalayas",
-      "We Work Remotely",
-      "Hacker News",
-      "Otta",
-      "Wellfound",
-      "LinkedIn",
-      "Indeed",
-      "Glassdoor",
-      "Flexa",
-      "EuroTechJobs",
-      "Built In",
-      "JobTeaser",
-      "Talent.com",
-      "StepStone",
-      "Adzuna",
-      "Reed"
-    ];
-
+    const LEVEL_OPTIONS = { junior: "Junior", mid: "Mid", senior: "Senior" };
+    const ALL_SOURCES = ["Greenhouse","Lever","Ashby","RemoteOK","YCombinator","Welcome to the Jungle","Himalayas","We Work Remotely","Hacker News","Otta","Wellfound","LinkedIn","Indeed","Glassdoor","Flexa","EuroTechJobs","Built In","JobTeaser","Talent.com","StepStone","Adzuna","Reed"];
     const SOURCE_METADATA = {
-      Greenhouse: {
-        type: "ATS / pages carrières",
-        description: "Regroupe surtout des offres publiées via Greenhouse, fréquent chez les startups, scale-ups et sociétés tech.",
-        focus: "Très utile pour business, sales, customer success, operations et marketing en environnement startup ou SaaS."
-      },
-      Lever: {
-        type: "ATS / pages carrières",
-        description: "Source issue des entreprises qui publient leurs offres via Lever, avec beaucoup d'acteurs tech et croissance.",
-        focus: "Souvent pertinent pour sales, business development, account management, partnerships et growth."
-      },
-      Ashby: {
-        type: "ATS / pages carrières",
-        description: "Plateforme de recrutement utilisée par de nombreuses startups et scale-ups modernes.",
-        focus: "Utile pour account management, revops, customer success, operations et go-to-market."
-      },
-      RemoteOK: {
-        type: "Remote-first",
-        description: "Job board centré sur le travail à distance, avec une forte composante tech et digital.",
-        focus: "À privilégier pour des rôles remote en sales, support client, growth, marketing ou operations."
-      },
-      YCombinator: {
-        type: "Startups",
-        description: "Écosystème startup très orienté early-stage, innovation et postes très larges.",
-        focus: "Idéal pour business development, account executive, operations, growth et rôles startup."
-      },
-      "Welcome to the Jungle": {
-        type: "Généraliste Europe",
-        description: "Plateforme très utilisée en France et en Europe, avec startup, scale-up et corporate.",
-        focus: "Très utile pour marketing, customer success, account management, partnerships et rôles business généralistes."
-      },
-      Himalayas: {
-        type: "Remote-first",
-        description: "Plateforme remote avec bonne présence de rôles digitaux et internationaux.",
-        focus: "Bonne source pour remote business, customer success, growth, marketing, operations et business analyst."
-      },
-      "We Work Remotely": {
-        type: "Remote-first",
-        description: "Job board historique du remote, très utilisé pour des postes internet et startup.",
-        focus: "Souvent utile pour customer success, account executive, marketing, revops et support business remote."
-      },
-      "Hacker News": {
-        type: "Startup / community",
-        description: "Source plus informelle issue de l’écosystème startup, souvent avec des rôles hybrides.",
-        focus: "Utile si tu es ouvert aux startups en forte croissance, postes business larges et rôles transverses."
-      },
-      Otta: {
-        type: "Tech / startups",
-        description: "Plateforme moderne orientée startups et scale-ups, forte sur les métiers business de croissance.",
-        focus: "Très pratique pour business development, account executive, customer success, ops et product marketing."
-      },
-      Wellfound: {
-        type: "Startups",
-        description: "Anciennement AngelList Talent, très orienté startup et environnement entrepreneurial.",
-        focus: "Utile pour sales, growth, partnerships, ops et account management en startup."
-      },
-      LinkedIn: {
-        type: "Généraliste",
-        description: "Grande plateforme généraliste avec beaucoup d’offres sur presque tous les secteurs white-collar.",
-        focus: "Bonne source large pour presque tous les métiers d’école de commerce, du junior au senior."
-      },
-      Indeed: {
-        type: "Généraliste",
-        description: "Agrégateur et job board très large, utile pour maximiser fortement le volume d’offres.",
-        focus: "À privilégier pour sales, marketing, support client, operations, analyste et finance."
-      },
-      Glassdoor: {
-        type: "Généraliste + avis",
-        description: "Plateforme emploi connue aussi pour les avis employeurs, avec une couverture assez large.",
-        focus: "Intéressante pour des rôles business généralistes si tu veux aussi évaluer les employeurs."
-      },
-      Flexa: {
-        type: "Flexible work",
-        description: "Plateforme orientée travail flexible, remote ou hybride.",
-        focus: "Très utile si ton critère principal est la flexibilité pour des métiers business et digitaux."
-      },
-      EuroTechJobs: {
-        type: "Tech Europe",
-        description: "Plateforme européenne orientée emplois tech et digitaux avec dimension internationale.",
-        focus: "Peut être utile pour growth, revops, account et partnerships en environnement tech européen."
-      },
-      "Built In": {
-        type: "Tech / startups",
-        description: "Site emploi centré sur les entreprises tech avec fiches sociétés et nombreux postes startup ou scale-up.",
-        focus: "Particulièrement pertinent pour GTM, sales, product marketing et customer success."
-      },
-      JobTeaser: {
-        type: "Étudiants / jeunes diplômés",
-        description: "Plateforme très connue chez les étudiants et jeunes diplômés, souvent connectée aux écoles.",
-        focus: "À cocher pour stages, graduate programs, VIE, alternances ou premiers CDI business."
-      },
-      "Talent.com": {
-        type: "Généraliste / agrégateur",
-        description: "Agrégateur large qui aide à capter du volume sur de nombreux secteurs et niveaux.",
-        focus: "Utile pour ratisser large sur les métiers business si tu veux maximiser tes options."
-      },
-      StepStone: {
-        type: "Généraliste Europe",
-        description: "Plateforme européenne bien implantée sur les postes white-collar et corporate.",
-        focus: "Bonne source pour marketing, account management, finance, procurement, supply chain et operations."
-      },
-      Adzuna: {
-        type: "Généraliste / agrégateur",
-        description: "Agrégateur emploi large qui fait remonter beaucoup d'offres issues de sites différents.",
-        focus: "Pratique pour élargir le volume total d'offres sur business, finance, sales et marketing."
-      },
-      Reed: {
-        type: "Généraliste UK",
-        description: "Site emploi historique au Royaume-Uni avec beaucoup de postes business et white-collar.",
-        focus: "À privilégier si Londres ou le marché UK t'intéressent pour sales, finance et operations."
-      }
+      Greenhouse:{type:"ATS / pages carrières",description:"Regroupe surtout des offres publiées via Greenhouse, fréquent chez les startups, scale-ups et sociétés tech.",focus:"Très utile pour business, sales, customer success, operations et marketing en environnement startup ou SaaS."},
+      Lever:{type:"ATS / pages carrières",description:"Source issue des entreprises qui publient leurs offres via Lever, avec beaucoup d'acteurs tech et croissance.",focus:"Souvent pertinent pour sales, business development, account management, partnerships et growth."},
+      Ashby:{type:"ATS / pages carrières",description:"Plateforme de recrutement utilisée par de nombreuses startups et scale-ups modernes.",focus:"Utile pour account management, revops, customer success, operations et go-to-market."},
+      RemoteOK:{type:"Remote-first",description:"Job board centré sur le travail à distance, avec une forte composante tech et digital.",focus:"À privilégier pour des rôles remote en sales, support client, growth, marketing ou operations."},
+      YCombinator:{type:"Startups",description:"Écosystème startup très orienté early-stage, innovation et postes très larges.",focus:"Idéal pour business development, account executive, operations, growth et rôles startup."},
+      "Welcome to the Jungle":{type:"Généraliste Europe",description:"Plateforme très utilisée en France et en Europe, avec startup, scale-up et corporate.",focus:"Très utile pour marketing, customer success, account management, partnerships et rôles business généralistes."},
+      Himalayas:{type:"Remote-first",description:"Plateforme remote avec bonne présence de rôles digitaux et internationaux.",focus:"Bonne source pour remote business, customer success, growth, marketing, operations et business analyst."},
+      "We Work Remotely":{type:"Remote-first",description:"Job board historique du remote, très utilisé pour des postes internet et startup.",focus:"Souvent utile pour customer success, account executive, marketing, revops et support business remote."},
+      "Hacker News":{type:"Startup / community",description:"Source plus informelle issue de l'écosystème startup, souvent avec des rôles hybrides.",focus:"Utile si tu es ouvert aux startups en forte croissance, postes business larges et rôles transverses."},
+      Otta:{type:"Tech / startups",description:"Plateforme moderne orientée startups et scale-ups, forte sur les métiers business de croissance.",focus:"Très pratique pour business development, account executive, customer success, ops et product marketing."},
+      Wellfound:{type:"Startups",description:"Anciennement AngelList Talent, très orienté startup et environnement entrepreneurial.",focus:"Utile pour sales, growth, partnerships, ops et account management en startup."},
+      LinkedIn:{type:"Généraliste",description:"Grande plateforme généraliste avec beaucoup d'offres sur presque tous les secteurs white-collar.",focus:"Bonne source large pour presque tous les métiers d'école de commerce, du junior au senior."},
+      Indeed:{type:"Généraliste",description:"Agrégateur et job board très large, utile pour maximiser fortement le volume d'offres.",focus:"À privilégier pour sales, marketing, support client, operations, analyste et finance."},
+      Glassdoor:{type:"Généraliste + avis",description:"Plateforme emploi connue aussi pour les avis employeurs, avec une couverture assez large.",focus:"Intéressante pour des rôles business généralistes si tu veux aussi évaluer les employeurs."},
+      Flexa:{type:"Flexible work",description:"Plateforme orientée travail flexible, remote ou hybride.",focus:"Très utile si ton critère principal est la flexibilité pour des métiers business et digitaux."},
+      EuroTechJobs:{type:"Tech Europe",description:"Plateforme européenne orientée emplois tech et digitaux avec dimension internationale.",focus:"Peut être utile pour growth, revops, account et partnerships en environnement tech européen."},
+      "Built In":{type:"Tech / startups",description:"Site emploi centré sur les entreprises tech avec fiches sociétés et nombreux postes startup ou scale-up.",focus:"Particulièrement pertinent pour GTM, sales, product marketing et customer success."},
+      JobTeaser:{type:"Étudiants / jeunes diplômés",description:"Plateforme très connue chez les étudiants et jeunes diplômés, souvent connectée aux écoles.",focus:"À cocher pour stages, graduate programs, VIE, alternances ou premiers CDI business."},
+      "Talent.com":{type:"Généraliste / agrégateur",description:"Agrégateur large qui aide à capter du volume sur de nombreux secteurs et niveaux.",focus:"Utile pour ratisser large sur les métiers business si tu veux maximiser tes options."},
+      StepStone:{type:"Généraliste Europe",description:"Plateforme européenne bien implantée sur les postes white-collar et corporate.",focus:"Bonne source pour marketing, account management, finance, procurement, supply chain et operations."},
+      Adzuna:{type:"Généraliste / agrégateur",description:"Agrégateur emploi large qui fait remonter beaucoup d'offres issues de sites différents.",focus:"Pratique pour élargir le volume total d'offres sur business, finance, sales et marketing."},
+      Reed:{type:"Généraliste UK",description:"Site emploi historique au Royaume-Uni avec beaucoup de postes business et white-collar.",focus:"À privilégier si Londres ou le marché UK t'intéressent pour sales, finance et operations."}
     };
 
-    const state = {
-      poller: null,
-      allJobs: [],
-      totalScored: 0
-    };
+    const state = { poller: null, allJobs: [], totalScored: 0 };
 
-    function uniqueValues(values) {
-      return [...new Set(values.filter(Boolean))];
-    }
+    function uniqueValues(v) { return [...new Set(v.filter(Boolean))]; }
+    function normalizeText(v) { return String(v||"").trim(); }
+    function normalizeLower(v) { return normalizeText(v).toLowerCase(); }
+    function escapeHtml(v) { return String(v).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#39;"); }
+    function scoreColor(s) { return s>=80?"#a8ff38":s>=60?"#ffd57e":"#ff8c7e"; }
 
-    function normalizeText(value) {
-      return String(value || "").trim();
-    }
-
-    function normalizeLower(value) {
-      return normalizeText(value).toLowerCase();
-    }
-
-    function escapeHtml(value) {
-      return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#39;");
-    }
-
-    function scoreColor(score) {
-      if (score >= 80) return "#a8ff38";
-      if (score >= 60) return "#ffd57e";
-      return "#ff8c7e";
-    }
-
-    function renderChoiceGroup(containerId, inputName, options, type = "checkbox") {
-      const container = document.getElementById(containerId);
-      container.innerHTML = "";
-
-      Object.entries(options).forEach(([value, config]) => {
-        const label = document.createElement("label");
-        label.className = "choice-card";
-        label.innerHTML = `
-          <input type="${type}" name="${inputName}" value="${escapeHtml(value)}" />
-          <span>${escapeHtml(typeof config === "string" ? config : config.label)}</span>
-        `;
-        container.appendChild(label);
+    function renderChoiceGroup(containerId, inputName, options, type="checkbox") {
+      const c = document.getElementById(containerId); c.innerHTML="";
+      Object.entries(options).forEach(([value,config]) => {
+        const l = document.createElement("label"); l.className="choice-card";
+        l.innerHTML=`<input type="${type}" name="${inputName}" value="${escapeHtml(value)}" /><span>${escapeHtml(typeof config==="string"?config:config.label)}</span>`;
+        c.appendChild(l);
       });
     }
-
     function renderSources() {
-      const container = document.getElementById("source-list");
-      container.innerHTML = "";
-
-      ALL_SOURCES.forEach((source) => {
-        const metadata = SOURCE_METADATA[source];
-
-        const label = document.createElement("label");
-        label.className = "source-card";
-        label.innerHTML = `
-          <div class="source-card-top">
-            <input type="checkbox" name="source-choice" value="${escapeHtml(source)}" />
-            <div>
-              <span class="source-card-title">${escapeHtml(source)}</span>
-              <span class="source-card-type">${escapeHtml(metadata.type)}</span>
-            </div>
-          </div>
-          <p class="source-card-description">${escapeHtml(metadata.description)}</p>
-          <p class="source-card-focus"><strong>Utile pour :</strong> ${escapeHtml(metadata.focus)}</p>
-        `;
-        container.appendChild(label);
+      const c = document.getElementById("source-list"); c.innerHTML="";
+      ALL_SOURCES.forEach(source => {
+        const m = SOURCE_METADATA[source];
+        const l = document.createElement("label"); l.className="source-card";
+        l.innerHTML=`<div class="source-card-top"><input type="checkbox" name="source-choice" value="${escapeHtml(source)}" /><div><span class="source-card-title">${escapeHtml(source)}</span><span class="source-card-type">${escapeHtml(m.type)}</span></div></div><p class="source-card-description">${escapeHtml(m.description)}</p><p class="source-card-focus"><strong>Utile pour :</strong> ${escapeHtml(m.focus)}</p>`;
+        c.appendChild(l);
       });
     }
-
-    function createTagInput(containerId, placeholder, initialValues = []) {
-      const container = document.getElementById(containerId);
-      container.innerHTML = "";
-
-      const tagList = document.createElement("div");
-      tagList.className = "tag-list";
-
-      const input = document.createElement("input");
-      input.type = "text";
-      input.className = "tag-input";
-      input.placeholder = placeholder;
-
-      container.append(tagList, input);
-
-      initialValues.forEach((value) => addTag(containerId, value));
-
-      input.addEventListener("keydown", (event) => {
-        if (event.key !== "Enter" && event.key !== ",") return;
-        event.preventDefault();
-        const value = input.value.trim();
-        if (!value) return;
-        addTag(containerId, value);
-        input.value = "";
-        updateDisplaySummary();
-        refreshVisibleJobs();
+    function createTagInput(containerId, placeholder, initialValues=[]) {
+      const c = document.getElementById(containerId); c.innerHTML="";
+      const tl = document.createElement("div"); tl.className="tag-list";
+      const inp = document.createElement("input"); inp.type="text"; inp.className="tag-input"; inp.placeholder=placeholder;
+      c.append(tl, inp);
+      initialValues.forEach(v => addTag(containerId, v));
+      inp.addEventListener("keydown", e => {
+        if (e.key!=="Enter"&&e.key!==",") return; e.preventDefault();
+        const v=inp.value.trim(); if(!v) return;
+        addTag(containerId,v); inp.value=""; updateDisplaySummary(); refreshVisibleJobs();
       });
     }
-
     function addTag(containerId, value) {
-      const container = document.getElementById(containerId);
-      const tagList = container.querySelector(".tag-list");
-      const normalized = value.trim();
-      if (!normalized) return;
-
-      const exists = Array.from(tagList.querySelectorAll(".tag")).some(
-        (tag) => normalizeLower(tag.dataset.value) === normalizeLower(normalized)
-      );
-      if (exists) return;
-
-      const tag = document.createElement("button");
-      tag.type = "button";
-      tag.className = "tag";
-      tag.dataset.value = normalized;
-      tag.textContent = normalized;
-      tag.addEventListener("click", () => {
-        tag.remove();
-        updateDisplaySummary();
-        refreshVisibleJobs();
-      });
-
-      tagList.appendChild(tag);
+      const c = document.getElementById(containerId);
+      const tl = c.querySelector(".tag-list"); const n=value.trim(); if(!n) return;
+      if(Array.from(tl.querySelectorAll(".tag")).some(t=>normalizeLower(t.dataset.value)===normalizeLower(n))) return;
+      const t=document.createElement("button"); t.type="button"; t.className="tag"; t.dataset.value=n; t.textContent=n;
+      t.addEventListener("click",()=>{t.remove();updateDisplaySummary();refreshVisibleJobs();});
+      tl.appendChild(t);
     }
-
-    function getTags(containerId) {
-      return Array.from(document.querySelectorAll(`#${containerId} .tag`)).map((tag) => tag.dataset.value);
-    }
-
-    function getCheckedValues(inputName) {
-      return Array.from(document.querySelectorAll(`input[name="${inputName}"]:checked`)).map((input) => input.value);
-    }
-
-    function getEffectiveRoleKeys() {
-      const selected = getCheckedValues("role-family");
-      return selected.length ? selected : Object.keys(ROLE_OPTIONS);
-    }
-
-    function getEffectiveSectorKeys() {
-      return getCheckedValues("sector-focus");
-    }
-
-    function getEffectiveLevels() {
-      const selected = getCheckedValues("level-choice");
-      return selected.length ? selected : ALL_LEVELS;
-    }
-
-    function getEffectiveSources() {
-      const selected = getCheckedValues("source-choice");
-      return selected.length ? selected : ALL_SOURCES;
-    }
-
-    function getLocationFilters() {
-      if (document.getElementById("all-countries-toggle").checked) return [];
-      return getTags("countries-wrap");
-    }
-
+    function getTags(id) { return Array.from(document.querySelectorAll(`#${id} .tag`)).map(t=>t.dataset.value); }
+    function getCheckedValues(n) { return Array.from(document.querySelectorAll(`input[name="${n}"]:checked`)).map(i=>i.value); }
+    function getEffectiveRoleKeys() { const s=getCheckedValues("role-family"); return s.length?s:Object.keys(ROLE_OPTIONS); }
+    function getEffectiveSectorKeys() { return getCheckedValues("sector-focus"); }
+    function getEffectiveLevels() { const s=getCheckedValues("level-choice"); return s.length?s:ALL_LEVELS; }
+    function getEffectiveSources() { const s=getCheckedValues("source-choice"); return s.length?s:ALL_SOURCES; }
+    function getLocationFilters() { return document.getElementById("all-countries-toggle").checked?[]:getTags("countries-wrap"); }
     function buildKeywordUniverse() {
-      const roleKeywords = getEffectiveRoleKeys().flatMap((key) => ROLE_OPTIONS[key].keywords);
-      const sectorKeywords = getEffectiveSectorKeys().flatMap((key) => SECTOR_OPTIONS[key].keywords);
-      const extraKeywords = getTags("extra-keywords-wrap");
-      return uniqueValues([...roleKeywords, ...sectorKeywords, ...extraKeywords]);
+      return uniqueValues([...getEffectiveRoleKeys().flatMap(k=>ROLE_OPTIONS[k].keywords),...getEffectiveSectorKeys().flatMap(k=>SECTOR_OPTIONS[k].keywords),...getTags("extra-keywords-wrap")]);
     }
-
     function buildScanPayload() {
-      return {
-        filters: {
-          keywords: buildKeywordUniverse(),
-          exclude: getTags("exclude-wrap"),
-          locations: getLocationFilters(),
-          levels: getEffectiveLevels(),
-          sources: getEffectiveSources(),
-          companies: getTags("company-wrap")
-        },
-        weights: {
-          keywords: Number(document.getElementById("weight-keywords").value),
-          location: Number(document.getElementById("weight-location").value),
-          company: Number(document.getElementById("weight-company").value),
-          semantic: 30
-        },
-        display: {
-          limit: 500,
-          min_score: 0
-        }
-      };
+      return { filters:{keywords:buildKeywordUniverse(),exclude:getTags("exclude-wrap"),locations:getLocationFilters(),levels:getEffectiveLevels(),sources:getEffectiveSources(),companies:getTags("company-wrap")}, weights:{keywords:Number(document.getElementById("weight-keywords").value),location:Number(document.getElementById("weight-location").value),company:Number(document.getElementById("weight-company").value),semantic:30}, display:{limit:500,min_score:0} };
     }
-
     function updateRangeLabel(inputId, outputId) {
-      const input = document.getElementById(inputId);
-      const output = document.getElementById(outputId);
-
-      const sync = () => {
-        output.textContent = input.value;
-        if (inputId === "score-range" || inputId === "max-range") {
-          updateDisplaySummary();
-          refreshVisibleJobs();
-        }
-      };
-
-      sync();
-      input.addEventListener("input", sync);
+      const inp=document.getElementById(inputId), out=document.getElementById(outputId);
+      const sync=()=>{out.textContent=inp.value;if(inputId==="score-range"||inputId==="max-range"){updateDisplaySummary();refreshVisibleJobs();}};
+      sync(); inp.addEventListener("input",sync);
     }
-
     function inferLevel(position) {
-      const title = normalizeLower(position);
-
-      if (["head", "director", "vp", "chief", "enterprise", "strategic", "global", "lead", "senior"].some((term) => title.includes(term))) {
-        return "senior";
-      }
-      if (["associate", "specialist", "representative", "analyst", "coordinator", "assistant", "junior"].some((term) => title.includes(term))) {
-        return "junior";
-      }
+      const t=normalizeLower(position);
+      if(["head","director","vp","chief","enterprise","strategic","global","lead","senior"].some(w=>t.includes(w))) return "senior";
+      if(["associate","specialist","representative","analyst","coordinator","assistant","junior"].some(w=>t.includes(w))) return "junior";
       return "mid";
     }
-
     function normalizeJob(job) {
-      const breakdown = job.score_breakdown || {};
-      return {
-        company: normalizeText(job.company),
-        description: normalizeText(job.description),
-        link: normalizeText(job.link),
-        location: normalizeText(job.location),
-        position: normalizeText(job.position),
-        source: normalizeText(job.source),
-        level: normalizeLower(job.level) || inferLevel(job.position),
-        score_breakdown: {
-          company: Number(breakdown.company || 0),
-          final: Number(breakdown.final || 0),
-          keywords: Number(breakdown.keywords || 0),
-          location: Number(breakdown.location || 0),
-          semantic: Number(breakdown.semantic || 0)
-        }
-      };
+      const b=job.score_breakdown||{};
+      return {company:normalizeText(job.company),description:normalizeText(job.description),link:normalizeText(job.link),location:normalizeText(job.location),position:normalizeText(job.position),source:normalizeText(job.source),level:normalizeLower(job.level)||inferLevel(job.position),score_breakdown:{company:Number(b.company||0),final:Number(b.final||0),keywords:Number(b.keywords||0),location:Number(b.location||0),semantic:Number(b.semantic||0)}};
     }
-
-    function jobBlob(job) {
-      return normalizeLower([job.company, job.position, job.location, job.description, job.level].join(" "));
-    }
-
+    function jobBlob(job) { return normalizeLower([job.company,job.position,job.location,job.description,job.level].join(" ")); }
     function applyClientFilters(jobs) {
-      const selectedLevelsRaw = getCheckedValues("level-choice");
-      const selectedSourcesRaw = getCheckedValues("source-choice");
-      const levelFilters = selectedLevelsRaw.length ? selectedLevelsRaw : ALL_LEVELS;
-      const sourceFilters = selectedSourcesRaw.length ? selectedSourcesRaw : ALL_SOURCES;
-      const keywordUniverse = buildKeywordUniverse().map(normalizeLower);
-      const excludeTerms = getTags("exclude-wrap").map(normalizeLower);
-      const locationTerms = getLocationFilters().map(normalizeLower);
-      const companyTerms = getTags("company-wrap").map(normalizeLower);
-      const minScore = Number(document.getElementById("score-range").value);
-      const limit = Number(document.getElementById("max-range").value);
-
-      return jobs
-        .filter((job) => sourceFilters.includes(job.source))
-        .filter((job) => levelFilters.includes(job.level))
-        .filter((job) => Number(job.score_breakdown.final || 0) >= minScore)
-        .filter((job) => {
-          const blob = jobBlob(job);
-          return !excludeTerms.some((term) => term && blob.includes(term));
-        })
-        .filter((job) => {
-          if (!keywordUniverse.length) return true;
-          const blob = jobBlob(job);
-          return keywordUniverse.some((term) => term && blob.includes(term));
-        })
-        .filter((job) => {
-          if (!locationTerms.length) return true;
-          const location = normalizeLower(job.location);
-          return locationTerms.some((term) => term && location.includes(term));
-        })
-        .filter((job) => {
-          if (!companyTerms.length) return true;
-          const company = normalizeLower(job.company);
-          return companyTerms.some((term) => term && company.includes(term));
-        })
-        .sort((a, b) => Number(b.score_breakdown.final || 0) - Number(a.score_breakdown.final || 0))
-        .slice(0, limit);
+      const lf=getCheckedValues("level-choice"),sf=getCheckedValues("source-choice");
+      const lev=lf.length?lf:ALL_LEVELS,src=sf.length?sf:ALL_SOURCES;
+      const kw=buildKeywordUniverse().map(normalizeLower),ex=getTags("exclude-wrap").map(normalizeLower);
+      const loc=getLocationFilters().map(normalizeLower),com=getTags("company-wrap").map(normalizeLower);
+      const min=Number(document.getElementById("score-range").value),lim=Number(document.getElementById("max-range").value);
+      return jobs.filter(j=>src.includes(j.source)).filter(j=>lev.includes(j.level)).filter(j=>Number(j.score_breakdown.final||0)>=min).filter(j=>{const b=jobBlob(j);return!ex.some(t=>t&&b.includes(t));}).filter(j=>{if(!kw.length)return true;const b=jobBlob(j);return kw.some(t=>t&&b.includes(t));}).filter(j=>{if(!loc.length)return true;const l=normalizeLower(j.location);return loc.some(t=>t&&l.includes(t));}).filter(j=>{if(!com.length)return true;const c=normalizeLower(j.company);return com.some(t=>t&&c.includes(t));}).sort((a,b)=>Number(b.score_breakdown.final||0)-Number(a.score_breakdown.final||0)).slice(0,lim);
     }
-
     function renderJobs(jobs) {
-      const list = document.getElementById("jobs-list");
-      list.innerHTML = "";
-
-      const totalLoaded = state.allJobs.length;
-      const countText = totalLoaded
-        ? `${jobs.length} offre${jobs.length > 1 ? "s" : ""} visible${jobs.length > 1 ? "s" : ""} sur ${totalLoaded}`
-        : `${jobs.length} offre${jobs.length > 1 ? "s" : ""} visible${jobs.length > 1 ? "s" : ""}`;
-
-      document.getElementById("count-text").textContent = countText;
-
-      if (!jobs.length) {
-        const empty = document.createElement("div");
-        empty.className = "empty-state";
-        empty.innerHTML = totalLoaded
-          ? `Aucune offre visible avec tes filtres actuels.<br>Il y a bien ${totalLoaded} offres chargées, mais elles sont filtrées par ta configuration.`
-          : `Aucune offre chargée pour le moment. Lance un scan pour récupérer les résultats.`;
-        list.appendChild(empty);
-        return;
-      }
-
-      jobs.forEach((job) => {
-        const score = Math.round(Number(job.score_breakdown.final || 0));
-        const card = document.createElement("a");
-        card.className = "job-card";
-        card.href = job.link || "#";
-        card.target = "_blank";
-        card.rel = "noopener noreferrer";
-
-        card.innerHTML = `
-          <div class="job-top">
-            <div>
-              <div class="pill">${escapeHtml(job.source)}</div>
-              <div class="job-title">${escapeHtml(job.position || "Sans titre")}</div>
-              <div class="job-meta">${escapeHtml(job.company || "Entreprise inconnue")} • ${escapeHtml(job.location || "N/A")} • ${escapeHtml(job.level || "mid")}</div>
-            </div>
-            <div class="score-box" style="background:${scoreColor(score)};color:#081006">
-              <strong>${score}</strong>
-              <span>score</span>
-            </div>
-          </div>
-          <p class="job-description">${escapeHtml((job.description || "").slice(0, 240))}${(job.description || "").length > 240 ? "..." : ""}</p>
-          <div class="job-tags">
-            <span>KW ${Math.round(Number(job.score_breakdown.keywords || 0))}</span>
-            <span>LOC ${Math.round(Number(job.score_breakdown.location || 0))}</span>
-            <span>ENT ${Math.round(Number(job.score_breakdown.company || 0))}</span>
-            <span>SEM ${Math.round(Number(job.score_breakdown.semantic || 0))}</span>
-          </div>
-          <div class="job-link">Voir l'offre</div>
-        `;
-
+      const list=document.getElementById("jobs-list"); list.innerHTML="";
+      const tot=state.allJobs.length;
+      document.getElementById("count-text").textContent=tot?`${jobs.length} offre${jobs.length>1?"s":""} visible${jobs.length>1?"s":""} sur ${tot}`:`${jobs.length} offre${jobs.length>1?"s":""}`;
+      if(!jobs.length){const e=document.createElement("div");e.className="empty-state";e.innerHTML=tot?`Aucune offre visible avec tes filtres actuels.<br>${tot} offres chargées mais filtrées.`:`Aucune offre chargée. Lance un scan.`;list.appendChild(e);return;}
+      jobs.forEach(job=>{
+        const score=Math.round(Number(job.score_breakdown.final||0));
+        const card=document.createElement("a");card.className="job-card";card.href=job.link||"#";card.target="_blank";card.rel="noopener noreferrer";
+        card.innerHTML=`<div class="job-top"><div><div class="pill">${escapeHtml(job.source)}</div><div class="job-title">${escapeHtml(job.position||"Sans titre")}</div><div class="job-meta">${escapeHtml(job.company||"?")} • ${escapeHtml(job.location||"N/A")} • ${escapeHtml(job.level||"mid")}</div></div><div class="score-box" style="background:${scoreColor(score)};color:#081006"><strong>${score}</strong><span>score</span></div></div><p class="job-description">${escapeHtml((job.description||"").slice(0,240))}${(job.description||"").length>240?"...":""}</p><div class="job-tags"><span>KW ${Math.round(Number(job.score_breakdown.keywords||0))}</span><span>LOC ${Math.round(Number(job.score_breakdown.location||0))}</span><span>ENT ${Math.round(Number(job.score_breakdown.company||0))}</span><span>SEM ${Math.round(Number(job.score_breakdown.semantic||0))}</span></div><div class="job-link">Voir l'offre →</div>`;
         list.appendChild(card);
       });
     }
-
-    function refreshVisibleJobs() {
-      renderJobs(applyClientFilters(state.allJobs));
-    }
-
+    function refreshVisibleJobs() { renderJobs(applyClientFilters(state.allJobs)); }
     async function loadJobsFromBackend() {
-      try {
-        const response = await fetch(`${API_BASE}/jobs?limit=500&min_score=0`);
-        const data = await response.json();
-        state.allJobs = Array.isArray(data.jobs) ? data.jobs.map(normalizeJob) : [];
-        refreshVisibleJobs();
-      } catch (error) {
-        document.getElementById("status-text").textContent = `Erreur de chargement des offres : ${error.message}`;
-      }
+      try { const r=await fetch(`${API_BASE}/jobs?limit=500&min_score=0`); const d=await r.json(); state.allJobs=Array.isArray(d.jobs)?d.jobs.map(normalizeJob):[]; refreshVisibleJobs(); }
+      catch(e) { document.getElementById("status-text").textContent=`Erreur : ${e.message}`; }
     }
-
-    function scanIsFinished(data) {
-      const status = normalizeLower(data.status);
-      return data.running === false || Number(data.progress || 0) >= 100 || status.includes("termine") || status.includes("terminé");
-    }
-
+    function scanIsFinished(d) { const s=normalizeLower(d.status); return d.running===false||Number(d.progress||0)>=100||s.includes("termine")||s.includes("terminé"); }
     async function pollStatus() {
-      const response = await fetch(`${API_BASE}/status`);
-      const data = await response.json();
-
-      document.getElementById("progress-text").textContent = `${data.progress || 0}%`;
-      document.getElementById("progress-fill").style.width = `${data.progress || 0}%`;
-      document.getElementById("status-text").textContent = data.status || "Scan en cours...";
-      state.totalScored = Number(data.count || 0);
-
-      if (scanIsFinished(data)) {
-        if (state.poller) {
-          clearInterval(state.poller);
-          state.poller = null;
-        }
-        document.getElementById("status-text").textContent = "Chargement des offres...";
-        await loadJobsFromBackend();
-        document.getElementById("status-text").textContent = `Scan terminé. ${data.count || 0} offres scorées côté backend.`;
-      }
+      const r=await fetch(`${API_BASE}/status`); const d=await r.json();
+      document.getElementById("progress-text").textContent=`${d.progress||0}%`;
+      document.getElementById("progress-fill").style.width=`${d.progress||0}%`;
+      document.getElementById("status-text").textContent=d.status||"Scan en cours...";
+      state.totalScored=Number(d.count||0);
+      if(scanIsFinished(d)){if(state.poller){clearInterval(state.poller);state.poller=null;}document.getElementById("status-text").textContent="Chargement des offres...";await loadJobsFromBackend();document.getElementById("status-text").textContent=`Scan terminé. ${d.count||0} offres scorées.`;}
     }
-
     async function launchScan() {
-      document.getElementById("status-text").textContent = "Connexion au backend...";
-      document.getElementById("progress-text").textContent = "0%";
-      document.getElementById("progress-fill").style.width = "0%";
-
+      document.getElementById("status-text").textContent="Connexion au backend...";
+      document.getElementById("progress-text").textContent="0%";
+      document.getElementById("progress-fill").style.width="0%";
       try {
-        const payload = buildScanPayload();
-        const response = await fetch(`${API_BASE}/scan`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          document.getElementById("status-text").textContent = data.message || "Impossible de lancer le scan.";
-          return;
-        }
-
-        document.getElementById("status-text").textContent = "Scan démarré...";
-        if (state.poller) clearInterval(state.poller);
-        await pollStatus();
-        state.poller = setInterval(pollStatus, 1500);
-      } catch (error) {
-        document.getElementById("status-text").textContent = `Erreur réseau : ${error.message}`;
-      }
+        const r=await fetch(`${API_BASE}/scan`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(buildScanPayload())});
+        const d=await r.json();
+        if(!r.ok){document.getElementById("status-text").textContent=d.message||"Impossible de lancer le scan.";return;}
+        document.getElementById("status-text").textContent="Scan démarré...";
+        if(state.poller) clearInterval(state.poller);
+        await pollStatus(); state.poller=setInterval(pollStatus,1500);
+      } catch(e){document.getElementById("status-text").textContent=`Erreur réseau : ${e.message}`;}
     }
-
     function updateDisplaySummary() {
-      const roleRaw = getCheckedValues("role-family");
-      const sectorsRaw = getCheckedValues("sector-focus");
-      const levelsRaw = getCheckedValues("level-choice");
-      const sourcesRaw = getCheckedValues("source-choice");
-      const countries = getTags("countries-wrap");
-      const allCountries = document.getElementById("all-countries-toggle").checked;
-
-      const roleText = roleRaw.length ? `${roleRaw.length} famille${roleRaw.length > 1 ? "s" : ""}` : "toutes les familles";
-      const sectorText = sectorsRaw.length ? `${sectorsRaw.length} focus` : "tous secteurs";
-      const levelText = levelsRaw.length ? levelsRaw.join(", ") : "tous niveaux";
-      const sourceText = sourcesRaw.length ? `${sourcesRaw.length} source${sourcesRaw.length > 1 ? "s" : ""}` : "toutes les sources";
-      const countryText = allCountries || !countries.length ? "tous pays" : countries.join(", ");
-
-      document.getElementById("display-summary").textContent =
-        `Filtres actifs : ${roleText}, ${sectorText}, niveaux ${levelText}, pays ${countryText}, ${sourceText}, score minimum ${document.getElementById("score-range").value}, limite ${document.getElementById("max-range").value}.`;
+      const rr=getCheckedValues("role-family"),sr=getCheckedValues("sector-focus"),lr=getCheckedValues("level-choice"),sor=getCheckedValues("source-choice"),co=getTags("countries-wrap"),ac=document.getElementById("all-countries-toggle").checked;
+      document.getElementById("display-summary").textContent=`Filtres actifs : ${rr.length?rr.length+" famille"+(rr.length>1?"s":""):"toutes les familles"}, ${sr.length?sr.length+" focus":"tous secteurs"}, niveaux ${lr.length?lr.join(", "):"tous"}, pays ${ac||!co.length?"tous":co.join(", ")}, ${sor.length?sor.length+" source"+(sor.length>1?"s":""):"toutes les sources"}, score min ${document.getElementById("score-range").value}, limite ${document.getElementById("max-range").value}.`;
     }
-
     function bindLiveEvents() {
-      document.querySelectorAll('input[name="role-family"], input[name="sector-focus"], input[name="level-choice"], input[name="source-choice"]').forEach((input) => {
-        input.addEventListener("change", () => {
-          updateDisplaySummary();
-          refreshVisibleJobs();
-        });
-      });
-
-      document.getElementById("all-countries-toggle").addEventListener("change", () => {
-        updateDisplaySummary();
-        refreshVisibleJobs();
-      });
-
-      document.getElementById("select-all-sources").addEventListener("click", () => {
-        document.querySelectorAll('input[name="source-choice"]').forEach((input) => {
-          input.checked = true;
-        });
-        updateDisplaySummary();
-        refreshVisibleJobs();
-      });
-
-      document.getElementById("clear-all-sources").addEventListener("click", () => {
-        document.querySelectorAll('input[name="source-choice"]').forEach((input) => {
-          input.checked = false;
-        });
-        updateDisplaySummary();
-        refreshVisibleJobs();
-      });
-
-      document.getElementById("scan-button").addEventListener("click", launchScan);
+      document.querySelectorAll('input[name="role-family"],input[name="sector-focus"],input[name="level-choice"],input[name="source-choice"]').forEach(i=>i.addEventListener("change",()=>{updateDisplaySummary();refreshVisibleJobs();}));
+      document.getElementById("all-countries-toggle").addEventListener("change",()=>{updateDisplaySummary();refreshVisibleJobs();});
+      document.getElementById("select-all-sources").addEventListener("click",()=>{document.querySelectorAll('input[name="source-choice"]').forEach(i=>i.checked=true);updateDisplaySummary();refreshVisibleJobs();});
+      document.getElementById("clear-all-sources").addEventListener("click",()=>{document.querySelectorAll('input[name="source-choice"]').forEach(i=>i.checked=false);updateDisplaySummary();refreshVisibleJobs();});
+      document.getElementById("scan-button").addEventListener("click",launchScan);
     }
 
+    // ── DASHBOARD ──
+    const STATUSES = ['À postuler','Postulé','Entretien','Offre','Refus'];
+    const STATUS_CSS = {'À postuler':'s-todo','Postulé':'s-applied','Entretien':'s-interview','Offre':'s-offer','Refus':'s-rejected'};
+    const STATUS_COLORS = {'À postuler':'rgba(255,255,255,0.2)','Postulé':'rgba(168,255,56,0.6)','Entretien':'rgba(102,199,255,0.6)','Offre':'rgba(29,200,117,0.6)','Refus':'rgba(255,100,100,0.5)'};
+
+    function loadApps() { try { return JSON.parse(localStorage.getItem('jobradar_apps')||'[]'); } catch(e){return[];} }
+    function saveApps(apps) { localStorage.setItem('jobradar_apps',JSON.stringify(apps)); }
+
+    function showDashTab(name) {
+      const names=['stats','kanban','list','reminders'];
+      document.querySelectorAll('.dash-view-tab').forEach((b,i)=>b.classList.toggle('active',names[i]===name));
+      document.querySelectorAll('.dash-panel').forEach((p,i)=>p.classList.toggle('active',names[i]===name));
+      if(name==='stats') renderStats();
+      if(name==='kanban') renderKanban();
+      if(name==='list') renderList();
+      if(name==='reminders') renderReminders();
+    }
+
+    function renderStats() {
+      const apps=loadApps();
+      const total=apps.length,applied=apps.filter(a=>a.status!=='À postuler').length;
+      const interviews=apps.filter(a=>a.status==='Entretien'||a.status==='Offre').length;
+      const offers=apps.filter(a=>a.status==='Offre').length;
+      const rejected=apps.filter(a=>a.status==='Refus').length;
+      const rate=applied>0?Math.round((interviews/applied)*100):0;
+      document.getElementById('stats-grid').innerHTML=`
+        <div class="stat-card"><div class="big-num" style="color:var(--text)">${total}</div><div class="stat-lbl">Total</div></div>
+        <div class="stat-card"><div class="big-num" style="color:var(--accent)">${applied}</div><div class="stat-lbl">Postulées</div></div>
+        <div class="stat-card"><div class="big-num" style="color:var(--secondary)">${interviews}</div><div class="stat-lbl">Entretiens</div></div>
+        <div class="stat-card"><div class="big-num" style="color:#5DCAA5">${offers}</div><div class="stat-lbl">Offres</div></div>
+        <div class="stat-card"><div class="big-num" style="color:#ffd57e">${rate}%</div><div class="stat-lbl">Taux réponse</div></div>
+        <div class="stat-card"><div class="big-num" style="color:#ff8c7e">${rejected}</div><div class="stat-lbl">Refus</div></div>
+      `;
+      const sc={};STATUSES.forEach(s=>sc[s]=apps.filter(a=>a.status===s).length);
+      const ms=Math.max(...Object.values(sc),1);
+      document.getElementById('chart-status').innerHTML=STATUSES.map(s=>`<div class="bar-row"><div class="bar-label">${s}</div><div class="bar-track"><div class="bar-fill" style="width:${(sc[s]/ms)*100}%;background:${STATUS_COLORS[s]}"></div></div><div class="bar-count">${sc[s]}</div></div>`).join('');
+      const src={};apps.forEach(a=>{src[a.source||'Autre']=(src[a.source||'Autre']||0)+1;});
+      const sorted=Object.entries(src).sort((a,b)=>b[1]-a[1]).slice(0,7);const ms2=Math.max(...sorted.map(x=>x[1]),1);
+      document.getElementById('chart-source').innerHTML=sorted.map(([s,c])=>`<div class="bar-row"><div class="bar-label" style="font-size:0.75rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(s)}</div><div class="bar-track"><div class="bar-fill" style="width:${(c/ms2)*100}%;background:var(--accent)"></div></div><div class="bar-count">${c}</div></div>`).join('')||'<p style="color:var(--muted);font-size:0.85rem">Aucune donnée</p>';
+      // Timeline (last 8 weeks)
+      const weeks={};for(let i=7;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i*7);const k=d.toISOString().slice(0,10);weeks[k]=0;}
+      apps.forEach(a=>{if(!a.date)return;const ad=new Date(a.date);for(const k of Object.keys(weeks)){const kd=new Date(k);const diff=(ad-kd)/86400000;if(diff>=0&&diff<7){weeks[k]++;break;}}});
+      const wvals=Object.values(weeks);const mw=Math.max(...wvals,1);const wkeys=Object.keys(weeks);
+      document.getElementById('chart-timeline').innerHTML=wkeys.map((k,i)=>`<div class="bar-row"><div class="bar-label" style="font-size:0.72rem">${k.slice(5)}</div><div class="bar-track"><div class="bar-fill" style="width:${(wvals[i]/mw)*100}%;background:var(--secondary)"></div></div><div class="bar-count">${wvals[i]}</div></div>`).join('');
+      // Funnel
+      const funnel=[['Découvertes',total],['Postulées',applied],['Entretiens',interviews],['Offres',offers]];const mf=Math.max(...funnel.map(x=>x[1]),1);
+      document.getElementById('chart-funnel').innerHTML=funnel.map(([l,v])=>`<div class="bar-row"><div class="bar-label">${l}</div><div class="bar-track"><div class="bar-fill" style="width:${(v/mf)*100}%;background:linear-gradient(90deg,var(--secondary),var(--accent))"></div></div><div class="bar-count">${v}</div></div>`).join('');
+    }
+
+    function renderKanban() {
+      const apps=loadApps();
+      document.getElementById('kanban-board').innerHTML=STATUSES.map(status=>{
+        const col=apps.filter(a=>a.status===status);
+        return `<div class="kanban-col"><div class="kanban-header"><span class="kanban-title">${status}</span><span class="kanban-count">${col.length}</span></div><div class="kanban-body">${col.map(a=>`<div class="kanban-card" onclick="openEditModal('${a.id}')"><div class="kc-title">${escapeHtml(a.position)}</div><div class="kc-company">${escapeHtml(a.company)}</div><div class="kc-date">${a.date||''} ${a.location?'· '+escapeHtml(a.location):''}</div></div>`).join('')}</div><button class="kanban-add" onclick="openAddModal('${status}')">+ Ajouter</button></div>`;
+      }).join('');
+    }
+
+    function renderList() {
+      const apps=loadApps();
+      const q=(document.getElementById('list-search')?.value||'').toLowerCase();
+      const flt=document.getElementById('list-filter')?.value||'';
+      const filtered=apps.filter(a=>{const b=(a.position+a.company+a.location+a.source+a.contact+a.notes).toLowerCase();return(!q||b.includes(q))&&(!flt||a.status===flt);});
+      document.getElementById('list-body').innerHTML=filtered.length?filtered.map(a=>`<tr onclick="openEditModal('${a.id}')"><td><strong>${escapeHtml(a.position)}</strong></td><td>${escapeHtml(a.company)}</td><td>${escapeHtml(a.location||'—')}</td><td>${escapeHtml(a.source||'—')}</td><td>${a.date||'—'}</td><td><span class="status-badge ${STATUS_CSS[a.status]||'s-todo'}">${a.status}</span></td><td>${escapeHtml(a.contact||'—')}</td><td>${a.link?`<a href="${a.link}" target="_blank" onclick="event.stopPropagation()" style="color:var(--accent);font-size:0.8rem">Voir →</a>`:''}</td></tr>`).join(''):'<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:2rem">Aucune candidature trouvée</td></tr>';
+    }
+
+    function renderReminders() {
+      const apps=loadApps();const today=new Date();
+      const due=apps.filter(a=>{if(!a.date||a.status==='Refus'||a.status==='Offre'||a.status==='À postuler')return false;const diff=(today-new Date(a.date))/86400000;return diff>=7;}).sort((a,b)=>new Date(a.date)-new Date(b.date));
+      document.getElementById('reminders-list').innerHTML=due.length?due.map(a=>{const d=new Date(a.date);const diff=Math.floor((today-d)/86400000);const urgent=diff>=14;return`<div class="reminder-item ${urgent?'reminder-urgent':''}" onclick="openEditModal('${a.id}')"><div class="reminder-date">J+${diff}<small>${d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'})}</small></div><div class="reminder-info"><div class="reminder-title">${escapeHtml(a.position)} — ${escapeHtml(a.company)}</div><div class="reminder-sub">Statut : ${a.status}${a.contact?' · Contact : '+escapeHtml(a.contact):''}</div></div><span class="status-badge ${STATUS_CSS[a.status]}">${a.status}</span></div>`;}).join(''):'<div style="text-align:center;padding:3rem;color:var(--muted)">✅ Aucune relance nécessaire pour le moment</div>';
+    }
+
+    function openAddModal(defaultStatus='À postuler') {
+      document.getElementById('modal-title').textContent='Ajouter une candidature';
+      document.getElementById('modal-id').value='';
+      ['position','company','location','contact','link','notes'].forEach(f=>document.getElementById('m-'+f).value='');
+      document.getElementById('m-source').value='LinkedIn';
+      document.getElementById('m-status').value=defaultStatus;
+      document.getElementById('m-date').value=new Date().toISOString().split('T')[0];
+      document.getElementById('modal-delete-btn').style.display='none';
+      document.getElementById('app-modal').classList.add('open');
+    }
+    function openEditModal(id) {
+      const a=loadApps().find(x=>x.id===id); if(!a) return;
+      document.getElementById('modal-title').textContent='Modifier la candidature';
+      document.getElementById('modal-id').value=a.id;
+      ['position','company','location','source','status','date','contact','link','notes'].forEach(f=>{ const el=document.getElementById('m-'+f); if(el) el.value=a[f]||''; });
+      document.getElementById('modal-delete-btn').style.display='inline-block';
+      document.getElementById('app-modal').classList.add('open');
+    }
+    function closeModalOverlay(e) { if(e.target===document.getElementById('app-modal')) document.getElementById('app-modal').classList.remove('open'); }
+    function saveApp() {
+      const pos=document.getElementById('m-position').value.trim(),com=document.getElementById('m-company').value.trim();
+      if(!pos||!com){alert('Poste et entreprise sont obligatoires.');return;}
+      const apps=loadApps();const id=document.getElementById('modal-id').value||'app_'+Date.now();
+      const existing=apps.findIndex(a=>a.id===id);
+      const a={id,position:pos,company:com,location:document.getElementById('m-location').value.trim(),source:document.getElementById('m-source').value,status:document.getElementById('m-status').value,date:document.getElementById('m-date').value,contact:document.getElementById('m-contact').value.trim(),link:document.getElementById('m-link').value.trim(),notes:document.getElementById('m-notes').value.trim(),updatedAt:new Date().toISOString()};
+      if(existing>=0) apps[existing]=a; else apps.unshift(a);
+      saveApps(apps); document.getElementById('app-modal').classList.remove('open');
+      renderStats();renderKanban();renderList();renderReminders();
+    }
+    function deleteApp() {
+      const id=document.getElementById('modal-id').value; if(!id||!confirm('Supprimer cette candidature ?')) return;
+      saveApps(loadApps().filter(a=>a.id!==id)); document.getElementById('app-modal').classList.remove('open');
+      renderStats();renderKanban();renderList();renderReminders();
+    }
+
+    // ── INIT ──
     function init() {
-      renderChoiceGroup("role-family-grid", "role-family", ROLE_OPTIONS);
-      renderChoiceGroup("sector-grid", "sector-focus", SECTOR_OPTIONS);
-      renderChoiceGroup("level-grid", "level-choice", LEVEL_OPTIONS);
+      renderChoiceGroup("role-family-grid","role-family",ROLE_OPTIONS);
+      renderChoiceGroup("sector-grid","sector-focus",SECTOR_OPTIONS);
+      renderChoiceGroup("level-grid","level-choice",LEVEL_OPTIONS);
       renderSources();
-
-      createTagInput("extra-keywords-wrap", "Ajouter un mot-clé puis Entrée");
-      createTagInput("exclude-wrap", "Ajouter un terme à exclure puis Entrée", ["intern", "internship", "director", "vp", "head of", "chief"]);
-      createTagInput("countries-wrap", "Ajouter un pays ou une ville puis Entrée");
-      createTagInput("company-wrap", "Ajouter une entreprise puis Entrée");
-
-      updateRangeLabel("weight-keywords", "weight-keywords-value");
-      updateRangeLabel("weight-location", "weight-location-value");
-      updateRangeLabel("weight-company", "weight-company-value");
-      updateRangeLabel("score-range", "score-range-value");
-      updateRangeLabel("max-range", "max-range-value");
-
-      bindLiveEvents();
-      updateDisplaySummary();
-      loadJobsFromBackend();
+      createTagInput("extra-keywords-wrap","Ajouter un mot-clé puis Entrée");
+      createTagInput("exclude-wrap","Ajouter un terme à exclure puis Entrée",["intern","internship","director","vp","head of","chief"]);
+      createTagInput("countries-wrap","Ajouter un pays ou une ville puis Entrée");
+      createTagInput("company-wrap","Ajouter une entreprise puis Entrée");
+      updateRangeLabel("weight-keywords","weight-keywords-value");
+      updateRangeLabel("weight-location","weight-location-value");
+      updateRangeLabel("weight-company","weight-company-value");
+      updateRangeLabel("score-range","score-range-value");
+      updateRangeLabel("max-range","max-range-value");
+      bindLiveEvents();updateDisplaySummary();loadJobsFromBackend();
+      // Demo data si vide
+      if(loadApps().length===0){saveApps([{id:'d1',position:'Customer Success Manager',company:'Stripe',location:'Amsterdam',source:'Greenhouse',status:'Entretien',date:'2026-03-10',contact:'Sarah L.',link:'https://stripe.com',notes:'Très bon feeling, attendre retour RH'},{id:'d2',position:'Account Manager DACH',company:'Salesforce',location:'Zurich',source:'LinkedIn',status:'Postulé',date:'2026-03-14',contact:'',link:'',notes:''},{id:'d3',position:'Business Development Rep',company:'HubSpot',location:'Remote',source:'Ashby',status:'À postuler',date:'',contact:'',link:'',notes:''},{id:'d4',position:'Graduate Program',company:'Google',location:'Zurich',source:'Greenhouse',status:'Refus',date:'2026-03-05',contact:'',link:'',notes:"Pas assez d'expérience"},{id:'d5',position:'Partnerships Associate',company:'Revolut',location:'Barcelone',source:'WTTJ',status:'Postulé',date:'2026-03-08',contact:'Marc D.',link:'',notes:''}]);}
+      renderStats();
     }
-
     init();
   </script>
 </body>
